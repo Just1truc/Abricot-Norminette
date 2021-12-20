@@ -19,6 +19,19 @@ def check_layout_inside_function(files):
             if (char == '\t' and ("Makefile" in files) != True):
                 print("\033[1;33;40m[MINOR]: [L2]: No tab should be replaced by an identation:", files, "line :", test)
     inside.close()
+    inside = open(files, "r")
+    line = 0
+    prev_line = "02"
+    for lines in inside:
+        line += 1
+        if (lines[0] != ' ' and lines[0] != '\n' and "(" in lines and ")" in lines and "{" in lines):
+            print("\033[1;33;40m[MINOR]: [L4]: Curly brackets misplaced:", files, "line :", line)
+        if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines)):
+            print("\033[1;33;40m[MINOR]: [L4]: Curly brackets misplaced:", files, "line :", line)
+        if (prev_line[0] == ' ' and "}" in prev_line and not("if" in prev_line) and not("else" in prev_line) and not("for" in prev_line) and not("while" in prev_line) and "else" in lines and not("}" in lines)):
+            print("\033[1;33;40m[MINOR]: [L4]: Curly brackets misplaced:", files, "line :", line)
+        prev_line = lines
+    inside.close()
             
 def check_function(files):
     inside = open(files, "r")
