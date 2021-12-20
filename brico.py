@@ -121,9 +121,10 @@ def check_file_organization(files):
 
 def check_coding_style(files):
     check_file_organization(files)
-    check_global_scope(files)
-    check_function(files)
-    check_layout_inside_function(files)
+    if (".o" in files) != True:
+        check_global_scope(files)
+        check_function(files)
+        check_layout_inside_function(files)
 
 def browse_directory(directory, paths):
     for files in directory:
@@ -132,7 +133,7 @@ def browse_directory(directory, paths):
                 check_include(os.listdir(files))
             browse_directory(os.listdir(files), paths + "/" + str(files))
         else:
-            if (".c" in files or ".h" in files or "Makefile" in files):
+            if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
                 check_coding_style(paths + "/" + files)
 
 def main():
