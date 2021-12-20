@@ -64,13 +64,14 @@ def check_function(files):
     for lines in inside:
         line += 1
         for char in lines:
-            if (char == '('):
+            if (char == '(' and lines[0] != ' '):
                 counter = 1
             if (counter > 0 and char == ','):
                 counter += 1
             if (char == ')'):
                 if (counter > 4):
                     print("\033[1;31;40m[MAJOR]: [F5]: Function should not need more than 4 arguments:", files, "line :", line,"(", counter, "> 4 )")
+                counter = 0
     inside.close()
             
 def check_global_scope(files):
