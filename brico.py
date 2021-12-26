@@ -151,10 +151,11 @@ def check_coding_style(files):
 
 def browse_directory(directory, paths):
     for files in directory:
-        if path.isdir(files):
+        test = paths + "/" + files
+        if path.isdir(test):
             if (files == "include"):
-                check_include(os.listdir(files))
-            browse_directory(os.listdir(files), paths + "/" + str(files))
+                check_include(os.listdir(test))
+            browse_directory(os.listdir(test), paths + "/" + str(files))
         else:
             if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
                 check_coding_style(paths + "/" + files)
