@@ -8,6 +8,26 @@ def check_include(files):
         if ((".h" in dos) != True):
             print("\033[1;31;40m[MAJOR]: [G6]:    Include folder should only contain .h files:   ", dos)
 
+def check_control_structure(files):
+    inside = open(files, "r")
+    depth = 0
+    nbr = 0
+    for lines in inside:
+        nbr+=1
+        if ("if" in lines and not("else" in lines)):
+            depth = 1
+        if ("else if" in lines):
+            depth += 1
+        if ("else" in lines and not("if" in lines)):
+            depth += 1
+        if ("for" in lines or "while" in lines):
+            depth += 1
+        if (lines[0] == '{' or lines[0] == '}'):
+            depth = 0
+        if (depth > 3 or ("           " in lines and ("if" in lines or "else" in lines or "for" in lines or "while" in lines))):
+            depth = 0
+            print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:        ", files,"line :", nbr)
+            
 def check_layout_inside_function(files):
     inside = open(files, "r")
     line = 0
@@ -148,6 +168,7 @@ def check_coding_style(files):
         check_global_scope(files)
         check_function(files)
         check_layout_inside_function(files)
+        check_control_structure(files)
 
 def browse_directory(directory, paths):
     for files in directory:
