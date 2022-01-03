@@ -164,7 +164,7 @@ def check_file_organization(files):
 
 def check_coding_style(files):
     check_file_organization(files)
-    if ".c" in files || "Makefile" in files || ".h" in files:
+    if ".c" in files or "Makefile" in files or ".h" in files:
         check_global_scope(files)
         check_function(files)
         check_layout_inside_function(files)
