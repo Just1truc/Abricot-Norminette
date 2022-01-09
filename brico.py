@@ -9,25 +9,33 @@ def check_include(files):
             print("\033[1;31;40m[MAJOR]: [G6]:    Include folder should only contain .h files:   ", dos)
 
 def check_control_structure(files):
+    depth = 4
+    tot = 1
+    op_list = [ "for", "if", "while" ]
     inside = open(files, "r")
-    depth = 0
-    nbr = 0
+    line = 0
     for lines in inside:
-        nbr+=1
-        if ("if" in lines and not("else" in lines)):
-            depth = 1
-        if ("else if" in lines):
-            depth += 1
-        if ("else" in lines and not("if" in lines)):
-            depth += 1
-        if ("for" in lines or "while" in lines):
-            depth += 1
-        if (lines[0] == '{' or lines[0] == '}'):
-            depth = 0
-        if (depth > 3 or ("           " in lines and ("if" in lines or "else" in lines or "for" in lines or "while" in lines))):
-            depth = 0
-            print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:        ", files,"line :", nbr)
-            
+        init = 0
+        line += 1
+        for op in op_list:
+            if (op in lines):
+                init = 1
+                break;
+        u = 0
+        for i in lines:
+            if i == ' ': u+=1
+            else : break;
+        if (init == 1 and u > depth) or ("else if" in lines and u == depth):
+            depth = u
+            tot += 1
+        elif init == 1 and u == depth and not("else if" in lines):
+            depth = u
+        if (tot == 3):
+            print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:", files, "line :", line)         
+            tot = 0
+        
+        
+    
 def check_layout_inside_function(files):
     inside = open(files, "r")
     line = 0
