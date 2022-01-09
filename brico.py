@@ -31,10 +31,8 @@ def check_control_structure(files):
         elif init == 1 and u == depth and not("else if" in lines):
             depth = u
         if (tot == 3):
-            print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:", files, "line :", line)         
-            tot = 0
-        
-        
+            print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:        ", files, "line :", line)         
+            tot = 0        
     
 def check_layout_inside_function(files):
     inside = open(files, "r")
