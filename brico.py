@@ -39,19 +39,20 @@ def check_layout_inside_function(files):
             if (char == '\t' and ("Makefile" in files) != True):
                 print("\033[1;33;40m[MINOR]: [L2]:     No tab should be replaced by an identation:   ", files, "line :", test)
     inside.close()
-    inside = open(files, "r")
-    line = 0
-    prev_line = "02"
-    for lines in inside:
-        line += 1
-        if (lines[0] != ' ' and lines[0] != '\n' and "(" in lines and ")" in lines and "{" in lines):
-            print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
-        if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines) and not("}" in lines)):
-            print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
-        if (prev_line[0] == ' ' and "}" in prev_line and not("if" in prev_line) and not("else" in prev_line) and not("for" in prev_line) and not("while" in prev_line) and "else" in lines and not("}" in lines)):
-            print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
-        prev_line = lines
-    inside.close()
+    if ".c" in files:
+        inside = open(files, "r")
+        line = 0
+        prev_line = "02"
+        for lines in inside:
+            line += 1
+            if (lines[0] != ' ' and lines[0] != '\n' and "(" in lines and ")" in lines and "{" in lines):
+                print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
+            if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines) and not("}" in lines)):
+                print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
+            if (prev_line[0] == ' ' and "}" in prev_line and not("if" in prev_line) and not("else" in prev_line) and not("for" in prev_line) and not("while" in prev_line) and "else" in lines and not("}" in lines)):
+                print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
+            prev_line = lines
+        inside.close()
             
 def check_function(files):
     inside = open(files, "r")
@@ -148,7 +149,7 @@ def check_global_scope(files):
 def check_file_organization(files):
     forbidden_files = [ ".o", ".gch", ".a", ".so", "~", "#", ".d" ]
     for ext in forbidden_files:
-        if (ext in str(files)):
+        if (ext in str(files) and files[len(files) - 1] == ext[len(ext) - 1]):
             print("\033[1;31;40m[MAJOR]: [O1]:    Delivery Folder should not contain", ext,"files:   ", files)
     if (any(ele.isupper() for ele in str(files)) == True and ("Makefile" in files) != True):
         print("\033[1;31;40m[MAJOR]: [O4]:          Name not in snake case convention:        ", files)
@@ -164,7 +165,7 @@ def check_file_organization(files):
 
 def check_coding_style(files):
     check_file_organization(files)
-    if ".c" in files or "Makefile" in files or ".h" in files:
+    if (".c" in files and files[-1] == 'c') or "Makefile" in files or ".h" in files:
         check_global_scope(files)
         check_function(files)
         check_layout_inside_function(files)

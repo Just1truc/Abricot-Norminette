@@ -1,2 +1,2 @@
-#!/bin/sh
-python ~/.Abricot-script/brico.py
+#!/bin/bash
+python3 ~/.Abricot-script/brico.py
