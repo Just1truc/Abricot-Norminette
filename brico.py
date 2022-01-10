@@ -30,6 +30,8 @@ def check_control_structure(files):
             tot += 1
         elif init == 1 and u == depth and not("else if" in lines):
             depth = u
+            if depth == 4:
+                tot = 0
         if (tot == 3):
             print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:        ", files, "line :", line)         
             tot = 0        
