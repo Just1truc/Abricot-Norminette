@@ -28,7 +28,7 @@ def check_control_structure(files):
         if (init == 1 and u > depth) or ("else if" in lines and u == depth):
             depth = u
             tot += 1
-        elif init == 1 and u < depth and not("else if" in lines):
+        elif init == 1 and u <= depth and not("else if" in lines):
             tot = 1
             depth = u
         if (tot == 3):
