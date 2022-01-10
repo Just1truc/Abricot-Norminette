@@ -25,12 +25,9 @@ def check_control_structure(files):
         for i in lines:
             if i == ' ': u+=1
             else : break;
-        if (init == 1 and u > depth) or ("else if" in lines and u == depth):
+        if (init == 1 and u > depth):
             depth = u
             tot += 1
-        elif init == 1 and u <= depth and not("else if" in lines):
-            tot = 1
-            depth = u
         if (tot == 3):
             print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:        ", files, "line :", line)         
             tot = 0        
