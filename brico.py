@@ -15,23 +15,11 @@ def check_control_structure(files):
     inside = open(files, "r")
     line = 0
     for lines in inside:
-        init = 0
-        line += 1
-        for op in op_list:
-            if (op in lines):
-                init = 1
-                break;
-        u = 0
-        for i in lines:
-            if i == ' ': u+=1
-            else : break;
-        if (init == 1 and u > depth):
-            depth = u
-            tot += 1
-        if (tot == 3):
-            print("\033[1;33;40m[MINOR]: [C1]:     There should not be more than 3 depth:        ", files, "line :", line)         
-            tot = 0        
-    
+        line += 1;
+        for val in op_list:
+            if val in lines and "            " in lines:
+                print("\033[1;33;40m[MINOR]: [C1]:      There shouldnot be more than 3 depth:     ", files, "line :", line)
+
 def check_layout_inside_function(files):
     inside = open(files, "r")
     line = 0
