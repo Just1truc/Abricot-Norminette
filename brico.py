@@ -11,7 +11,7 @@ def check_include(files):
 def check_control_structure(files):
     depth = 4
     tot = 1
-    op_list = [ "for", "if", "while" ]
+    op_list = [ "for (", "for(", "if (", "if(", "while (", "while(" ]
     inside = open(files, "r")
     line = 0
     for lines in inside:
