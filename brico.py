@@ -128,6 +128,16 @@ def check_global_scope(files):
                 print("\033[1;33;40m[MINOR]: [G2]:   There should be only one empty_line each time:  ", files, ": line:", line_nbr)
     inside.close()
     inside = open(files, "r")
+    prev_line = "\n"
+    line = 0
+    if (".c" in files):
+        for lines in inside:
+            line += 1
+            if prev_line[0] == '}' and lines[0] != '\n':
+                print("\033[1;33;40m[MINOR]: [G2]:   There should be only one empty_line each time:  ", files, ": line:", line)
+            prev_line = lines
+    inside.close()
+    inside = open(files, "r")
     line = 0
     for lines in inside:
         line += 1
