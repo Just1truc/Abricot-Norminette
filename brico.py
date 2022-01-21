@@ -174,6 +174,18 @@ def check_global_scope(files):
                 print("\033[1;33;40m[MINOR]: [G2]:   There should be only one empty_line each time:  ", files, ": line:", line)
             prev_line = lines
     inside.close()
+    line = 0
+    inside = open(files, "r")
+    if (".h" in files and files[-1] == 'h'):
+        for lines in inside:
+            line += 1
+            if "#define" in lines or "#include" in lines:
+                i = 0
+                while (lines[i] == ' '):
+                    i += 1
+                if (i != 4):
+                    print("\033[1;33;40m[MINOR]: [G3]:   preprocessor directives should be indented:    ", files, ": line:", line)
+    inside.close()
     inside = open(files, "r")
     line = 0
     for lines in inside:
