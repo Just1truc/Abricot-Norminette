@@ -192,9 +192,9 @@ def check_file_organization(files):
         for lines in inside:
             if (lines[0] == '{'):
                 function_nbr += 1
-    if (function_nbr > 5):
-        print("\033[1;31;40m[MAJOR]: [03]:          Too many functions in one file :         ", files, "(", function_nbr, "> 5 )")
-    inside.close()
+        if (function_nbr > 5):
+            print("\033[1;31;40m[MAJOR]: [03]:          Too many functions in one file :         ", files, "(", function_nbr, "> 5 )")
+        inside.close()
 
 def check_coding_style(files):
     check_file_organization(files)
