@@ -228,13 +228,14 @@ def check_global_scope(files):
 def check_file_organization(files):
     global major
     global minor
+    global po_o
     forbidden_files = [ ".o", ".gch", ".a", ".so", "~", "#", ".d" ]
     for ext in forbidden_files:
         if (ext in str(files) and files[len(files) - 1] == ext[len(ext) - 1]):
-            major.append(str("\033[1;31;40m[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files"))
+            po_o.append(str("\033[1;31;40m[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files"))
             #print("\033[1;31;40m[MAJOR]: [O1]:    Delivery Folder should not contain", ext,"files:   ", files)
     if (any(ele.isupper() for ele in str(files)) == True and ("Makefile" in files) != True):
-        major.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(files.replace("./", ""))))
+        po_o.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(files.replace("./", ""))))
         #print("\033[1;31;40m[MAJOR]: [O4]:          Name not in snake case convention:        ", files)
     if (".c" in files and files[-1] == 'c'):
         inside = open(files, "r")
@@ -267,6 +268,8 @@ def check_coding_style(files):
         print("")
 
 def browse_directory(directory, paths):
+    global po_o
+    po_o = []
     for files in directory:
         test = paths + "/" + files
         if path.isdir(test):
@@ -276,6 +279,10 @@ def browse_directory(directory, paths):
         else:
             if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
                 check_coding_style(paths + "/" + files)
+    if len(po_o) != 0:
+        print("\033[1;36mBad Files:")
+        for i in po_o:
+            print(i)
 
 def main():
     directory = os.listdir(".")
