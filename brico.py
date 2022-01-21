@@ -220,7 +220,7 @@ def check_global_scope(files):
         index = 0
         for char in lines:
             if (char == ' ' and lines[index + 1] == '\n' and line > 7):
-                minor.append("\033[1;33;40m[MINOR]: [G8]: Trailling space: line :", line)
+                minor.append("\033[1;33;40m[MINOR]: [G8]: Trailling space: line :"+ str(line))
                 #print("\033[1;33;40m[MINOR]: [G8]:                  Trailling space:                 ", files, "line :", line)
             index += 1
     inside.close()
