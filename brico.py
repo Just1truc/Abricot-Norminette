@@ -35,6 +35,7 @@ def check_layout_inside_function(files):
         inside =  open(files, "r")
         line = 0
         ins = 0
+        in_string = 0
         op_list = [ '*', '+', '/', '%', '=', '-' ]
         for lines in inside:
             line += 1
@@ -43,11 +44,18 @@ def check_layout_inside_function(files):
                 if ("return(" in lines or "while(" in lines or "for(" in lines or "if(" in lines or "){\n" in lines):
                     print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
                     ins = 1
+                in_string = 0
                 for i in range(len(lines)):
-                    for char in op_list:
-                        if lines[i] == char and lines[i + 1] != '=' and lines[i + 1] != ' ' and char != '-' and ins == 0:
-                            print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
-                            ins = 1
+                    if (lines[i] == '"'):
+                        if in_string == 1:
+                            in_string = 0
+                        else:
+                            in_string = 1
+                    if (in_string == 0):
+                        for char in op_list:
+                            if lines[i] == char and lines[i + 1] != '=' and lines[i + 1] != ' ' and char != '-' and lines[i + 1] != "'" and char != '*' and ins == 0 and not("++" in lines) and not("--" in lines) and not("#include" in lines):
+                                print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
+                                ins = 1
                 ##for o in range(len(lines)):
                     ##for char in op_list:
                         ##if (lines[o] == char and lines[o - 1] != ' ' and char != '=') or (lines[o] == '=' and lines[o - 1] != '=' and lines[o - 1] != ' ') and ins == 0:
@@ -178,9 +186,9 @@ def check_file_organization(files):
             print("\033[1;31;40m[MAJOR]: [O1]:    Delivery Folder should not contain", ext,"files:   ", files)
     if (any(ele.isupper() for ele in str(files)) == True and ("Makefile" in files) != True):
         print("\033[1;31;40m[MAJOR]: [O4]:          Name not in snake case convention:        ", files)
-    inside = open(files, "r")
-    function_nbr = 0
-    if (".c" in files):
+    if (".c" in files and files[-1] == 'c'):
+        inside = open(files, "r")
+        function_nbr = 0
         for lines in inside:
             if (lines[0] == '{'):
                 function_nbr += 1
