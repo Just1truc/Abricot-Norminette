@@ -123,7 +123,7 @@ def check_function(files):
                 counter += 1
             if (lines[0] == '}'):
                 if (counter - 3 > 20):
-                    major.append("\033[1;31;40m[MAJOR]: [F4]:       A function should not exceed 20 lines:      line :" + str(begin_line) + " ( " + str(counter - 3) + " > 20 )")
+                    major.append("\033[1;31;40m[MAJOR]: [F4]: A function should not exceed 20 lines: line :" + str(begin_line) + " ( " + str(counter - 3) + " > 20 )")
                     #print("\033[1;31;40m[MAJOR]: [F4]:       A function should not exceed 20 lines:      ", files, "line :", begin_line, "(", counter - 3, "> 20 )")
                 counter = 0
     inside.close()
@@ -139,7 +139,7 @@ def check_function(files):
                 counter += 1
             if (char == ')'):
                 if (counter > 4):
-                    major.append("\033[1;31;40m[MAJOR]: [F5]:   Function should not need more than 4 arguments: line :" + str(line) +" ( "+ str(counter)+ " > 4 )")
+                    major.append("\033[1;31;40m[MAJOR]: [F5]: Function should not need more than 4 arguments: line :" + str(line) +" ( "+ str(counter)+ " > 4 )")
                     #print("\033[1;31;40m[MAJOR]: [F5]:   Function should not need more than 4 arguments: ", files, "line :", line,"(", counter, "> 4 )")
                 counter = 0
     inside.close()
