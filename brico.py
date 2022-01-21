@@ -48,11 +48,11 @@ def check_layout_inside_function(files):
                         if lines[i] == char and lines[i + 1] != '=' and lines[i + 1] != ' ' and char != '-' and ins == 0:
                             print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
                             ins = 1
-                for o in range(len(lines)):
-                    for char in op_list:
-                        if (lines[o] == char and lines[o - 1] != ' ' and char != '=') or (lines[o] == '=' and lines[o - 1] != '=' and lines[o - 1] != ' ') and ins == 0:
-                            print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
-                            ins = 1
+                ##for o in range(len(lines)):
+                    ##for char in op_list:
+                        ##if (lines[o] == char and lines[o - 1] != ' ' and char != '=') or (lines[o] == '=' and lines[o - 1] != '=' and lines[o - 1] != ' ') and ins == 0:
+                            ##print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
+                            ##ins = 1
     inside.close()
     if ".c" in files:
         inside = open(files, "r")
