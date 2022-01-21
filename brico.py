@@ -251,6 +251,7 @@ def check_file_organization(files):
 def check_coding_style(files):
     global major
     global minor
+    global er
     major = []
     minor = []
     check_file_organization(files)
@@ -260,6 +261,7 @@ def check_coding_style(files):
         check_layout_inside_function(files)
         check_control_structure(files)
     if (len(major) != 0 or len(minor) != 0):
+        er = 1
         print("\033[1;36mIn", files.replace("./", ""), "\n")
         for i in major:
             print(i)
@@ -279,13 +281,18 @@ def browse_directory(directory, paths):
                 check_coding_style(paths + "/" + files)
 def main():
     global po_o
+    global er
+    er = 0
     po_o = []
     directory = os.listdir(".")
     paths = "."
     browse_directory(directory, paths)
     if len(po_o) != 0:
+        er = 1
         print("\033[1;36mBad Files:\n")
         for i in po_o:
             print(i)
+    if er == 0:
+        print("\033[1;32mNo Coding style error detected : Code clean")
 
 main()
