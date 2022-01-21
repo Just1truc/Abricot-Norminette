@@ -75,7 +75,7 @@ def check_layout_inside_function(files):
                             in_string = 1
                     if in_string == 0:
                         for char in op_list:
-                            if lines[o] == char and lines[o - 1] != ' ' and not("++" in lines) and not("--" in lines) and char != '=' and lines[o - 1] != lines[o] and lines[o + 1] != '>' and not("#include" in lines) and lines[o + 1] != "'" and char != '-' and lines[o - 1] != '(':
+                            if lines[o] == char and lines[o - 1] != ' ' and not("++" in lines) and not("--" in lines) and char != '=' and lines[o - 1] != lines[o] and lines[o + 1] != '>' and not("#include" in lines) and lines[o + 1] != "'" and char != '-' and lines[o - 1] != '(' and lines[o - 1] != '[':
                                 minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(line))
                                 #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
                                 ins = 1
