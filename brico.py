@@ -32,6 +32,29 @@ def check_layout_inside_function(files):
                 print("\033[1;33;40m[MINOR]: [L2]:     No tab should be replaced by an identation:   ", files, "line :", test)
     inside.close()
     if ".c" in files:
+        inside =  open(files, "r")
+        line = 0
+        ins = 0
+        op_list = [ '*', '+', '/', '%', '=', '-' ]
+        for lines in inside:
+            line += 1
+            ins = 0
+            if (line > 6):
+                if ("return(" in lines or "while(" in lines or "for(" in lines or "if(" in lines or "){\n" in lines):
+                    print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
+                    ins = 1
+                for i in range(len(lines)):
+                    for char in op_list:
+                        if lines[i] == char and lines[i + 1] != '=' and lines[i + 1] != ' ' and char != '-' and ins == 0:
+                            print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
+                            ins = 1
+                for o in range(len(lines)):
+                    for char in op_list:
+                        if (lines[o] == char and lines[o - 1] != ' ' and char != '=') or (lines[o] == '=' and lines[o - 1] != '=' and lines[o - 1] != ' ') and ins == 0:
+                            print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
+                            ins = 1
+    inside.close()
+    if ".c" in files:
         inside = open(files, "r")
         line = 0
         prev_line = "02"
