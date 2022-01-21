@@ -232,7 +232,7 @@ def check_file_organization(files):
     forbidden_files = [ ".o", ".gch", ".a", ".so", "~", "#", ".d" ]
     for ext in forbidden_files:
         if (ext in str(files) and files[len(files) - 1] == ext[len(ext) - 1]):
-            po_o.append(str("\033[1;31;40m[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files"))
+            po_o.append(str("\033[1;31;40m[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files: " + files))
             #print("\033[1;31;40m[MAJOR]: [O1]:    Delivery Folder should not contain", ext,"files:   ", files)
     if (any(ele.isupper() for ele in str(files)) == True and ("Makefile" in files) != True):
         po_o.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(files.replace("./", ""))))
@@ -244,7 +244,7 @@ def check_file_organization(files):
             if (lines[0] == '{'):
                 function_nbr += 1
         if (function_nbr > 5):
-            major.append("\033[1;31;40m[MAJOR]: [03]: Too many functions in one file : (" + function_nbr + "> 5 )")
+            major.append("\033[1;31;40m[MAJOR]: [03]: Too many functions in one file : ( " + str(function_nbr) + " > 5 )")
             #print("\033[1;31;40m[MAJOR]: [03]:          Too many functions in one file :         ", files, "(", function_nbr, "> 5 )")
         inside.close()
 
@@ -268,8 +268,6 @@ def check_coding_style(files):
         print("")
 
 def browse_directory(directory, paths):
-    global po_o
-    po_o = []
     for files in directory:
         test = paths + "/" + files
         if path.isdir(test):
@@ -279,14 +277,15 @@ def browse_directory(directory, paths):
         else:
             if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
                 check_coding_style(paths + "/" + files)
-    if len(po_o) != 0:
-        print("\033[1;36mBad Files:")
-        for i in po_o:
-            print(i)
-
 def main():
+    global po_o
+    po_o = []
     directory = os.listdir(".")
     paths = "."
     browse_directory(directory, paths)
+    if len(po_o) != 0:
+        print("\033[1;36mBad Files:\n")
+        for i in po_o:
+            print(i)
 
 main()
