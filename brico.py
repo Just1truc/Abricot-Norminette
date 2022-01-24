@@ -49,12 +49,19 @@ def check_layout_inside_function(files):
         inside =  open(files, "r")
         line = 0
         ins = 0
+        startin = 0
+        for lines in inside:
+            startin += 1
+            if lines[0] != '/' and lines[0] != '*':
+                break;
+        inside.close()
+        inside = open(files, "r")
         in_string = 0
         op_list = [ '*', '+', '/', '%', '=', '-' ]
         for lines in inside:
             line += 1
             ins = 0
-            if (line > 6):
+            if (line > startin):
                 if ("return(" in lines or "while(" in lines or "for(" in lines or "if(" in lines or "){\n" in lines):
                     minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(line))
                     #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
@@ -68,7 +75,7 @@ def check_layout_inside_function(files):
                             in_string = 1
                     if (in_string == 0):
                         for char in op_list:
-                            if lines[i] == char and lines[i + 1] != '=' and lines[i + 1] != ' ' and char != '-' and lines[i + 1] != "'" and char != '*' and ins == 0 and not("++" in lines) and not("--" in lines) and not("#include" in lines) and lines[i + 1] != '\n' and not("//" in lines):
+                            if lines[i] == char and lines[i + 1] != '=' and lines[i + 1] != ' ' and char != '-' and lines[i + 1] != "'" and char != '*' and ins == 0 and not("++" in lines) and not("--" in lines) and not("#include" in lines) and lines[i + 1] != '\n' and not("//" in lines) and not("*/" in lines) and not("/*" in lines):
                                 minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(line))
                                 #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
                                 ins = 1
@@ -80,7 +87,7 @@ def check_layout_inside_function(files):
                             in_string = 1
                     if in_string == 0:
                         for char in op_list:
-                            if lines[o] == char and lines[o - 1] != ' ' and not("++" in lines) and not("--" in lines) and char != '=' and lines[o - 1] != lines[o] and lines[o + 1] != '>' and not("#include" in lines) and lines[o + 1] != "'" and char != '-' and lines[o - 1] != '(' and lines[o - 1] != '[' and not("//" in lines):
+                            if lines[o] == char and lines[o - 1] != ' ' and not("++" in lines) and not("--" in lines) and char != '=' and lines[o - 1] != lines[o] and lines[o + 1] != '>' and not("#include" in lines) and lines[o + 1] != "'" and char != '-' and lines[o - 1] != '(' and lines[o - 1] != '[' and not("//" in lines) and not("*/" in lines) and not("/*" in lines):
                                 minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(line))
                                 #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
                                 ins = 1
