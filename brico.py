@@ -272,7 +272,7 @@ def check_coding_style(files):
 def browse_directory(directory, paths):
     for files in directory:
         test = paths + "/" + files
-        if path.isdir(test):
+        if path.isdir(test) and files != "tests":
             if (files == "include"):
                 check_include(os.listdir(test))
             browse_directory(os.listdir(test), paths + "/" + str(files))
