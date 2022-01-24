@@ -4,12 +4,16 @@ import os.path
 from os import path
 
 def check_include(files):
-    global major
-    global minor
+    tot = []
     for dos in files:
         if ((".h" in dos) != True):
-            major.append("\033[1;31;40m[MAJOR]: [G6]: Include folder should only contain .h files: " + dos.replace("./", ""))
+            tot.append("\033[1;31;40m[MAJOR]: [G6]: Include folder should only contain .h files: " + dos.replace("./", ""))
             #print("\033[1;31;40m[MAJOR]: [G6]:    Include folder should only contain .h files:   ", dos)
+    if len(tot) > 0:
+        er = 1
+        print("\033[1;36mIn", files.replace("./", ""), "\n")
+        for i in tot:
+            print(i)
 
 def check_control_structure(files):
     global major
