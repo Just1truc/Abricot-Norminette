@@ -237,7 +237,7 @@ def check_file_organization(files):
     if (any(ele.isupper() for ele in str(files)) == True and ("Makefile" in files) != True):
         po_o.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(files.replace("./", ""))))
         #print("\033[1;31;40m[MAJOR]: [O4]:          Name not in snake case convention:        ", files)
-    if (".c" in files and files[-1] == 'c'):
+    if (files[-1] == 'c' and files[-2] == '.'):
         inside = open(files, "r")
         function_nbr = 0
         for lines in inside:
@@ -255,7 +255,7 @@ def check_coding_style(files):
     major = []
     minor = []
     check_file_organization(files)
-    if ((".c" in files and files[-1] == 'c') or "Makefile" in files or (".h" in files and files[-1] == 'h')) and not("~" in files):
+    if ((files[-1] == 'c' and files[-2] == '.') or "Makefile" in files or (files[-1] == 'h' and files[-2] == '.')) and not("~" in files):
         check_global_scope(files)
         check_function(files)
         check_layout_inside_function(files)
