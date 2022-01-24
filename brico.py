@@ -11,9 +11,10 @@ def check_include(files):
             #print("\033[1;31;40m[MAJOR]: [G6]:    Include folder should only contain .h files:   ", dos)
     if len(tot) > 0:
         er = 1
-        print("\033[1;36mIn", files.replace("./", ""), "\n")
+        print("\033[1;36mIn include\n")
         for i in tot:
             print(i)
+        print("")
 
 def check_control_structure(files):
     global major
