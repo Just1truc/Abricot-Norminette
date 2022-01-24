@@ -255,7 +255,7 @@ def check_coding_style(files):
     major = []
     minor = []
     check_file_organization(files)
-    if ((".c" in files and files[-1] == 'c') or "Makefile" in files or ".h" in files) and not("~" in files):
+    if ((".c" in files and files[-1] == 'c') or "Makefile" in files or (".h" in files and files[-1] == 'h')) and not("~" in files):
         check_global_scope(files)
         check_function(files)
         check_layout_inside_function(files)
