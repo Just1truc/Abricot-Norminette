@@ -201,11 +201,16 @@ def check_global_scope(files):
             prev_line = lines
     inside.close()
     line = 0
+    start = 0
     inside = open(files, "r")
     if (".h" in files and files[-1] == 'h'):
         for lines in inside:
             line += 1
-            if "#define" in lines or "#include" in lines:
+            if "#ifndef" in lines:
+                start=1
+            if "#endif" in lines:
+                start = 0
+            if ("#define" in lines or "#include" in lines) and start == 1:
                 i = 0
                 while (lines[i] == ' '):
                     i += 1
