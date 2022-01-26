@@ -253,8 +253,13 @@ def check_global_scope(files):
                 #print("\033[1;33;40m[MINOR]: [G8]:                  Trailling space:                 ", files, "line :", line)
             index += 1
     inside.close()
-            
-def check_file_organization(files):
+
+def check_04(file_name):
+    global po_o
+    if (any(ele.isupper() for ele in str(file_name)) == True and ("Makefile" in file_name) != True):
+        po_o.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(file_name.replace("./", ""))))
+
+def check_file_organization(files, file_name):
     global major
     global minor
     global po_o
@@ -263,9 +268,7 @@ def check_file_organization(files):
         if (ext in str(files) and files[len(files) - 1] == ext[len(ext) - 1]):
             po_o.append(str("\033[1;31;40m[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files: " + files))
             #print("\033[1;31;40m[MAJOR]: [O1]:    Delivery Folder should not contain", ext,"files:   ", files)
-    if (any(ele.isupper() for ele in str(files)) == True and ("Makefile" in files) != True):
-        po_o.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(files.replace("./", ""))))
-        #print("\033[1;31;40m[MAJOR]: [O4]:          Name not in snake case convention:        ", files)
+    check_04(file_name)
     if (files[-1] == 'c' and files[-2] == '.'):
         inside = open(files, "r")
         function_nbr = 0
@@ -277,13 +280,13 @@ def check_file_organization(files):
             #print("\033[1;31;40m[MAJOR]: [03]:          Too many functions in one file :         ", files, "(", function_nbr, "> 5 )")
         inside.close()
 
-def check_coding_style(files):
+def check_coding_style(files, file_name):
     global major
     global minor
     global er
     major = []
     minor = []
-    check_file_organization(files)
+    check_file_organization(files, file_name)
     if ((files[-1] == 'c' and files[-2] == '.') or "Makefile" in files or (files[-1] == 'h' and files[-2] == '.')) and not("~" in files) and not(".swp" in files):
         check_global_scope(files)
         check_function(files)
@@ -304,10 +307,11 @@ def browse_directory(directory, paths):
         if path.isdir(test) and files != "tests":
             if (files == "include"):
                 check_include(os.listdir(test))
+            check_04(files)
             browse_directory(os.listdir(test), paths + "/" + str(files))
         else:
             if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
-                check_coding_style(paths + "/" + files)
+                check_coding_style(paths + "/" + files, files)
 
 def get_struct(direct, paths):
     global var_types
