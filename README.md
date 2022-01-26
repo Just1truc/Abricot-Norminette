@@ -1,7 +1,7 @@
 # Abricot moulinette
 
 Welcome to Abricot Norminette,
-Abricot Moulinette is a norminette that check your C project file and check the coding style errors for EPITECH
+Abricot Norminette is a checker for C project file and check the coding style errors for EPITECH
 
 
 ## Files checked
