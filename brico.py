@@ -254,10 +254,10 @@ def check_global_scope(files):
             index += 1
     inside.close()
 
-def check_04(file_name):
+def check_04(file_name, path):
     global po_o
     if (any(ele.isupper() for ele in str(file_name)) == True and ("Makefile" in file_name) != True):
-        po_o.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(file_name.replace("./", ""))))
+        po_o.append(str("\033[1;31;40m[MAJOR]: [O4]: Name not in snake case convention: " + str(path.replace("./", ""))))
 
 def check_file_organization(files, file_name):
     global major
@@ -268,7 +268,7 @@ def check_file_organization(files, file_name):
         if (ext in str(files) and files[len(files) - 1] == ext[len(ext) - 1]):
             po_o.append(str("\033[1;31;40m[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files: " + files))
             #print("\033[1;31;40m[MAJOR]: [O1]:    Delivery Folder should not contain", ext,"files:   ", files)
-    check_04(file_name)
+    check_04(file_name, files)
     if (files[-1] == 'c' and files[-2] == '.'):
         inside = open(files, "r")
         function_nbr = 0
@@ -307,7 +307,7 @@ def browse_directory(directory, paths):
         if path.isdir(test) and files != "tests":
             if (files == "include"):
                 check_include(os.listdir(test))
-            check_04(files)
+            check_04(files, test)
             browse_directory(os.listdir(test), paths + "/" + str(files))
         else:
             if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
@@ -329,7 +329,9 @@ def get_struct(direct, paths):
                     tot=lines.replace(" ", "")
                     if begin == 1 and tot[0] == '}':
                         i = 0
-                        var_types += [lines.replace(" ", "").replace("}", "").replace(";\n", "")]
+                        tot=lines.replace(" ", "").replace("}", "").replace(";\n", "")
+                        if len(tot) > 0:
+                            var_types += [tot]
                             
 def main():
     global po_o
