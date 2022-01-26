@@ -12,7 +12,7 @@ Abricot Norminette is a checker for C project file and check the coding style er
 ## Error handling
 
 - G 6, 1, 2, 3, 8
->include folder should not contain .h files
+> include folder should not contain .h files
 > bad file header
 > there should be only one line between each fonction
 > preprocessor directive must be indented
