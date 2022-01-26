@@ -92,55 +92,6 @@ def check_layout_inside_function(files):
     inside.close()
     if ".c" in files:
         misplaced_spaces([files]);
-    '''
-    if ".c" in files:
-        inside =  open(files, "r")
-        line = 0
-        ins = 0
-        startin = 0
-        for lines in inside:
-            startin += 1
-            if lines[0] != '/' and lines[0] != '*':
-                break;
-        inside.close()
-        inside = open(files, "r")
-        in_string = 0
-        op_list = [ '*', '+', '/', '%', '=', '-' ]
-        for lines in inside:
-            line += 1
-            ins = 0
-            if (line > startin):
-                if ("return(" in lines or "while(" in lines or "for(" in lines or "if(" in lines or "){\n" in lines):
-                    minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(line))
-                    #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
-                    ins = 1
-                in_string = 0
-                for i in range(len(lines)):
-                    if (lines[i] == '"'):
-                        if in_string == 1:
-                            in_string = 0
-                        else:
-                            in_string = 1
-                    if (in_string == 0):
-                        for char in op_list:
-                            if lines[i] == char and lines[i + 1] != '=' and lines[i + 1] != ' ' and char != '-' and lines[i + 1] != "'" and char != '*' and ins == 0 and not("++" in lines) and not("--" in lines) and not("#include" in lines) and lines[i + 1] != '\n' and not("//" in lines) and not("*/" in lines) and not("/*" in lines):
-                                minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(line))
-                                #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
-                                ins = 1
-                for o in range(len(lines)):
-                    if (lines[o] == '"'):
-                        if in_string == 1:
-                            in_string = 0
-                        else:
-                            in_string = 1
-                    if in_string == 0:
-                        for char in op_list:
-                            if lines[o] == char and lines[o - 1] != ' ' and not("++" in lines) and not("--" in lines) and char != '=' and lines[o - 1] != lines[o] and lines[o + 1] != '>' and not("#include" in lines) and lines[o + 1] != "'" and char != '-' and lines[o - 1] != '(' and lines[o - 1] != '[' and not("//" in lines) and not("*/" in lines) and not("/*" in lines):
-                                minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(line))
-                                #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
-                                ins = 1
-    inside.close()
-    '''
     if ".c" in files:
         inside = open(files, "r")
         line = 0
@@ -208,6 +159,7 @@ def check_function(files):
 def check_global_scope(files):
     global major
     global minor
+    global var_types
     inside = open(files, "r")
     line_nbr = 0
     result = ""
@@ -279,6 +231,17 @@ def check_global_scope(files):
                     minor.append("\033[1;33;40m[MINOR]: [G3]: preprocessor directives should be indented: line:"+ str(line))
                     #print("\033[1;33;40m[MINOR]: [G3]:   preprocessor directives should be indented:    ", files, ": line:", line)
     inside.close()
+    if ".c" in files:
+        inside = open(files, "r")
+        line = 0
+        for lines in inside:
+            line += 1
+            for types in var_types:
+                if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t':
+                    minor.append("\033[1;33;40m[MINOR]: [G4]: Global variable should be const: line:"+ str(line))
+            if "\r" in lines:
+                minor.append("\033[1;33;40m[MINOR]: [G7]: Line should finish only end with a \n: line:"+ str(line))
+        inside.close()
     inside = open(files, "r")
     line = 0
     for lines in inside:
@@ -345,9 +308,31 @@ def browse_directory(directory, paths):
         else:
             if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
                 check_coding_style(paths + "/" + files)
+
+def get_struct(direct, paths):
+    global var_types
+    for files in direct:
+        test = paths + "/" + files
+        if path.isdir(test):
+            get_struct(os.listdir(test), test)
+        else:
+            if (test[-1] == 'h' and test[-2] == '.'):
+                inside = open(test, "r")
+                begin = 0
+                for lines in inside:
+                    if "typedef" in lines:
+                        begin = 1
+                    tot=lines.replace(" ", "")
+                    if begin == 1 and tot[0] == '}':
+                        i = 0
+                        var_types += [lines.replace(" ", "").replace("}", "").replace(";\n", "")]
+                            
 def main():
     global po_o
     global er
+    global var_types
+    var_types = [ "int", "char", "float", "double", "void"]
+    get_struct(os.listdir("."), ".")
     er = 0
     po_o = []
     directory = os.listdir(".")
