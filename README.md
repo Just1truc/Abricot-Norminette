@@ -55,6 +55,6 @@ git pull
 
 ## Credit
 
-programation : Justin Duc
-rédaction : Baptiste Leroyer
+programation : Justin Duc;
+rédaction : Baptiste Leroyer;
 L3 handling : Matthias André
