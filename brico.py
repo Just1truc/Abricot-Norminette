@@ -237,7 +237,7 @@ def check_global_scope(files):
         for lines in inside:
             line += 1
             for types in var_types:
-                if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t':
+                if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
                     minor.append("\033[1;33;40m[MINOR]: [G4]: Global variable should be const: line:"+ str(line))
             if "\r" in lines:
                 minor.append("\033[1;33;40m[MINOR]: [G7]: Line should finish only end with a \n: line:"+ str(line))
