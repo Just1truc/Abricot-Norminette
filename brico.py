@@ -2,6 +2,51 @@ import os
 import sys
 import os.path
 from os import path
+import re
+
+def tabs_to_space(string):
+    begin = 0
+    len_str = len(string)
+    if len_str == 0:
+        return (string)
+    while string[begin] == ' ':
+        begin += 1
+    if begin == len_str - 1:
+        return (string)
+    string = string[begin:]
+    while re.search(r'(\s\s)+(?=([^"]*"[^"]*")*[^"]*$)', string):
+        string = re.sub(r'(\s\s)+(?=([^"]*"[^"]*")*[^"]*$)', ' ', string)
+    return (' ' * begin + string)
+
+def fix_clang(string):
+    return string.replace(" ;", ";")
+
+def misplaced_spaces(files):
+    global minor
+    for f in files:
+        break_pos = []
+        file_opened = open("./"+f, 'r')
+        lines = file_opened.read()
+        absolute_lines = lines.replace(' ', '').replace('\\\n', '\n')
+        for i in range(len(absolute_lines)):
+            if absolute_lines[i] == '\n':
+                break_pos.append(i)
+        fmt = os.popen("clang-format "+f).read().replace('\n', '')
+        pos = 0
+        i = 0
+        while i < len(fmt):
+            if fmt[i] != ' ':
+                pos += 1;
+                if (pos in break_pos):
+                    fmt = fmt[:i + 1] + '\n' + fmt[i + 1:]
+            i += 1
+        fmt = str(fmt).splitlines()
+        lines = lines.splitlines()
+        for i in range(len(lines)):
+            clean_fmt = fix_clang(tabs_to_space(fmt[i])).strip()
+            clean_line = lines[i].rstrip('\\').strip()
+            if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', ''):
+                minor.append("\033[1;33;40m[MINOR]: [L3]: misplaced spaces: line :" + str(i + 1))
 
 def check_include(files):
     tot = []
@@ -45,6 +90,11 @@ def check_layout_inside_function(files):
                 minor.append("\033[1;33;40m[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
                 #print("\033[1;33;40m[MINOR]: [L2]:     No tab should be replaced by an identation:   ", files, "line :", test)
     inside.close()
+    lis=[]
+    lis.append(files)
+    if ".c" in files:
+        misplaced_spaces(lis);
+    '''
     if ".c" in files:
         inside =  open(files, "r")
         line = 0
@@ -92,6 +142,7 @@ def check_layout_inside_function(files):
                                 #print("\033[1;33;40m[MINOR]: [L3]:                 misplaced spaces:                ", files, "line :", line)
                                 ins = 1
     inside.close()
+    '''
     if ".c" in files:
         inside = open(files, "r")
         line = 0
@@ -304,6 +355,7 @@ def main():
     directory = os.listdir(".")
     paths = "."
     browse_directory(directory, paths)
+    os.system("echo \"BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: Never\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nBreakBeforeBraces: Linux\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: Never\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\" > .clang-format")
     if len(po_o) != 0:
         er = 1
         print("\033[1;36mBad Files:\n")
@@ -311,5 +363,6 @@ def main():
             print(i)
     if er == 0:
         print("\033[1;32mNo Coding style error detected : Code clean")
+    os.system("rm .clang-format")
 
 main()
