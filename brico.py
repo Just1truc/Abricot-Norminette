@@ -42,7 +42,7 @@ def misplaced_spaces(files):
             i += 1
         fmt = str(fmt).splitlines()
         lines = lines.splitlines()
-        for i in range(len(lines)):
+        for i in range(min(len(lines), len(fmt))):
             clean_fmt = fix_clang(tabs_to_space(fmt[i])).strip()
             clean_line = lines[i].rstrip('\\').strip()
             if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', ''):
@@ -90,10 +90,8 @@ def check_layout_inside_function(files):
                 minor.append("\033[1;33;40m[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
                 #print("\033[1;33;40m[MINOR]: [L2]:     No tab should be replaced by an identation:   ", files, "line :", test)
     inside.close()
-    lis=[]
-    lis.append(files)
     if ".c" in files:
-        misplaced_spaces(lis);
+        misplaced_spaces([files]);
     '''
     if ".c" in files:
         inside =  open(files, "r")
