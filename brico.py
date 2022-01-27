@@ -296,7 +296,7 @@ def check_coding_style(files, file_name):
     major = []
     minor = []
     check_file_organization(files, file_name)
-    if ((files[-1] == 'c' and files[-2] == '.') or "Makefile" in files or (files[-1] == 'h' and files[-2] == '.')) and not("~" in files) and not(".swp" in files):
+    if ((files[-1] == 'c' and files[-2] == '.') or "Makefile" in files or (files[-1] == 'h' and files[-2] == '.')) and not("~" in files) and not(".swp" in files) and files.replace("./", "")[0] != '.':
         check_global_scope(files)
         check_function(files)
         check_layout_inside_function(files)
