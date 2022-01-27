@@ -14,7 +14,6 @@ fi
 echo "=> Erasing Done"
 tput sgr 0
 echo "=> Installing clang-format..."
-sudo pacman -Sy clang-tools-extra 2> /dev/null
 sudo dnf -y install clang-tools-extra 2> /dev/null
 sudo apt-get -y install clang-tools-extra 2> /dev/null
 sudo zypper -y install clang-tools-extra 2> /dev/null
