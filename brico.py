@@ -46,7 +46,7 @@ def misplaced_spaces(files):
             clean_fmt = fix_clang(tabs_to_space(fmt[i])).strip()
             clean_line = lines[i].rstrip('\\').strip()
             if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', ''):
-                minor.append("\033[92m[MINOR]: [L3]: misplaced spaces: line :" + str(i + 1))
+                minor.append("\033[93m[MINOR]: [L3]: misplaced spaces: line :" + str(i + 1))
 
 def check_include(files):
     tot = []
@@ -73,7 +73,7 @@ def check_control_structure(files):
         line += 1;
         for val in op_list:
             if val in lines and "            " in lines:
-                minor.append("\033[92m[MINOR]: [C1]: There should not be more than 3 depth: line :" + str(line))
+                minor.append("\033[93m[MINOR]: [C1]: There should not be more than 3 depth: line :" + str(line))
                 #print("\033[1;33;40m[MINOR]: [C1]:      There should not be more than 3 depth:     ", files, "line :", line)
 
 def check_layout_inside_function(files):
@@ -87,7 +87,7 @@ def check_layout_inside_function(files):
         test += 1
         for char in lines:
             if (char == '\t' and ("Makefile" in files) != True):
-                minor.append("\033[92m[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
+                minor.append("\033[93m[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
                 #print("\033[1;33;40m[MINOR]: [L2]:     No tab should be replaced by an identation:   ", files, "line :", test)
     inside.close()
     if ".c" in files:
@@ -99,16 +99,16 @@ def check_layout_inside_function(files):
         for lines in inside:
             line += 1
             if (lines[0] != ' ' and lines[0] != '\n' and "(" in lines and ")" in lines and "{" in lines):
-                minor.append("\033[92m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
                 #print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
             if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines) and not("}" in lines)):
-                minor.append("\033[92m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
                 #print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
             if (prev_line[0] == ' ' and "}" in prev_line and not("if" in prev_line) and not("else" in prev_line) and not("for" in prev_line) and not("while" in prev_line) and "else" in lines and not("}" in lines)):
-                minor.append("\033[92m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
                 #print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
             if "{" in lines and "struct" in prev_line and ".h" in files:
-                minor.append("\033[92m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
             prev_line = lines
         inside.close()
             
@@ -201,7 +201,7 @@ def check_global_scope(files):
                 trailling_lines = 0
             if (trailling_lines == 2):
                 trailling_lines = 0;
-                minor.append("\033[92m[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))
+                minor.append("\033[93m[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))
                 #print("\033[1;33;40m[MINOR]: [G2]:   There should be only one empty_line each time:  ", files, ": line:", line_nbr)
     inside.close()
     inside = open(files, "r")
@@ -211,7 +211,7 @@ def check_global_scope(files):
         for lines in inside:
             line += 1
             if prev_line[0] == '}' and lines[0] != '\n':
-                minor.append("\033[92m[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))
+                minor.append("\033[93m[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))
                 #print("\033[1;33;40m[MINOR]: [G2]:   There should be only one empty_line each time:  ", files, ": line:", line)
             prev_line = lines
     inside.close()
@@ -230,7 +230,7 @@ def check_global_scope(files):
                 while (lines[i] == ' '):
                     i += 1
                 if (i != 4):
-                    minor.append("\033[92m[MINOR]: [G3]: preprocessor directives should be indented: line:"+ str(line))
+                    minor.append("\033[93m[MINOR]: [G3]: preprocessor directives should be indented: line:"+ str(line))
                     #print("\033[1;33;40m[MINOR]: [G3]:   preprocessor directives should be indented:    ", files, ": line:", line)
     inside.close()
     if ".c" in files:
@@ -240,9 +240,9 @@ def check_global_scope(files):
             line += 1
             for types in var_types:
                 if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
-                    minor.append("\033[92m[MINOR]: [G4]: Global variable should be const: line:"+ str(line))
+                    minor.append("\033[93m[MINOR]: [G4]: Global variable should be const: line:"+ str(line))
             if "\r" in lines:
-                minor.append("\033[92m[MINOR]: [G7]: Line should finish only end with a \n: line:"+ str(line))
+                minor.append("\033[93m[MINOR]: [G7]: Line should finish only end with a \n: line:"+ str(line))
         inside.close()
     inside = open(files, "r")
     line = 0
@@ -251,7 +251,7 @@ def check_global_scope(files):
         index = 0
         for char in lines:
             if (char == ' ' and lines[index + 1] == '\n' and line > 7):
-                minor.append("\033[92m[MINOR]: [G8]: Trailling space: line :"+ str(line))
+                minor.append("\033[93m[MINOR]: [G8]: Trailling space: line :"+ str(line))
                 #print("\033[1;33;40m[MINOR]: [G8]:                  Trailling space:                 ", files, "line :", line)
             index += 1
     inside.close()
