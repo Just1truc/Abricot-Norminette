@@ -107,7 +107,7 @@ def check_layout_inside_function(files):
             if (prev_line[0] == ' ' and "}" in prev_line and not("if" in prev_line) and not("else" in prev_line) and not("for" in prev_line) and not("while" in prev_line) and "else" in lines and not("}" in lines)):
                 minor.append("\033[1;33;40m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
                 #print("\033[1;33;40m[MINOR]: [L4]:              Curly brackets misplaced:            ", files, "line :", line)
-            if "{" in lines and "struct" in prev_line:
+            if "{" in lines and "struct" in prev_line and ".h" in files:
                 minor.append("\033[1;33;40m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
             prev_line = lines
         inside.close()
