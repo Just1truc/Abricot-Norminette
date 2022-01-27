@@ -348,8 +348,6 @@ def main():
     global var_types
     var_types = [ "int", "char", "float", "double", "void"]
     get_struct(os.listdir("."), ".")
-    for i in var_types:
-        print(i)
     er = 0
     po_o = []
     directory = os.listdir(".")
