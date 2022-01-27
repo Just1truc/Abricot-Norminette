@@ -338,7 +338,7 @@ def get_struct(direct, paths):
                     tot=lines.replace(" ", "")
                     if begin == 1 and tot[0] == '}':
                         i = 0
-                        tot=lines.replace(" ", "").replace("}", "").replace(";\n", "")
+                        tot=lines.replace(" ", "").replace("}", "").replace(";\n", "").replace("\n", "")
                         if len(tot) > 0:
                             var_types += [tot]
                             
