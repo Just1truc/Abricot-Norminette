@@ -45,7 +45,7 @@ def misplaced_spaces(files):
         for i in range(min(len(lines), len(fmt))):
             clean_fmt = fix_clang(tabs_to_space(fmt[i])).strip()
             clean_line = lines[i].rstrip('\\').strip()
-            if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', ''):
+            if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', '') and clean_line[0:2] != "**":
                 minor.append("\033[93m[MINOR]: [L3]: misplaced spaces: line :" + str(i + 1))
 
 def check_include(files):
