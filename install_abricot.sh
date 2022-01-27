@@ -9,10 +9,10 @@ tput setaf 2
 echo "=> Erasing Done"
 tput sgr 0
 echo "=> Installing clang-format..."
-sudo pacman -S clang-tools-extra &> /dev/null
-sudo dnf install clang-tools-extra &> /dev/null
-sudo apt-get install clang-tools-extra &> /dev/null
-sudo zypper install clang-tools-extra &> /dev/null
+sudo pacman -Sy clang-tools-extra &> /dev/null
+sudo dnf -y install clang-tools-extra &> /dev/null
+sudo apt-get -y install clang-tools-extra &> /dev/null
+sudo zypper -y install clang-tools-extra &> /dev/null
 tput setaf 2
 echo "=> Installation of clang done"
 tput init
