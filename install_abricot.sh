@@ -23,6 +23,7 @@ tput init
 echo "=> Copying source code..."
 sudo mkdir /usr/local/lib/Abricot_scripts
 sudo cp -R . /usr/local/lib/Abricot_scripts
+sudo chmod -R 777 /usr/local/lib/Abricot_scripts
 tput setaf 2
 echo "=> Done copying source code"
 tput sgr 0
@@ -30,12 +31,11 @@ echo "=> Erasing zsh alias if needed..."
 OUTPUT=$(sudo cat ~/.zshrc | grep "alias abricot")
 if [[ $OUTPUT != "" ]]
 then
-    word="alias abricot='sh ~/.Abricot-script/brico.sh'"
-    vide=""
-    sed 's/$word/$vide/g' ~/.zshrc > ~/.zshrc
-    tput setaf 2
-    echo "=> Alias erased"
-    tput sgr 0
+    TEST=$(sudo cat ~/.zshrc | grep "unalias abricot")
+    if [[ $TEST == "" ]]
+    then
+        echo "unalias abricot" >> ~/.zshrc
+    fi
 fi
 echo "=> Copying source code into bin..."
 sudo cp abricot /usr/local/bin
