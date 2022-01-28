@@ -1,6 +1,5 @@
 import os
 import sys
-import json
 import os.path
 from os import path
 import re
