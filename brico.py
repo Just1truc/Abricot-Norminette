@@ -48,7 +48,7 @@ class Misplaced_spaces:
                     clean_fmt = self.fix_clang(self.tabs_to_space(fmt[i])).strip()
                     clean_line = lines[i].rstrip('\\').strip()
                     if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', '') and clean_line[0:2] != "**":
-                        Norm_obj.minor.append("\033[93m[MINOR]: [L3]: misplaced spaces: line :" + str(i + 1))
+                        Norm_obj.minor.append("[MINOR]: [L3]: misplaced spaces: line :" + str(i + 1))
                 file_opened.close()
 
 class Too_many_functions:
@@ -63,7 +63,7 @@ class Too_many_functions:
                 if (lines[0] == '{'):
                     function_nbr += 1
             if (function_nbr > self.max_function_nbr):
-                Norm_obj.major.append("\033[91m[MAJOR]: [03]: Too many functions in one file : ( " + str(function_nbr) + " > 5 )")
+                Norm_obj.major.append("[MAJOR]: [03]: Too many functions in one file : ( " + str(function_nbr) + " > 5 )")
             inside.close()
 
 class Too_many_depth:
@@ -80,7 +80,7 @@ class Too_many_depth:
             line += 1
             for val in op_list:
                 if val in lines and (" " * self.indentation_space_nbr * self.max_depth) in lines:
-                    Norm_obj.minor.append("\033[93m[MINOR]: [C1]: There should not be more than 3 depth: line :" + str(line))
+                    Norm_obj.minor.append("[MINOR]: [C1]: There should not be more than 3 depth: line :" + str(line))
         inside.close()
 
 class Arguments_nbr:
@@ -100,7 +100,7 @@ class Arguments_nbr:
                     counter += 1
                 if (char == ')'):
                     if (counter > self.max_arguments_nbr):
-                        Norm_obj.major.append("\033[91m[MAJOR]: [F5]: Function should not need more than 4 arguments: line :" + str(line) +" ( "+ str(counter)+ " > 4 )")
+                        Norm_obj.major.append("[MAJOR]: [F5]: Function should not need more than 4 arguments: line :" + str(line) +" ( "+ str(counter)+ " > 4 )")
                     counter = 0
         inside.close()
 
@@ -123,7 +123,7 @@ class Function_length:
                     counter += 1
                 if (lines[0] == '}'):
                     if (counter - 3 > self.max_length):
-                        Norm_obj.major.append("\033[91m[MAJOR]: [F4]: A function should not exceed 20 lines: line :" + str(begin_line) + " ( " + str(counter - 3) + " > 20 )")
+                        Norm_obj.major.append("[MAJOR]: [F4]: A function should not exceed 20 lines: line :" + str(begin_line) + " ( " + str(counter - 3) + " > 20 )")
                     counter = 0
         inside.close()
 
@@ -135,11 +135,11 @@ class Curly_brackets:
         for lines in inside:
             line += 1
             if (lines[0] != ' ' and lines[0] != '\n' and "(" in lines and ")" in lines and "{" in lines):
-                Norm_obj.minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                Norm_obj.minor.append("[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
             if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines) and not("}" in lines)) and not("do" in lines):
-                Norm_obj.minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                Norm_obj.minor.append("[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
             if (prev_line[0] == ' ' and "}" in prev_line and not("if" in prev_line) and not("else" in prev_line) and not("for" in prev_line) and not("while" in prev_line) and "else" in lines and not("}" in lines)):
-                Norm_obj.minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                Norm_obj.minor.append("[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
             prev_line = lines
         inside.close()
 
@@ -150,7 +150,7 @@ class Curly_brackets:
         for lines in inside:
             line += 1
             if "{" in lines and "struct" in prev_line:
-                Norm_obj.minor.append("\033[93m[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
+                Norm_obj.minor.append("[MINOR]: [L4]: Curly brackets misplaced: line :" + str(line))
             prev_line = lines
         inside.close()
 
@@ -168,7 +168,7 @@ class Identation_error:
             test += 1
             for char in lines:
                 if (char == '\t' and ("Makefile" in files) != True):
-                    Norm_obj.minor.append("\033[93m[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
+                    Norm_obj.minor.append("[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
         inside.close()
 
 class Trailling_spaces:
@@ -179,7 +179,7 @@ class Trailling_spaces:
             line += 1
             if len(lines) >= 2:
                 if lines[-1] == '\n' and lines[-2] == ' ':
-                    Norm_obj.minor.append("\033[93m[MINOR]: [G8]: Trailling space: line : "+ str(line))
+                    Norm_obj.minor.append("[MINOR]: [G8]: Trailling space: line : "+ str(line))
         inside.close()
 
 class Line_Endings:
@@ -194,7 +194,7 @@ class Line_Endings:
                 line += 1
                 for endings in self.forbidden_endings:
                     if endings == lines[-1]:
-                        Norm_obj.minor.append("\033[93m[MINOR]: [G7]: Line should finish only end with a \n: line:"+ str(line))
+                        Norm_obj.minor.append("[MINOR]: [G7]: Line should finish only end with a \n: line:"+ str(line))
             inside.close()
     
 class Global_variable:
@@ -230,7 +230,7 @@ class Global_variable:
                 line += 1
                 for types in self.var_types:
                     if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
-                        Norm_obj.minor.append("\033[93m[MINOR]: [G4]: Global variable should be const: line:"+ str(line))
+                        Norm_obj.minor.append("[MINOR]: [G4]: Global variable should be const: line:"+ str(line))
             inside.close()
 
 class Preprocessor_Directives:
@@ -251,7 +251,7 @@ class Preprocessor_Directives:
                     while (lines[i] == ' '):
                         i += 1
                     if (i != 4):
-                        Norm_obj.minor.append("\033[93m[MINOR]: [G3]: preprocessor directives should be indented: line:"+ str(line))
+                        Norm_obj.minor.append("[MINOR]: [G3]: preprocessor directives should be indented: line:"+ str(line))
         inside.close()
 
 class Empty_line:
@@ -269,7 +269,7 @@ class Empty_line:
                     trailling_lines = 0
                 if (trailling_lines == 2):
                     trailling_lines = 0
-                    Norm_obj.minor.append("\033[93m[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))                                                          
+                    Norm_obj.minor.append("[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))                                                          
         inside.close()
         inside = open(files, "r")
         prev_line = "\n"
@@ -278,7 +278,7 @@ class Empty_line:
             for lines in inside:
                 line += 1
                 if prev_line[0] == '}' and lines[0] != '\n':
-                    Norm_obj.minor.append("\033[93m[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))                                                              
+                    Norm_obj.minor.append("[MINOR]: [G2]: There should be only one empty_line each time: line:" + str(line_nbr))                                                              
                 prev_line = lines
         inside.close()
     
@@ -309,10 +309,10 @@ class Check_file_header:
             line_nbr += 1
         if (".c" in  files):
             if (result != self.c_file_header):
-                Norm_obj.major.append("\033[91m[MAJOR]: [G1]: File header not correct")
+                Norm_obj.major.append("[MAJOR]: [G1]: File header not correct")
         if (files == "Makefile"):
             if (result != self.h_file_header):
-                Norm_obj.major.append("\033[91m[MAJOR]: [G1]: File header not correct")
+                Norm_obj.major.append("[MAJOR]: [G1]: File header not correct")
 
 class Check_Include:
 
@@ -337,12 +337,12 @@ class Check_file:
 
     def check_04(self, file_name, path, Norm_obj):
         if (any(ele.isupper() for ele in str(file_name)) == True and ("Makefile" in file_name) != True):
-            Norm_obj.bad_files.append(str("\033[91m[MAJOR]: [O4]: Name not in snake case convention: " + str(path.replace("./", ""))))
+            Norm_obj.bad_files.append(str("[MAJOR]: [O4]: Name not in snake case convention: " + str(path.replace("./", ""))))
 
     def check_01(self, file_name, files, Norm_obj):
         for ext in self.forbidden_files:
             if (ext in str(files) and files[len(files) - 1] == ext[len(ext) - 1]):
-                Norm_obj.bad_files.append(str("\033[91m[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files: " + files.replace("./", "")))
+                Norm_obj.bad_files.append(str("[MAJOR]: [O1]: Delivery Folder should not contain "+ ext +" files: " + files.replace("./", "")))
             
     def run(self, file_name, path, Norm_obj):
         self.check_04(file_name, path, Norm_obj)
@@ -359,7 +359,7 @@ class Too_Long_Line:
         for lines in inside:
            line += 1
            if len(lines) > self.line_length:
-               Norm_obj.major.append("\033[91m[MAJOR]: [F3]: The length of a line should not exceed 80 columns: line : "+ str(line) + " ( " + str(len(lines)) +" > "+ str(self.line_length) + " )")
+               Norm_obj.major.append("[MAJOR]: [F3]: The length of a line should not exceed 80 columns: line : "+ str(line) + " ( " + str(len(lines)) +" > "+ str(self.line_length) + " )")
         inside.close()
 
 class Norms:
@@ -383,6 +383,8 @@ class Norms:
         self.minor = []
         self.bad_files = []
         self.error_nbr = 0
+        self.minor_color = "\033[93m"
+        self.major_color = "\033[91m"
 
     def browse_directory(self, directory, paths):
         for files in directory:
@@ -406,9 +408,9 @@ class Norms:
                         self.error_nbr += 1
                         print("\033[1;36mIn File", test.replace("./", ""), "\n")
                         for i in self.major:
-                            print(i)
+                            print(self.major_color + i)
                         for i in self.minor:
-                            print(i)
+                            print(self.minor_color + i)
                         print("")
                     self.major = []
                     self.minor = []
@@ -421,7 +423,7 @@ class Norms:
             self.error_nbr += 1
             print("\033[1;36mBad files :\n")
             for i in self.bad_files:
-                print(i)
+                print(self.major_color + i)
             print("")
         if self.error_nbr == 0:
             print("\033[1;32mNo Coding style error detected : Code clean")
