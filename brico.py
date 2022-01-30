@@ -73,14 +73,31 @@ class Too_many_depth:
     
     def run(self, Norm_obj, files):
         tot = 1
-        op_list = [ "for (", "for(", "if (", "if(", "while (", "while(" ]
+        spaces_lvl = 4
+        depth = 1
+        op_list = [ "for (", "for(", "if (", "if(", "while (", "while(", "do(", "do (" ]
         inside = open(files, "r")
         line = 0
         for lines in inside:
             line += 1
+            in_it = 0
+            i = 0
+            while (lines[i] == ' '): i+=1
             for val in op_list:
-                if val in lines and (" " * self.indentation_space_nbr * self.max_depth) in lines:
-                    Norm_obj.minor.append("[MINOR]: [C1]: There should not be more than 3 depth: line :" + str(line))
+                if val in lines:
+                    in_it = 1
+                    break;
+            if in_it == 1:
+                if i > spaces_lvl:
+                    depth += 1
+                    spaces_lvl = i
+                elif i < spaces_lvl:
+                    depth = i // self.indentation_space_nbr
+                    spaces_lvl = i
+                if "else if" in lines:
+                    depth += 1
+            if depth >= self.max_depth and in_it == 1:
+                Norm_obj.major.append("[MAJOR]: [C1]: Conditionnal branching: line : "+str(line))                    
         inside.close()
 
 class Arguments_nbr:
@@ -377,7 +394,8 @@ class Norms:
                           "Function_length" : Function_length(),
                           "Arguments_nbr" : Arguments_nbr(),
                           "Too_many_functions" : Too_many_functions(),
-                          "Misplaced_spaces" : Misplaced_spaces()}
+                          "Misplaced_spaces" : Misplaced_spaces(),
+                          "Too_many_depth" : Too_many_depth()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
