@@ -147,6 +147,7 @@ class Arguments_nbr:
         inside = open(files, "r")
         line = 0
         counter = 0
+        last_char = 'p'
         for lines in inside:
             line += 1
             for char in lines:
@@ -157,7 +158,10 @@ class Arguments_nbr:
                 if (char == ')'):
                     if (counter > self.max_arguments_nbr):
                         Norm_obj.major.append("[MAJOR]: [F5]: Function should not need more than 4 arguments: line :" + str(line) +" ( "+ str(counter)+ " > 4 )")
+                    if last_char == '(':
+                        Norm_obj.major.append("[MAJOR]: [F5]: Argumentless functions should take void as parameter: line :" + str(line))
                     counter = 0
+                last_char = char
         inside.close()
 
 class Function_length:
