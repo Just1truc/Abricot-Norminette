@@ -11,7 +11,7 @@ class Line_Break:
             rest = ""
             for lines in inside:
                 rest = lines
-            if lines.replace(" ", "") != "}\n":
+            if rest.replace(" ", "") != "}\n":
                 Norm_obj.info.append("[INFO]: [A3]: Line break missing at end of file")
             inside.close()
 
