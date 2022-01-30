@@ -13,6 +13,19 @@ class Line_Break:
                 rest = lines
             if lines.replace(" ", "") != "}\n":
                 Norm_obj.info.append("[INFO]: [A3]: Line break missing at end of file")
+            inside.close()
+
+class Check_include:
+    def run(self, Norm_obj, files):
+        inside = open(files, "r")
+        line = 0
+        for lines in inside:
+            line += 1
+            if "#include" in lines:
+                tab = lines.split('"')
+                if tab[1][-1] != 'h' or tab[1][-2] != '.':
+                    Norm_obj.major.append("[MAJOR]: [G6]: #include should only contain .h files : line : " + str(line))
+        inside.close()
 
 class Misplaced_spaces:
     def tabs_to_space(self, string):
@@ -412,7 +425,8 @@ class Norms:
                           "Too_many_functions" : Too_many_functions(),
                           "Misplaced_spaces" : Misplaced_spaces(),
                           "Too_many_depth" : Too_many_depth(),
-                          "Line_Break" : Line_Break()}
+                          "Line_Break" : Line_Break(),
+                          "Check_include" : Check_include()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
