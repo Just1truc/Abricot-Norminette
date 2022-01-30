@@ -101,7 +101,10 @@ class Too_many_depth:
                 if i > spaces_lvl:
                     depth += 1
                     spaces_lvl = i
-                elif i <= spaces_lvl:
+                elif i < spaces_lvl:
+                    depth = i // self.indentation_space_nbr
+                    spaces_lvl = i
+                elif i == spaces_lvl and not("else if" in lines):
                     depth = i // self.indentation_space_nbr
                     spaces_lvl = i
                 if "else if" in lines:
