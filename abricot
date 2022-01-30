@@ -1,2 +1,11 @@
 #!/bin/bash
-python3 /usr/local/lib/Abricot_scripts/brico.py
+if [[ $# -eq 1 ]]
+then
+    if [[ $1 == "-update" ]]
+    then
+        cd /usr/local/lib/Abricot_scripts/
+        sh install_abricot.sh
+    fi
+else
+    python3 /usr/local/lib/Abricot_scripts/brico.py
+fi

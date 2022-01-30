@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo "=> Erasing old version"
 FILE=~/.Abricot-script/
 if [ -d $FILE ]
