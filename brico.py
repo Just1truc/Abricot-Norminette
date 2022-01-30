@@ -276,6 +276,9 @@ class Preprocessor_Directives:
                     start=1
                 if "#endif" in lines:
                     start = 0
+                if "#endif" in lines or "#ifndef" in lines:
+                    if lines[0] != '#':
+                        Norm_obj.minor.append("[MINOR]: [G3]: preprocessor directives should be indented: line:"+ str(line))
                 if ("#define" in lines or "#include" in lines) and start == 1:
                     i = 0
                     while (lines[i] == ' '):
