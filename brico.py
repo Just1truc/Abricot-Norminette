@@ -19,12 +19,25 @@ class Check_include:
     def run(self, Norm_obj, files):
         inside = open(files, "r")
         line = 0
+        in_it = 0
         for lines in inside:
             line += 1
             if "#include" in lines:
-                tab = lines.split('"')
-                if tab[1][-1] != 'h' or tab[1][-2] != '.':
-                    Norm_obj.major.append("[MAJOR]: [G6]: #include should only contain .h files : line : " + str(line))
+                if ('"' in lines):
+                    tab = lines.split('"')
+                    if tab[1][-1] != 'h' or tab[1][-2] != '.':
+                        Norm_obj.major.append("[MAJOR]: [G6]: #include should only contain .h files : line : " + str(line))
+                else:
+                    tot = ""
+                    for char in lines:
+                        if char == '>':
+                            in_it = 0
+                        if in_it == 1:
+                            tot += str(char)
+                        if char == '<':
+                            in_it = 1
+                    if tot[-1] != 'h' or tot[-2] != '.':
+                        Norm_obj.major.append("[MAJOR]: [G6]: #include should only contain .h files : line : " + str(line))
         inside.close()
 
 class Misplaced_spaces:
