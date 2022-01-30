@@ -23,6 +23,15 @@ tput init
 echo "=> Copying source code..."
 sudo mkdir /usr/local/lib/Abricot_scripts
 sudo cp -R . /usr/local/lib/Abricot_scripts
+FILE=/usr/local/lib/Abricot_update
+if [ -d $FILE ]
+then
+    echo "=> Updating"
+else
+    sudo mkdir /usr/local/lib/Abricot_update
+    sudo cp -R . /usr/local/lib/Abricot_update
+    sudo chmod -R 777 /usr/local/lib/Abricot_update
+fi
 sudo chmod -R 777 /usr/local/lib/Abricot_scripts
 tput setaf 2
 echo "=> Done copying source code"

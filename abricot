@@ -3,8 +3,10 @@ if [[ $# -eq 1 ]]
 then
     if [[ $1 == "-update" ]]
     then
-        cd /usr/local/lib/Abricot_scripts/
+        cd /usr/local/lib/Abricot_update
+        git pull
         sh install_abricot.sh
+        cd -
     fi
 else
     python3 /usr/local/lib/Abricot_scripts/brico.py
