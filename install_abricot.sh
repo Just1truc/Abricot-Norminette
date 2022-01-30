@@ -54,5 +54,3 @@ tput sgr0
 tput setaf 2
 echo "=> Installation Done"
 tput sgr 0
-echo "=> Restarting zsh"
-zsh
