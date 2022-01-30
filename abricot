@@ -3,10 +3,11 @@ if [[ $# -eq 1 ]]
 then
     if [[ $1 == "-update" ]]
     then
+        val=`pwd`
         cd /usr/local/lib/Abricot_update
         git pull
         sh install_abricot.sh
-        cd -
+        cd $val
     fi
 else
     python3 /usr/local/lib/Abricot_scripts/brico.py
