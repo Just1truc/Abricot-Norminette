@@ -4,6 +4,16 @@ import os.path
 from os import path
 import re
 
+class Line_Break:
+    def run(self, Norm_obj, file_name):
+        if ".c" in file_name:
+            inside = open(file_name, "r")
+            rest = ""
+            for lines in inside:
+                rest = lines
+            if lines.replace(" ", "") != "}\n":
+                Norm_obj.info.append("[INFO]: [A3]: Line break missing at end of file")
+
 class Misplaced_spaces:
     def tabs_to_space(self, string):
         begin = 0
@@ -91,7 +101,7 @@ class Too_many_depth:
                 if i > spaces_lvl:
                     depth += 1
                     spaces_lvl = i
-                elif i < spaces_lvl:
+                elif i <= spaces_lvl:
                     depth = i // self.indentation_space_nbr
                     spaces_lvl = i
                 if "else if" in lines:
@@ -395,14 +405,17 @@ class Norms:
                           "Arguments_nbr" : Arguments_nbr(),
                           "Too_many_functions" : Too_many_functions(),
                           "Misplaced_spaces" : Misplaced_spaces(),
-                          "Too_many_depth" : Too_many_depth()}
+                          "Too_many_depth" : Too_many_depth(),
+                          "Line_Break" : Line_Break()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
+        self.info = []
         self.bad_files = []
         self.error_nbr = 0
         self.minor_color = "\033[93m"
         self.major_color = "\033[91m"
+        self.info_color = "\033[97m"
 
     def browse_directory(self, directory, paths):
         for files in directory:
@@ -422,16 +435,19 @@ class Norms:
                         for rules in self.norm_list:
                             obj = self.norm_list[rules]
                             obj.run(self, paths + "/" + files)
-                    if (len(self.major) != 0 or len(self.minor) != 0):
+                    if (len(self.major) != 0 or len(self.minor) != 0 or len(self.info) != 0):
                         self.error_nbr += 1
                         print("\033[1;36mIn File", test.replace("./", ""), "\n")
                         for i in self.major:
                             print(self.major_color + i)
                         for i in self.minor:
                             print(self.minor_color + i)
+                        for i in self.info:
+                            print(self.info_color + i)
                         print("")
                     self.major = []
                     self.minor = []
+                    self.info = []
 
     def run(self):
         os.system("echo \"BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: Never\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nBreakBeforeBraces: Linux\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: Never\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\" > .clang-format")
