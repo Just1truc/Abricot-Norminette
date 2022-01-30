@@ -155,7 +155,7 @@ class Arguments_nbr:
                     counter = 1
                 if (counter > 0 and char == ','):
                     counter += 1
-                if (char == ')'):
+                if (char == ')' and lines[0] != ' '):
                     if (counter > self.max_arguments_nbr):
                         Norm_obj.major.append("[MAJOR]: [F5]: Function should not need more than 4 arguments: line :" + str(line) +" ( "+ str(counter)+ " > 4 )")
                     if last_char == '(':
