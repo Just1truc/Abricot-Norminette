@@ -4,6 +4,19 @@ import os.path
 from os import path
 import re
 
+class Check_Goto:
+    def __init__(self):
+        self.auth = True
+
+    def run(self, Norm_obj, files):
+        inside = open(files, "r")
+        line = 0
+        for lines in inside:
+            line += 1
+            if " goto " in lines and self.auth == True:
+                Norm_obj.major.append("[MAJOR]: [C3]: Cringe t'as un goto fdf: line : " + str(line))
+        inside.close()
+
 class Line_Break:
     def run(self, Norm_obj, file_name):
         if ".c" in file_name:
@@ -443,7 +456,8 @@ class Norms:
                           "Misplaced_spaces" : Misplaced_spaces(),
                           "Too_many_depth" : Too_many_depth(),
                           "Line_Break" : Line_Break(),
-                          "Check_include" : Check_include()}
+                          "Check_include" : Check_include(),
+                          "Check_Goto" : Check_Goto()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
