@@ -37,13 +37,17 @@ tput setaf 2
 echo "=> Done copying source code"
 tput sgr 0
 echo "=> Erasing zsh alias if needed..."
-OUTPUT=$(sudo cat ~/.zshrc | grep "alias abricot")
-if [[ $OUTPUT != "" ]]
+FILE=~/.zshrc
+if [ -d $FILE ]
 then
-    TEST=$(sudo cat ~/.zshrc | grep "unalias abricot")
-    if [[ $TEST == "" ]]
+    OUTPUT=$(sudo cat ~/.zshrc | grep "alias abricot")
+    if [[ $OUTPUT != "" ]]
     then
-        echo "unalias abricot" >> ~/.zshrc
+        TEST=$(sudo cat ~/.zshrc | grep "unalias abricot")
+        if [[ $TEST == "" ]]
+        then
+            echo "unalias abricot" >> ~/.zshrc
+        fi
     fi
 fi
 echo "=> Copying source code into bin..."
