@@ -19,14 +19,13 @@ class Check_Goto:
 
 class Line_Break:
     def run(self, Norm_obj, file_name):
-        if ".c" in file_name:
-            inside = open(file_name, "r")
-            rest = ""
-            for lines in inside:
-                rest = lines
-            if rest.replace(" ", "") != "}\n":
+        inside = open(file_name, "r")
+        rest = ""
+        for lines in inside:
+            rest = lines
+            if not("\n" in lines):
                 Norm_obj.info.append("[INFO]: [A3]: Line break missing at end of file")
-            inside.close()
+        inside.close()
 
 class Check_include:
     def run(self, Norm_obj, files):
