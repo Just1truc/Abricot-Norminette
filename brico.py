@@ -115,6 +115,24 @@ class Too_many_functions:
                 Norm_obj.major.append("[MAJOR]: [03]: Too many functions in one file : ( " + str(function_nbr) + " > 5 )")
             inside.close()
 
+class Include_guard:
+    def __init__(self):
+        self.check_ifndef = 0
+        self.check_endif = 0
+
+    def run(self, Norm_obj, files):
+        if (files[-1] == 'h' and files[-2] == '.'):
+            buffer = open(files, "r")
+            for lines in buffer:
+                if "#ifndef" in lines:
+                    self.check_ifndef = 1
+                if "#endif" in lines:
+                    self.check_endif = 1
+            buffer.close()
+            if (self.check_ifndef == 0 or self.check_endif == 0):
+                Norm_obj.minor.append("[MINOR]: [H2]: Header not protected from double inclusion")
+
+
 class Too_many_depth:
     def __init__(self):
         self.max_depth = 3
@@ -457,7 +475,8 @@ class Norms:
                           "Too_many_depth" : Too_many_depth(),
                           "Line_Break" : Line_Break(),
                           "Check_include" : Check_include(),
-                          "Check_Goto" : Check_Goto()}
+                          "Check_Goto" : Check_Goto(),
+                          "Include Guard" : Include_guard()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
