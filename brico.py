@@ -263,7 +263,13 @@ class Identation_error:
             inside = open(files, "r")
             test = 0
             for lines in inside:
+                nbr = 0
                 test += 1
+                i = 0
+                while lines[i] == ' ':
+                    i+=1
+                if i % 4 != 0:
+                    Norm_obj.minor.append("[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
                 for char in lines:
                     if (char == '\t' and ("Makefile" in files) != True):
                         Norm_obj.minor.append("[MINOR]: [L2]: No tab should be replaced by an identation: line :" + str(test))
