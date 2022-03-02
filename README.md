@@ -69,6 +69,6 @@ Programation : Justin Duc;
 
 Redaction : Baptiste Leroyer;
 
-L3 handling : Matthias André;
+L3 handling : Mathias André;
 
 Quality: Thomas Mazaud
