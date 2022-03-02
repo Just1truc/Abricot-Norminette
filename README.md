@@ -10,26 +10,26 @@ Welcome to Abricot Norminette, a checker for C project files that check the codi
 
 ## Error handling
 
-- G 6, 1, 2, 3, 8
-> include folder should not contain .h files; 
-> bad file header; 
-> there should be only one line between each fonction; 
-> preprocessor directive must be indented; 
-> trailing space; 
+G 6, 1, 2, 3, 8 :
+- include folder should not contain .h files;
+- bad file header; 
+- there should be only one line between each fonction; 
+- preprocessor directive must be indented; 
+- trailing space; 
 - C 1
-> there should not be more than 3 depth
+- there should not be more than 3 depth
 - L 2, 3, 4
-> bad indentation; 
-> misplaced spaces; 
-> misplaced curly bracket; 
+- bad indentation; 
+- misplaced spaces; 
+- misplaced curly bracket; 
 - O 1, 4, 3
-> check useless file; 
-> snake case convention; 
-> to many fonctions in a file; 
+- check useless file; 
+- snake case convention; 
+- to many fonctions in a file; 
 - F 3, 4, 5
-> a line lenght shoud not exceed 80 columns; 
-> a fonction should not exceed 20 lines; 
-> more than 4 arguments in a fonction; 
+- a line lenght shoud not exceed 80 columns; 
+- a fonction should not exceed 20 lines; 
+- more than 4 arguments in a fonction; 
 
 ## Installation
 
