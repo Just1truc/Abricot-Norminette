@@ -60,6 +60,7 @@ Python3+ should be installed on your computer for Abricot to work.
 |--------------	|---------------	|
 | Debian based 	| ✅             	|
 | Fedora based 	| ✅             	|
+| macOS        	| ✅             	|
 | Windows      	| ⚠️ WSL advised 	|
 
 
