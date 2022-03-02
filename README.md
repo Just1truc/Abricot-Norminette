@@ -1,44 +1,56 @@
-# Abricot moulinette
+# Abricot Norminette
 
-Welcome to Abricot Norminette, a checker for C project files that check the coding style errors for EPITECH
-
+Abricot Norminette is a file checker notifying the user of coding style errors.
 
 ## Files checked
+
 - *.c
 - *.h
 - *Makefile
+- Bad files
 
 ## Error handling
 
-G 6, 1, 2, 3, 8 :
+#### Global scope
 
-- include folder should not contain .h files;
-- bad file header; 
-- there should be only one line between each fonction; 
-- preprocessor directive must be indented; 
-- trailing space; 
+- **G1** Bad file header
+- **G2** There should be only one line between each fonction
+- **G3** Preprocessor directive must be indented
+- **G4** Global Variable must be const 
+- **G6** #include should only contain .h files
+- **G7** Line should finish only end with a "\n"
+- **G8** Trailing space
 
-C 1
+####  Control structure
 
-- there should not be more than 3 depth
+- **C1** There should not be more than 3 depth (conditionnal branching)
+- **C3** Forbidden goto
 
-L 2, 3, 4
+####  Advanced
 
-- bad indentation; 
-- misplaced spaces; 
-- misplaced curly bracket; 
+- **A3** Missing Line Break
 
-O 1, 4, 3
+#### Layout inside a function scope
 
-- check useless file; 
-- snake case convention; 
-- to many fonctions in a file; *
+- **L2** Bad indentation 
+- **L3** Misplaced spaces
+- **L4** Misplaced curly bracket
 
-F 3, 4, 
+#### Files organization
 
-- a line lenght shoud not exceed 80 columns; 
-- a fonction should not exceed 20 lines; 
-- more than 4 arguments in a fonction; 
+- **O1** Check useless file
+- **O3** Too many fonctions in a file
+- **O4** Snake case convention
+
+#### Functions
+
+- **F3** A line lenght shoud not exceed 80 columns; 
+- **F4** A fonction should not exceed 20 lines; 
+- **F5** More than 4 arguments in a fonction or argumentless function; 
+
+#### Header files
+
+- **H2** Header not protected from doucle inclusion
 
 ## Installation
 
