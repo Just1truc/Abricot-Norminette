@@ -63,7 +63,7 @@ Get into the repository folder and execute the "install_abricot.sh" file :
 cd ~/Abricot-Norminette && ./install_abricot.sh
 ```
 
-## Update instrutions
+## Updating
 
 Updates are regulary made.<br />
 To update Abricot, please use the following command :
