@@ -41,8 +41,6 @@ Get into the repository folder and execute the "install_abricot.sh" file :
 ```
 cd ~/Abricot-Norminette && ./install_abricot.sh
 ```
-⚠️ Be careful ! Abricot norminette only works with ZSH.<br />
-ZSH can (generally) be installed using your OS package manager (apt, dnf, brew...)
 
 ## Update instrutions
 
