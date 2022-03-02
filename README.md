@@ -1,7 +1,6 @@
 # Abricot moulinette
 
-Welcome to Abricot Norminette,
-Abricot Norminette is a checker for C project file and check the coding style errors for EPITECH
+Welcome to Abricot Norminette, a checker for C project files that check the coding style errors for EPITECH
 
 
 ## Files checked
@@ -32,31 +31,45 @@ Abricot Norminette is a checker for C project file and check the coding style er
 > a fonction should not exceed 20 lines; 
 > more than 4 arguments in a fonction; 
 
-## installation
+## Installation
 
-write this commande at the home of you computer :
+Clone the repository in your home folder :
 ```
-git clone git@github.com:Just1truc/Abricot-Norminette.git
+git clone https://github.com/Just1truc/Abricot-Norminette.git ~/Abricot-Norminette
 ```
-go in the file and execute the installator :
+Get into the repository folder and execute the "install_abricot.sh" file :
 ```
-./install_abricot.sh
+cd ~/Abricot-Norminette && ./install_abricot.sh
 ```
-Be careful Abricot norminette only work with ZSH
+⚠️ Be careful ! Abricot norminette only works with ZSH.<br />
+ZSH can (generally) be installed using your OS package manager (apt, dnf, brew...)
 
-## Up to date
+## Update instrutions
 
-Updates are regulary made.
-To update Abricot you juste have to go in the file ``Abricot-Norminette`` where you download it and write this commande :
+Updates are regulary made.<br />
+To update Abricot, please use the following command :
 ```
-git pull
+abricot --update
 ```
 
+## Compatibility
 
-## Credit
+Python3+ should be installed on your computer for Abricot to work.
 
-programation : Justin Duc;
+| OS           	| Compatible ?  	|
+|--------------	|---------------	|
+| Debian based 	| ✅             	|
+| Fedora based 	| ✅             	|
+| macOS        	| ✅             	|
+| Windows      	| ⚠️ WSL advised 	|
 
-rédaction : Baptiste Leroyer;
 
-L3 handling : Matthias André
+## Credits
+
+Programation : Justin Duc;
+
+Redaction : Baptiste Leroyer;
+
+L3 handling : Mathias André;
+
+Quality: Thomas Mazaud
