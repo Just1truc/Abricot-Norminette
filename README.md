@@ -16,17 +16,17 @@ G 6, 1, 2, 3, 8 :
 - there should be only one line between each fonction; 
 - preprocessor directive must be indented; 
 - trailing space; 
-- C 1
+C 1
 - there should not be more than 3 depth
-- L 2, 3, 4
+L 2, 3, 4
 - bad indentation; 
 - misplaced spaces; 
 - misplaced curly bracket; 
-- O 1, 4, 3
+O 1, 4, 3
 - check useless file; 
 - snake case convention; 
 - to many fonctions in a file; 
-- F 3, 4, 5
+F 3, 4, 5
 - a line lenght shoud not exceed 80 columns; 
 - a fonction should not exceed 20 lines; 
 - more than 4 arguments in a fonction; 
