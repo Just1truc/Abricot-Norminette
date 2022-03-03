@@ -16,7 +16,7 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 - **G1** Bad file header
 - **G2** There should be only one line between each fonction
 - **G3** Preprocessor directive must be indented
-- **G4** Global Variable must be const 
+- **G4** Global Variable must be const
 - **G6** #include should only contain .h files
 - **G7** Line should finish only end with a "\n"
 - **G8** Trailing space
@@ -32,7 +32,7 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 
 #### Layout inside a function scope
 
-- **L2** Bad indentation 
+- **L2** Bad indentation
 - **L3** Misplaced spaces
 - **L4** Misplaced curly bracket
 
@@ -44,9 +44,9 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 
 #### Functions
 
-- **F3** A line lenght shoud not exceed 80 columns; 
-- **F4** A fonction should not exceed 20 lines; 
-- **F5** More than 4 arguments in a fonction or argumentless function; 
+- **F3** A line lenght shoud not exceed 80 columns;
+- **F4** A fonction should not exceed 20 lines;
+- **F5** More than 4 arguments in a fonction or argumentless function;
 
 #### Header files
 
@@ -85,10 +85,26 @@ Python3+ should be installed on your computer for Abricot to work.
 
 ## Credits
 
-Programation : Justin Duc;
+#### Programation : Justin Duc
 
-Redaction : Baptiste Leroyer;
+[![linkeding bage](https://img.shields.io/badge/-linkedind-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/justin-duc-51b09b225/)
+[![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/Just1truc)
+[![mail](https://img.shields.io/badge/-Mail-0078D4?logo=Microsoft-Outlook&style=for-the-badge)](mailto:justin.duc@epitech.eu)
 
-L3 handling : Mathias André;
+#### Redaction : Baptiste Leroyer
 
-Quality: Thomas Mazaud
+[![linkeding bage](https://img.shields.io/badge/-linkedind-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/baptiste-leroyer-a69894227/)
+[![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/ZiplEix)
+[![mail](https://img.shields.io/badge/-Mail-0078D4?logo=Microsoft-Outlook&style=for-the-badge)](mailto:baptiste.leroyer@epitech.eu)
+
+#### L3 handling : Mathias André
+
+[![linkeding bage](https://img.shields.io/badge/-linkedind-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/mathias-andr%C3%A9-a7b30721a/)
+[![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/MathiDEV)
+[![mail](https://img.shields.io/badge/-Mail-0078D4?logo=Microsoft-Outlook&style=for-the-badge)](mailto:mathias.andre@epitech.eu)
+
+#### Quality: Thomas Mazaud
+
+[![linkeding bage](https://img.shields.io/badge/-linkedind-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/thomasmazaud/)
+[![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/Fyroeo)
+[![mail](https://img.shields.io/badge/-Mail-0078D4?logo=Microsoft-Outlook&style=for-the-badge)](mailto:thomas.mazaud@epitech.eu)
