@@ -4,6 +4,23 @@ import os.path
 from os import path
 import re
 
+class Comment_Check:
+    def __init__(self):
+        self.active = True
+    
+    def run(self, Norm_obj, files):
+        inside = open(files, "r")
+        line = 0
+        in_it = 0
+        for lines in inside:
+            line += 1
+            if lines[0] == '{':
+                in_it = 1
+            if lines[0] == '}':
+                in_it = 0
+            if ("//" in lines or "/*" in lines or "*/" in lines) and in_it == 1:
+                Norm_obj.minor.append("[MINOR]: [F6]: There shoudn't be comments inside a function : " + str(line))
+
 class Check_Goto:
     def __init__(self):
         self.auth = True
@@ -526,7 +543,8 @@ class Norms:
                           "Line_Break" : Line_Break(),
                           "Check_include" : Check_include(),
                           "Check_Goto" : Check_Goto(),
-                          "Include Guard" : Include_guard()}
+                          "Include Guard" : Include_guard(),
+                          "Comment_Check" : Comment_Check()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
