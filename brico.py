@@ -629,10 +629,12 @@ class Norms:
             for i in self.bad_files:
                 print_error("", "major", i)
             print("")
-            sys.exit(1)
+            if (os.environ['JENKINS']):
+                sys.exit(0)
         if self.error_nbr == 0:
             print("\033[1;32mNo Coding style error detected : Code clean\033[0m")
-            sys.exit(0)
+            if (os.environ['JENKINS']):
+                sys.exit(1)
 
 
 def main():
