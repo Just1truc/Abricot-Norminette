@@ -12,6 +12,7 @@ pipeline {
         stage('Setup') {
           steps {
             sh 'chmod +x abricot'
+            sh 'alias abricot=\'`pwd`/abricot\''
           }
         }
 
@@ -19,23 +20,21 @@ pipeline {
     }
 
     stage('G1: Bad file Header (C File)') {
+      environment {
+        JENKINS = ''
+      }
       parallel {
         stage('G1: Bad file Header (C File)') {
-          environment {
-            JENKINS = 'true'
-          }
           steps {
-            writeFile(file: 'g1.c', text: '/* ** EPITECH PROJECT, 2021 ** B-CPE-110-LYN-1-1-pushswap-thomas.mazaud ** File description: ** File to create the doubly circular linked list */')
-            sh './abricot'
-            sh 'rm g1.c'
+            sh '''cd ~/abricot-tests/G1/C
+abricot'''
           }
         }
 
         stage('G1: Bad file Header (H File)') {
           steps {
-            writeFile(file: 'Makefile', text: '## ## EPITECH PROJECT, 2021 ## B-CPE-110-LYN-1-1-pushswap-thomas.mazaud ## File description: ## Makefile #')
-            sh './abricot'
-            sh 'rm Makefile'
+            sh '''cd ~/abricot-tests/G1/H
+abricot'''
           }
         }
 
