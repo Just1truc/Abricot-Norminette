@@ -45,8 +45,8 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 #### Functions
 
 - **F3** A line lenght shoud not exceed 80 columns
-- **F4** A fonction should not exceed 20 lines
-- **F5** More than 4 arguments in a fonction or argumentless function
+- **F4** A function should not exceed 20 lines
+- **F5** More than 4 arguments in a function or argumentless function
 - **F6** Comments inside of functions
 
 #### Header files
