@@ -114,6 +114,25 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('O1: Check useless file') {
+          steps {
+            sh '''cd "~/abricot-tests/O1/#"
+${WORKSPACE}/abricot'''
+            sh '''cd "~/abricot-tests/O1/~"
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/O1/A
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/O1/D
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/O1/GCH
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/O1/O
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/O1/SO
+${WORKSPACE}/abricot'''
+          }
+        }
+
       }
     }
 
