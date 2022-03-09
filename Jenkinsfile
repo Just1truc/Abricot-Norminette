@@ -26,7 +26,7 @@ pipeline {
         stage('G1: Bad file Header (C File)') {
           steps {
             sh '''cd ~/abricot-tests/G1/C
-${WORKSPACE}/abricot '''
+${WORKSPACE}/abricot'''
           }
         }
 
