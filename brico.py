@@ -434,7 +434,7 @@ class Empty_line:
         inside = open(files, "r")
         trailling_lines = 0
         line_nbr = 0
-        if (".c" in files) and self.active == True:
+        if (".c" in files or "Makefile" in files) and self.active == True:
             for lines in inside:
                 line_nbr += 1
                 if (lines == "\n"):
