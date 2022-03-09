@@ -165,6 +165,20 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('O3: Too many fonctions in a file') {
+          steps {
+            sh '''cd ~/abricot-tests/O3
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('O4: Snake case convention') {
+          steps {
+            sh '''cd ~/abricot-tests/O4
+${WORKSPACE}/abricot'''
+          }
+        }
+
       }
     }
 
