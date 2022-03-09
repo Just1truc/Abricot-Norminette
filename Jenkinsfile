@@ -25,7 +25,7 @@ pipeline {
       parallel {
         stage('G1: Bad file Header (C File)') {
           steps {
-            sh 'alias abricot=\'`pwd`/abricot\''
+            sh 'pwd'
             sh '''cd ~/abricot-tests/G1/C
 abricot'''
           }
