@@ -92,17 +92,24 @@ ${WORKSPACE}/abricot'''
 ${WORKSPACE}/abricot'''
           }
         }
-        
+
         stage('L2: Bad indentation') {
           steps {
             sh '''cd ~/abricot-tests/L2
 ${WORKSPACE}/abricot'''
           }
         }
-                
+
         stage('L3: Misplaced spaces') {
           steps {
             sh '''cd ~/abricot-tests/L3
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('L4: Misplaced curly bracket') {
+          steps {
+            sh '''cd ~/abricot-tests/L4
 ${WORKSPACE}/abricot'''
           }
         }
