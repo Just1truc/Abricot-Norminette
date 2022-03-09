@@ -44,9 +44,16 @@ ${WORKSPACE}/abricot'''
           }
         }
 
-        stage('G3 Preprocessor directive must be indented') {
+        stage('G3: Preprocessor directive must be indented') {
           steps {
             sh '''cd ~/abricot-tests/G3
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('G4: Global Variable must be const') {
+          steps {
+            sh '''cd ~/abricot-tests/G4
 ${WORKSPACE}/abricot'''
           }
         }
