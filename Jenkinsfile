@@ -37,6 +37,13 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('G2: There should be only one line between each fonction') {
+          steps {
+            sh '''cd ~/abricot-tests/G2
+${WORKSPACE}/abricot'''
+          }
+        }
+
       }
     }
 
