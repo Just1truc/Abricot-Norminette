@@ -581,7 +581,7 @@ class Norms:
     def browse_directory(self, directory, paths):
         for files in directory:
             test = paths + "/" + files
-            if any((ignored_file in test and len(ignored_file) > 0) for ignored_file in self.ignored_files):
+            if test in self.ignored_files:
                 continue
             if path.isdir(test) and files != "tests":
                 if (files == "include"):
@@ -615,12 +615,8 @@ class Norms:
 
     def run(self):
         os.system("echo \"BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: Never\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nBreakBeforeBraces: Linux\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: Never\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\" > .clang-format")
-        ignore = subprocess.getoutput("find . -path *.gitignore | head -n 1")
-        if (len(ignore) > 0):
-            inside = open(ignore, "r")
-            self.ignored_files = inside.read().split("\n")
-        else:
-            self.ignored_files = []
+        process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
         self.browse_directory(os.listdir("."), ".")
         os.system("rm .clang-format")
         if len(self.bad_files) > 0:
