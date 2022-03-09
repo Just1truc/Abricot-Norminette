@@ -179,6 +179,20 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('F5: More than 4 arguments in a function') {
+          steps {
+            sh '''cd ~/abricot-tests/F5/more
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('F5: Argumentless function') {
+          steps {
+            sh '''cd ~/abricot-tests/F5/argumentless
+${WORKSPACE}/abricot'''
+          }
+        }
+
       }
     }
 
