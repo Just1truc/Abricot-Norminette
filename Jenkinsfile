@@ -58,9 +58,37 @@ ${WORKSPACE}/abricot'''
           }
         }
 
-        stage('G6 #include should only contain .h files') {
+        stage('G6: #include should only contain .h files') {
           steps {
             sh '''cd ~/abricot-tests/G6
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('G7: Line should finish only end with a "\n"') {
+          steps {
+            sh '''cd ~/abricot-tests/G7
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('G8: Trailing space') {
+          steps {
+            sh '''cd ~/abricot-tests/G8
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('C1: There should not be more than 3 depth (conditionnal branching)') {
+          steps {
+            sh '''cd ~/abricot-tests/C1
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('A3: Missing Line Break') {
+          steps {
+            sh '''cd ~/abricot-tests/A3
 ${WORKSPACE}/abricot'''
           }
         }
