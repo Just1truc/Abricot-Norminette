@@ -193,6 +193,20 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('F6: Comments inside of functions') {
+          steps {
+            sh '''cd ~/abricot-tests/F6
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('H2: Header not protected from doucle inclusion') {
+          steps {
+            sh '''cd ~/abricot-tests/H2
+${WORKSPACE}/abricot'''
+          }
+        }
+
       }
     }
 
