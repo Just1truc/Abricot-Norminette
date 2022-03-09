@@ -58,6 +58,13 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('G6 #include should only contain .h files') {
+          steps {
+            sh '''cd ~/abricot-tests/G6
+${WORKSPACE}/abricot'''
+          }
+        }
+
       }
     }
 
