@@ -92,6 +92,13 @@ ${WORKSPACE}/abricot'''
 ${WORKSPACE}/abricot'''
           }
         }
+        
+        stage('L2 Bad indentation') {
+          steps {
+            sh '''cd ~/abricot-tests/L2
+${WORKSPACE}/abricot'''
+          }
+        }
 
       }
     }
