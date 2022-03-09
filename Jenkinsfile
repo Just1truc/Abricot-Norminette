@@ -12,28 +12,29 @@ pipeline {
         stage('Setup') {
           steps {
             sh 'chmod +x abricot'
-            sh 'alias abricot=\'`pwd`/abricot\''
           }
         }
 
       }
     }
 
-    stage('G1: Bad file Header (C File)') {
+    stage('Tests') {
       environment {
-        JENKINS = ''
+        JENKINS = 'true'
       }
       parallel {
         stage('G1: Bad file Header (C File)') {
           steps {
-            sh '''cd ~/abricot-tests/G1/C
+            sh '''alias abricot=\'`pwd`/abricot"
+cd ~/abricot-tests/G1/C
 abricot'''
           }
         }
 
         stage('G1: Bad file Header (H File)') {
           steps {
-            sh '''cd ~/abricot-tests/G1/H
+            sh '''alias abricot=\'`pwd`/abricot"
+cd ~/abricot-tests/G1/H
 abricot'''
           }
         }
