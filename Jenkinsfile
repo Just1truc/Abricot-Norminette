@@ -44,6 +44,13 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('G3 Preprocessor directive must be indented') {
+          steps {
+            sh '''cd ~/abricot-tests/G3
+${WORKSPACE}/abricot'''
+          }
+        }
+
       }
     }
 
