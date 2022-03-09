@@ -65,7 +65,7 @@ ${WORKSPACE}/abricot'''
           }
         }
 
-        stage('G7: Line should finish only end with a "\n"') {
+        stage('G7: Line should finish only end with a backslash n') {
           steps {
             sh '''cd ~/abricot-tests/G7
 ${WORKSPACE}/abricot'''
@@ -93,9 +93,16 @@ ${WORKSPACE}/abricot'''
           }
         }
         
-        stage('L2 Bad indentation') {
+        stage('L2: Bad indentation') {
           steps {
             sh '''cd ~/abricot-tests/L2
+${WORKSPACE}/abricot'''
+          }
+        }
+                
+        stage('L3: Misplaced spaces') {
+          steps {
+            sh '''cd ~/abricot-tests/L3
 ${WORKSPACE}/abricot'''
           }
         }
