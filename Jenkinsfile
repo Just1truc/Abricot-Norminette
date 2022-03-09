@@ -114,22 +114,52 @@ ${WORKSPACE}/abricot'''
           }
         }
 
-        stage('O1: Check useless file') {
+        stage('O1: Check useless file (#)') {
           steps {
             sh '''cd ~/abricot-tests/O1/
 cd "#"
 ${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('O1: Check useless file (~)') {
+          steps {
             sh '''cd ~/abricot-tests/O1/
 cd "~"
 ${WORKSPACE}/abricot'''
-            sh '''cd ~/abricot-tests/O1/A
-${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('O1: Check useless file (D)') {
+          steps {
             sh '''cd ~/abricot-tests/O1/D
 ${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('O1: Check useless file (A)') {
+          steps {
+            sh '''cd ~/abricot-tests/O1/A
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('O1: Check useless file (GCH)') {
+          steps {
             sh '''cd ~/abricot-tests/O1/GCH
 ${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('O1: Check useless file (O)') {
+          steps {
             sh '''cd ~/abricot-tests/O1/O
 ${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('O1: Check useless file (SO)') {
+          steps {
             sh '''cd ~/abricot-tests/O1/SO
 ${WORKSPACE}/abricot'''
           }
