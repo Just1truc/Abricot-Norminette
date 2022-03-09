@@ -116,9 +116,11 @@ ${WORKSPACE}/abricot'''
 
         stage('O1: Check useless file') {
           steps {
-            sh '''cd "~/abricot-tests/O1/#"
+            sh '''cd ~/abricot-tests/O1/
+cd "#"
 ${WORKSPACE}/abricot'''
-            sh '''cd "~/abricot-tests/O1/~"
+            sh '''cd ~/abricot-tests/O1/
+cd "~"
 ${WORKSPACE}/abricot'''
             sh '''cd ~/abricot-tests/O1/A
 ${WORKSPACE}/abricot'''
