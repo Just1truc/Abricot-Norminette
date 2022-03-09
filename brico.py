@@ -483,10 +483,10 @@ class Check_file_header:
                     else:
                         result += line
                 line_nbr += 1
-            if (".c" in  files):
+            if (".c" in files or ".h" in files):
                 if (result != self.c_file_header):
                     Norm_obj.major.append(('G1', "File header not correct.", ""))
-            if (files == "Makefile"):
+            if ("Makefile" in files):
                 if (result != self.h_file_header):
                     Norm_obj.major.append(('G1', "File header not correct.", ""))
             inside.close()
