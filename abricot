@@ -9,6 +9,10 @@ then
         sh install_abricot.sh
         cd $val
     fi
-else
+fi
+if [[ -z "${JENKINS}" ]]
+then
     python3 /usr/local/lib/Abricot_scripts/brico.py
+else
+    python3 ${WORKSPACE}/brico.py
 fi
