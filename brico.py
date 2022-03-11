@@ -7,7 +7,8 @@ from os import path
 import re
 
 def print_error(file, error_type, error_tuple, rule):
-    pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}"
+    pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}{fileinfo}"
+    pattern2 = "  [{error_type}] ({error_name}) - {message}{fileinfo}"
     colors = {"minor": "\033[1;93m",
         "major": "\033[1;91m",
         "info": "\033[36;1m"}
@@ -27,7 +28,7 @@ def print_error(file, error_type, error_tuple, rule):
     if (rule == False): print("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m"))
     else:
         buffer = open("trace.md", "a")
-        buffer.write("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m") + "\n")
+        buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
 
 class Comment_Check:
@@ -611,7 +612,10 @@ class Norms:
                         self.error_nbr += 1
                         filename = test.replace("./", "")
                         if (self.rule == False): print("\033[1m‣ In File", filename)
-                        else: self.inside.write("\033[1m‣ In File " + filename + "\n")
+                        else:
+                            self.inside = open("trace.md", "a")
+                            self.inside.write("# ‣ In File " + filename + "\n\n")
+                            self.inside.close()
                         for i in self.major:
                             print_error(filename, "major", i, self.rule)
                         for i in self.minor:
@@ -619,7 +623,10 @@ class Norms:
                         for i in self.info:
                             print_error(filename, "info", i, self.rule)
                         if (self.rule == False): print("\033[0m")
-                        else: self.inside.write("\033[0m\n")
+                        else:
+                            self.inside = open("trace.md", "a")
+                            self.inside.write("\n")
+                            self.inside.close()
                     self.major_nbr += len(self.major)
                     self.minor_nbr += len(self.minor)
                     self.info_nbr += len(self.info)
@@ -633,17 +640,23 @@ class Norms:
         self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
         self.browse_directory(os.listdir("."), ".")
         os.system("rm .clang-format")
-        self.inside = open("trace.md", "a") if self.rule == True else False
         if len(self.bad_files) > 0:
             self.error_nbr += 1
             if (self.rule == False): print("\033[1m‣ Bad files :\033[0m")
-            else: self.inside.write("\033[1m## ‣ Bad files :\033[0m")
+            else:
+                self.inside = open("trace.md", "a")
+                self.inside.write("# ‣ Bad files :\n\n")
+                self.inside.close()
             for i in self.bad_files:
                 print_error("", "major", i, self.rule)
             if (self.rule == False): print("")
-            else: self.inside.write("\n")
+            else:
+                self.inside = open("trace.md", "a")
+                self.inside.write("\n")
+                self.inside.close()
             if "JENKINS" in os.environ:
                 sys.exit(0)
+            self.major_nbr += len(self.bad_files)
         if (self.rule == False):
             if self.error_nbr == 0:
                 print("\033[1;32mNo Coding style error detected : Code clean\033[0m")
@@ -654,8 +667,6 @@ class Norms:
                 print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
                 print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
                 print(self.info_color + "[INFO]" + self.reset_color + " : ", self.info_nbr)
-        else:
-            self.inside.close()
 
 def main():
     rule=False
