@@ -656,8 +656,11 @@ class Norms:
 
     def run(self):
         os.system("echo \"BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: false\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nBreakBeforeBraces: Linux\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: false\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\" > .clang-format")
-        # process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        # self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
+
+        # Don't ignore files if the -md is active for DiscordCi.
+        if not self.rule:
+            process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
         self.browse_directory(os.listdir("."), ".")
         os.system("rm .clang-format")
         if len(self.bad_files) > 0:
