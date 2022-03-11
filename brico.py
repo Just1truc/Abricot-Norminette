@@ -545,7 +545,7 @@ class Check_file:
 
     def check_01(self, file_name, files, Norm_obj):
         for ext in self.forbidden_files:
-            if (ext in str(files) and files[len(files) - 1] == ext[len(ext) - 1]):
+            if (ext in file_name):
                 Norm_obj.bad_files.append(('O1', "Delivery Folder should not contain %s files." % ext, files.replace("./", "")))
     def run(self, file_name, path, Norm_obj):
         if self.active == True:
