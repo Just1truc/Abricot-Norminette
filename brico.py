@@ -31,6 +31,23 @@ def print_error(file, error_type, error_tuple, rule):
         buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
 
+class TraillingLine:
+    def __init__(self):
+        self.active = True
+    
+    def run(self, Norm_obj, files):
+        inside = open(files, "r")
+        line = 0
+        rest = ""
+        for lines in inside:
+            line+=1
+            rest += lines
+        splitted = rest.split("\n")
+        if (len(splitted) > 2):
+            if splitted[-2] == "" and splitted[-1] == "":
+                Norm_obj.minor.append(('G9', "Trailling Line", line))
+        inside.close()
+
 class Comment_Check:
     def __init__(self):
         self.active = True
@@ -47,6 +64,7 @@ class Comment_Check:
                 in_it = 0
             if ("//" in lines or "/*" in lines or "*/" in lines) and in_it == 1:
                 Norm_obj.minor.append(('F6', "There shoudn't be comments inside a function.", line))
+        inside.close()
 
 class Check_Goto:
     def __init__(self):
@@ -570,7 +588,8 @@ class Norms:
                           "Check_include" : Check_include(),
                           "Check_Goto" : Check_Goto(),
                           "Include Guard" : Include_guard(),
-                          "Comment_Check" : Comment_Check()}
+                          "Comment_Check" : Comment_Check(),
+                          "TraillingLine" : TraillingLine()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
