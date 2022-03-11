@@ -6,8 +6,6 @@ import os.path
 from os import path
 import re
 
-from sqlalchemy import false
-
 def print_error(file, error_type, error_tuple, buffer, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}"
     colors = {"minor": "\033[1;93m",
