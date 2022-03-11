@@ -6,7 +6,9 @@ import os.path
 from os import path
 import re
 
-def print_error(file, error_type, error_tuple):
+from sqlalchemy import false
+
+def print_error(file, error_type, error_tuple, buffer, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}"
     colors = {"minor": "\033[1;93m",
         "major": "\033[1;91m",
@@ -24,7 +26,8 @@ def print_error(file, error_type, error_tuple):
         fileinfo += ")"
 
     color = colors[error_type] if error_type in colors else ""
-    print("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m"))
+    if (rule == False): print("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m"))
+    else: buffer.write("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m") + "\n")
 
 class Comment_Check:
     def __init__(self):
@@ -497,7 +500,7 @@ class Check_Include:
         self.authorised_files = [ ".h" ]
         self.active = True
 
-    def run(self, files):
+    def run(self, files, buffer, rule):
         if self.active == True:
             tot = []
             for dos in os.listdir(files):
@@ -507,7 +510,7 @@ class Check_Include:
                 er = 1
                 print("\033[1;36mIn include\n")
                 for i in tot:
-                    print_error("", "major", i)
+                    print_error("", "major", i, buffer, rule)
                 print("")
 
 class Check_file:
@@ -546,7 +549,7 @@ class Too_Long_Line:
 
 class Norms:
     ### Norms class: Central hub of the error handling
-    def __init__(self):
+    def __init__(self, rule):
         self.norm_list = {"Too long line" : Too_Long_Line(),
                           "Check file header" : Check_file_header(),
                           "Empty line" : Empty_line(),
@@ -574,9 +577,14 @@ class Norms:
         self.error_nbr = 0
         self.minor_color = "\033[93m"
         self.major_color = "\033[91m"
-        self.info_color = "\033[97m"
+        self.info_color = "\033[36;1m"
         self.reset_color = "\033[0m"
         self.ignored_files = []
+        self.major_nbr = 0
+        self.minor_nbr = 0
+        self.info_nbr = 0
+        self.rule = rule
+        self.inside = 0
 
     def browse_directory(self, directory, paths):
         for files in directory:
@@ -586,7 +594,7 @@ class Norms:
             if path.isdir(test) and files != "tests":
                 if (files == "include"):
                     inc = Check_Include()
-                    inc.run(test)
+                    inc.run(test, self.inside, self.rule)
                 obj = self.organisation_norms
                 obj.check_04(files, test, self)
                 self.browse_directory(os.listdir(test), paths + "/" + str(files))
@@ -601,14 +609,19 @@ class Norms:
                     if (len(self.major) != 0 or len(self.minor) != 0 or len(self.info) != 0):
                         self.error_nbr += 1
                         filename = test.replace("./", "")
-                        print("\033[1m‣ In File", filename)
+                        if (self.rule == False): print("\033[1m‣ In File", filename)
+                        else: self.inside.write("\033[1m‣ In File " + filename + "\n")
                         for i in self.major:
-                            print_error(filename, "major", i)
+                            print_error(filename, "major", i, self.inside, self.rule)
                         for i in self.minor:
-                            print_error(filename, "minor", i)
+                            print_error(filename, "minor", i, self.inside, self.rule)
                         for i in self.info:
-                            print_error(filename, "info", i)
-                        print("\033[0m")
+                            print_error(filename, "info", i, self.inside, self.rule)
+                        if (self.rule == False): print("\033[0m")
+                        else: self.inside.write("\033[0m\n")
+                    self.major_nbr += len(self.major)
+                    self.minor_nbr += len(self.minor)
+                    self.info_nbr += len(self.info)
                     self.major = []
                     self.minor = []
                     self.info = []
@@ -619,22 +632,35 @@ class Norms:
         self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
         self.browse_directory(os.listdir("."), ".")
         os.system("rm .clang-format")
+        self.inside = open("trace.md", "a") if self.rule == True else False
         if len(self.bad_files) > 0:
             self.error_nbr += 1
-            print("\033[1m‣ Bad files :\033[0m")
+            if (self.rule == False): print("\033[1m‣ Bad files :\033[0m")
+            else: self.inside.write("\033[1m## ‣ Bad files :\033[0m")
             for i in self.bad_files:
-                print_error("", "major", i)
-            print("")
+                print_error("", "major", i, self.inside, self.rule)
+            if (self.rule == False): print("")
+            else: self.inside.write("\n")
             if "JENKINS" in os.environ:
                 sys.exit(0)
-        if self.error_nbr == 0:
-            print("\033[1;32mNo Coding style error detected : Code clean\033[0m")
-            if "JENKINS" in os.environ:
-                sys.exit(1)
-
+        if (self.rule == False):
+            if self.error_nbr == 0:
+                print("\033[1;32mNo Coding style error detected : Code clean\033[0m")
+                if "JENKINS" in os.environ:
+                    sys.exit(1)
+            else:
+                print("Here's your report:")
+                print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
+                print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
+                print(self.info_color + "[INFO]" + self.reset_color + " : ", self.info_nbr)
+        else:
+            self.inside.close()
 
 def main():
-    rule = Norms()
+    rule=False
+    if (len(sys.argv) == 2):
+        if (sys.argv[1] == "-md"): rule = True
+    rule = Norms(rule)
     rule.run()
 
 main()
