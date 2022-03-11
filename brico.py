@@ -5,6 +5,7 @@ import sys
 import os.path
 from os import path
 import re
+from json import JSONEncoder
 
 def print_error(file, error_type, error_tuple, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}\033[0m"
@@ -656,8 +657,11 @@ class Norms:
 
     def run(self):
         os.system("echo \"BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: false\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nBreakBeforeBraces: Linux\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: false\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\" > .clang-format")
-        process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
+
+        # Don't ignore files if the -md is active for DiscordCi.
+        if not self.rule:
+            process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
         self.browse_directory(os.listdir("."), ".")
         os.system("rm .clang-format")
         if len(self.bad_files) > 0:
@@ -687,6 +691,23 @@ class Norms:
                 print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
                 print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
                 print(self.info_color + "[INFO]" + self.reset_color + " : ", self.info_nbr)
+        else:
+            # This code set a variable used for DiscordCi when the program is
+            # called with args -md.
+            # The print function is normal here.
+
+            # Set env var NORM to 0 or 1.
+            if self.major_nbr != 0 or self.minor_nbr != 0:
+                print(f"::set-output name=NORM::1")
+            else:
+                print(f"::set-output name=NORM::0")
+
+            # Set env var to a JSON with details of error.
+            output = {}
+            output["major"] = self.major_nbr
+            output["minor"] = self.minor_nbr
+            output["info"] = self.info_nbr
+            print(f"::set-output name=SUMMARY::{JSONEncoder().encode(output)}")
 
 def main():
     rule=False
