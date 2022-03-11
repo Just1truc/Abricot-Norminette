@@ -5,6 +5,7 @@ import sys
 import os.path
 from os import path
 import re
+from json import JSONEncoder
 
 def print_error(file, error_type, error_tuple, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}{fileinfo}"
@@ -667,6 +668,23 @@ class Norms:
                 print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
                 print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
                 print(self.info_color + "[INFO]" + self.reset_color + " : ", self.info_nbr)
+        else:
+            # This code set a variable used for DiscordCi when the program is
+            # called with args -md.
+            # The print function is normal here.
+
+            # Set env var NORM to 0 or 1.
+            if self.major_nbr != 0 or self.minor_nbr != 0:
+                print(f"::set-output name=NORM::1")
+            else:
+                print(f"::set-output name=NORM::0")
+
+            # Set env var to a JSON with details of error.
+            output = {}
+            output["major"] = self.major_nbr
+            output["minor"] = self.minor_nbr
+            output["info"] = self.info_nbr
+            print(f"::set-output name=SUMMARY::{JSONEncoder().encode(output)}")
 
 def main():
     rule=False
