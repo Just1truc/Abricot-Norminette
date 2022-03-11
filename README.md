@@ -20,6 +20,7 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 - **G6** #include should only contain .h files
 - **G7** Line should finish only end with a "\n"
 - **G8** Trailing space
+- **G9** Trailing lines
 
 ####  Control structure
 
