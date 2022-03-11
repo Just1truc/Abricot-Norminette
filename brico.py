@@ -168,7 +168,7 @@ class Misplaced_spaces:
                 for i in range(min(len(lines), len(fmt))):
                     clean_fmt = self.fix_clang(self.tabs_to_space(fmt[i])).strip()
                     clean_line = lines[i].rstrip('\\').strip()
-                    if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', '') and clean_line[0:2] != "**":
+                    if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', '') and clean_line[0:2] != "**" and not('//' in clean_line):
                         Norm_obj.minor.append(('L3', "Misplaced spaces.", (i + 1)))
                 file_opened.close()
 
