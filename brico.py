@@ -7,7 +7,7 @@ from os import path
 import re
 
 def print_error(file, error_type, error_tuple, rule):
-    pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}{fileinfo}"
+    pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}\033[0m"
     pattern2 = "  [{error_type}] ({error_name}) - {message}{fileinfo}"
     colors = {"minor": "\033[1;93m",
         "major": "\033[1;91m",
@@ -612,7 +612,7 @@ class Norms:
             test = paths + "/" + files
             if test in self.ignored_files:
                 continue
-            if path.isdir(test) and files != "tests":
+            if path.isdir(test) and files != "tests" and files[0] != '.':
                 if (files == "include"):
                     inc = Check_Include()
                     inc.run(test, self.rule)
@@ -620,9 +620,10 @@ class Norms:
                 obj.check_04(files, test, self)
                 self.browse_directory(os.listdir(test), paths + "/" + str(files))
             else:
-                if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
+                if (files[0] != '.'):
                     obj = self.organisation_norms
                     obj.run(files, paths + "/" + files, self)
+                if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
                     if ((files[-1] == 'c' and files[-2] == '.') or "Makefile" in files or (files[-1] == 'h' and files[-2] == '.')) and not("~" in files) and not(".swp" in files) and files.replace("./", "")[0] != '.':
                         for rules in self.norm_list:
                             obj = self.norm_list[rules]
