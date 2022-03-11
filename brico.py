@@ -6,7 +6,7 @@ import os.path
 from os import path
 import re
 
-def print_error(file, error_type, error_tuple, buffer, rule):
+def print_error(file, error_type, error_tuple, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}"
     colors = {"minor": "\033[1;93m",
         "major": "\033[1;91m",
@@ -25,7 +25,10 @@ def print_error(file, error_type, error_tuple, buffer, rule):
 
     color = colors[error_type] if error_type in colors else ""
     if (rule == False): print("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m"))
-    else: buffer.write("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m") + "\n")
+    else:
+        buffer = open("trace.md", "a")
+        buffer.write("\033[0m" + pattern.format(color=color, error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo, endcolor = "\033[0m") + "\n")
+        buffer.close()
 
 class Comment_Check:
     def __init__(self):
@@ -498,7 +501,7 @@ class Check_Include:
         self.authorised_files = [ ".h" ]
         self.active = True
 
-    def run(self, files, buffer, rule):
+    def run(self, files, rule):
         if self.active == True:
             tot = []
             for dos in os.listdir(files):
@@ -508,7 +511,7 @@ class Check_Include:
                 er = 1
                 print("\033[1;36mIn include\n")
                 for i in tot:
-                    print_error("", "major", i, buffer, rule)
+                    print_error("", "major", i, rule)
                 print("")
 
 class Check_file:
@@ -592,7 +595,7 @@ class Norms:
             if path.isdir(test) and files != "tests":
                 if (files == "include"):
                     inc = Check_Include()
-                    inc.run(test, self.inside, self.rule)
+                    inc.run(test, self.rule)
                 obj = self.organisation_norms
                 obj.check_04(files, test, self)
                 self.browse_directory(os.listdir(test), paths + "/" + str(files))
@@ -610,11 +613,11 @@ class Norms:
                         if (self.rule == False): print("\033[1m‣ In File", filename)
                         else: self.inside.write("\033[1m‣ In File " + filename + "\n")
                         for i in self.major:
-                            print_error(filename, "major", i, self.inside, self.rule)
+                            print_error(filename, "major", i, self.rule)
                         for i in self.minor:
-                            print_error(filename, "minor", i, self.inside, self.rule)
+                            print_error(filename, "minor", i, self.rule)
                         for i in self.info:
-                            print_error(filename, "info", i, self.inside, self.rule)
+                            print_error(filename, "info", i, self.rule)
                         if (self.rule == False): print("\033[0m")
                         else: self.inside.write("\033[0m\n")
                     self.major_nbr += len(self.major)
@@ -636,7 +639,7 @@ class Norms:
             if (self.rule == False): print("\033[1m‣ Bad files :\033[0m")
             else: self.inside.write("\033[1m## ‣ Bad files :\033[0m")
             for i in self.bad_files:
-                print_error("", "major", i, self.inside, self.rule)
+                print_error("", "major", i, self.rule)
             if (self.rule == False): print("")
             else: self.inside.write("\n")
             if "JENKINS" in os.environ:
