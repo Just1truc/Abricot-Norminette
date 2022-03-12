@@ -570,7 +570,7 @@ class Too_Long_Line:
 
 class Norms:
     ### Norms class: Central hub of the error handling
-    def __init__(self, rule):
+    def __init__(self, rule, json_rule):
         self.norm_list = {"Too long line" : Too_Long_Line(),
                           "Check file header" : Check_file_header(),
                           "Empty line" : Empty_line(),
@@ -606,6 +606,10 @@ class Norms:
         self.minor_nbr = 0
         self.info_nbr = 0
         self.rule = rule
+        self.json_rule = json_rule
+        self.json_output = {"major" : {"count" : 0, "list": []},
+                            "minor" : {"count" : 0, "list": []},
+                            "info" : {"count" : 0, "list" : []}}
         self.inside = 0
 
     def browse_directory(self, directory, paths):
@@ -621,33 +625,89 @@ class Norms:
                 obj.check_04(files, test, self)
                 self.browse_directory(os.listdir(test), paths + "/" + str(files))
             else:
+
+                ### Checking Rules
+
+                ## Checking organisation norms
+
                 if (files[0] != '.'):
                     obj = self.organisation_norms
                     obj.run(files, paths + "/" + files, self)
+
+                ## Checking file extension
+
                 if (".c" in files or ".h" in files or "Makefile" in files or ".o" in files):
                     if ((files[-1] == 'c' and files[-2] == '.') or "Makefile" in files or (files[-1] == 'h' and files[-2] == '.')) and not("~" in files) and not(".swp" in files) and files.replace("./", "")[0] != '.':
+                        
+                        ## Checking Rule list
+
                         for rules in self.norm_list:
                             obj = self.norm_list[rules]
                             obj.run(self, paths + "/" + files)
+
+                        
                     if (len(self.major) != 0 or len(self.minor) != 0 or len(self.info) != 0):
                         self.error_nbr += 1
                         filename = test.replace("./", "")
-                        if (self.rule == False): print("\033[1m‣ In File", filename)
-                        else:
-                            self.inside = open("trace.md", "a")
-                            self.inside.write("# ‣ In File " + filename + "\n\n")
-                            self.inside.close()
+
+                        ### Displaying file name
+                        if not self.json_rule:
+                            if (self.rule == False): print("\033[1m‣ In File", filename)
+                            else:
+                                self.inside = open("trace.md", "a")
+                                self.inside.write("# ‣ In File " + filename + "\n\n")
+                                self.inside.close()
+                        
+                        ### Displayer of found errors in files and adding errors to json rule if needed
+
                         for i in self.major:
-                            print_error(filename, "major", i, self.rule)
+                            if self.json_rule:
+                                self.json_output["major"]["count"] += 1
+                                id = 0
+                                init = 0
+                                for dictio in self.json_output["major"]["list"]:
+                                   if i[0] in dictio:
+                                       init = 1
+                                       self.json_output["major"]["list"][id][i[0]]["list"].append({"file" : filename, "line": i[2]})
+                                   id += 1
+                                if init == 0:
+                                    self.json_output["major"]["list"].append({ i[0] : { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] } })
+                            else :print_error(filename, "major", i, self.rule)
                         for i in self.minor:
-                            print_error(filename, "minor", i, self.rule)
+                            if self.json_rule:
+                                self.json_output["minor"]["count"] += 1
+                                id = 0
+                                init = 0
+                                for dictio in self.json_output["minor"]["list"]:
+                                    if i[0] in dictio:
+                                        init = 1
+                                        self.json_output["minor"]["list"][id][i[0]]["list"].append({"file" : filename, "line": i[2]})
+                                    id += 1
+                                if init == 0:
+                                    self.json_output["minor"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : filename, "line": i[2]}]}})
+                            else: print_error(filename, "minor", i, self.rule)
                         for i in self.info:
-                            print_error(filename, "info", i, self.rule)
-                        if (self.rule == False): print("\033[0m")
-                        else:
-                            self.inside = open("trace.md", "a")
-                            self.inside.write("\n")
-                            self.inside.close()
+                            if self.json_rule:
+                                self.json_output["info"]["count"] += 1
+                                id = 0
+                                init = 0
+                                for dictio in self.json_output["info"]["list"]:
+                                    if i[0] in dictio:
+                                        init = 1
+                                        self.json_output["info"]["list"][id][i[0]]["list"].append({"file" : filename, "line": i[2]})
+                                    id += 1
+                                if init == 0:
+                                    self.json_output["info"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : filename, "line": i[2]}]}})
+                            else: print_error(filename, "info", i, self.rule)
+                        if not self.json_rule:
+                            if (self.rule == False): print("\033[0m")
+                            else:
+                                self.inside = open("trace.md", "a")
+                                self.inside.write("\n")
+                                self.inside.close()
+                    
+                    ### Reset of error tabs for next file and Incrementation of total error number for final report
+
                     self.major_nbr += len(self.major)
                     self.minor_nbr += len(self.minor)
                     self.info_nbr += len(self.info)
@@ -666,54 +726,72 @@ class Norms:
         os.system("rm .clang-format")
         if len(self.bad_files) > 0:
             self.error_nbr += 1
-            if (self.rule == False): print("\033[1m‣ Bad files :\033[0m")
-            else:
-                self.inside = open("trace.md", "a")
-                self.inside.write("# ‣ Bad files :\n\n")
-                self.inside.close()
+            if (not self.json_rule):
+                if (self.rule == False): print("\033[1m‣ Bad files :\033[0m")
+                else:
+                    self.inside = open("trace.md", "a")
+                    self.inside.write("# ‣ Bad files :\n\n")
+                    self.inside.close()
             for i in self.bad_files:
-                print_error("", "major", i, self.rule)
-            if (self.rule == False): print("")
-            else:
-                self.inside = open("trace.md", "a")
-                self.inside.write("\n")
-                self.inside.close()
+                if self.json_rule:
+                    self.json_output["major"]["count"] += 1
+                    init = 0
+                    id = 0
+                    for dictio in self.json_output["major"]["list"]:
+                        if i[0] in dictio:
+                            init = 1
+                            self.json_output["major"]["list"][id][i[0]]["list"].append({"file" : i[2], "line": ""})
+                        id += 1
+                    if init == 0:
+                        self.json_output["major"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : i[2], "line": ""}]}})
+                else:
+                    print_error("", "major", i, self.rule)
+            if not self.json_rule:
+                if (self.rule == False): print("")
+                else:
+                    self.inside = open("trace.md", "a")
+                    self.inside.write("\n")
+                    self.inside.close()
             if "JENKINS" in os.environ:
                 sys.exit(0)
             self.major_nbr += len(self.bad_files)
-        if (self.rule == False):
-            if self.error_nbr == 0:
-                print("\033[1;32mNo Coding style error detected : Code clean\033[0m")
-                if "JENKINS" in os.environ:
-                    sys.exit(1)
+        if not self.json_rule:
+            if (self.rule == False):
+                if self.error_nbr == 0:
+                    print("\033[1;32mNo Coding style error detected : Code clean\033[0m")
+                    if "JENKINS" in os.environ:
+                        sys.exit(1)
+                elif not self.json_rule:
+                    print("Here's your report:")
+                    print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
+                    print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
+                    print(self.info_color + "[INFO]" + self.reset_color + " : ", self.info_nbr)
             else:
-                print("Here's your report:")
-                print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
-                print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
-                print(self.info_color + "[INFO]" + self.reset_color + " : ", self.info_nbr)
-        else:
-            # This code set a variable used for DiscordCi when the program is
-            # called with args -md.
-            # The print function is normal here.
+                # This code set a variable used for DiscordCi when the program is
+                # called with args -md.
+                # The print function is normal here.
 
-            # Set env var NORM to 0 or 1.
-            if self.major_nbr != 0 or self.minor_nbr != 0:
-                print(f"::set-output name=NORM::1")
-            else:
-                print(f"::set-output name=NORM::0")
+                # Set env var NORM to 0 or 1.
+                if self.major_nbr != 0 or self.minor_nbr != 0:
+                    print(f"::set-output name=NORM::1")
+                else:
+                    print(f"::set-output name=NORM::0")
 
-            # Set env var to a JSON with details of error.
-            output = {}
-            output["major"] = self.major_nbr
-            output["minor"] = self.minor_nbr
-            output["info"] = self.info_nbr
-            print(f"::set-output name=SUMMARY::{JSONEncoder().encode(output)}")
+                # Set env var to a JSON with details of error.
+                output = {}
+                output["major"] = self.major_nbr
+                output["minor"] = self.minor_nbr
+                output["info"] = self.info_nbr
+                print(f"::set-output name=SUMMARY::{JSONEncoder().encode(output)}")
+        else: print(self.json_output)
 
 def main():
     rule=False
+    json_rule=False
     if (len(sys.argv) == 2):
         if (sys.argv[1] == "-md"): rule = True
-    rule = Norms(rule)
+        if (sys.argv[1] == "-json"): json_rule = True
+    rule = Norms(rule, json_rule)
     rule.run()
 
 main()
