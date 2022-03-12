@@ -571,6 +571,9 @@ class Too_Long_Line:
 class Norms:
     ### Norms class: Central hub of the error handling
     def __init__(self, rule, json_rule):
+
+        # A list of checked errors
+
         self.norm_list = {"Too long line" : Too_Long_Line(),
                           "Check file header" : Check_file_header(),
                           "Empty line" : Empty_line(),
@@ -605,22 +608,37 @@ class Norms:
         self.major_nbr = 0
         self.minor_nbr = 0
         self.info_nbr = 0
+
+        ## Option rules
+
         self.rule = rule
         self.json_rule = json_rule
+
+        ## Json List on error for option -json argument
+
         self.json_output = {"major" : {"count" : 0, "list": []},
                             "minor" : {"count" : 0, "list": []},
                             "info" : {"count" : 0, "list" : []}}
         self.inside = 0
 
     def browse_directory(self, directory, paths):
+
+        ### Use : A function that browse reccursivly through each file and folder begin to the current user position
+
         for files in directory:
             test = paths + "/" + files
             if test in self.ignored_files:
                 continue
+            
+            ### Checking if the file is a folder
+
             if path.isdir(test) and files != "tests" and files[0] != '.':
+                ## Checking include because specifics rule applies to this folder
                 if (files == "include"):
                     inc = Check_Include()
                     inc.run(test, self.rule)
+
+                # Checking 04 and 01 and putting errors in bad files
                 obj = self.organisation_norms
                 obj.check_04(files, test, self)
                 self.browse_directory(os.listdir(test), paths + "/" + str(files))
@@ -628,8 +646,7 @@ class Norms:
 
                 ### Checking Rules
 
-                ## Checking organisation norms
-
+                # Checking organisation norms
                 if (files[0] != '.'):
                     obj = self.organisation_norms
                     obj.run(files, paths + "/" + files, self)
@@ -644,8 +661,9 @@ class Norms:
                         for rules in self.norm_list:
                             obj = self.norm_list[rules]
                             obj.run(self, paths + "/" + files)
+                    
+                    ## Checking if there is errors to display
 
-                        
                     if (len(self.major) != 0 or len(self.minor) != 0 or len(self.info) != 0):
                         self.error_nbr += 1
                         filename = test.replace("./", "")
@@ -660,7 +678,10 @@ class Norms:
                         
                         ### Displayer of found errors in files and adding errors to json rule if needed
 
+                        # Displaying Major Coding Style errors
                         for i in self.major:
+
+                            # Adding error in json output depending on options
                             if self.json_rule:
                                 self.json_output["major"]["count"] += 1
                                 id = 0
@@ -672,8 +693,14 @@ class Norms:
                                    id += 1
                                 if init == 0:
                                     self.json_output["major"]["list"].append({ i[0] : { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] } })
+
+                            # Displaying Major error
                             else :print_error(filename, "major", i, self.rule)
+
+                        # Displaying Minor Coding Style errors
                         for i in self.minor:
+
+                            # Adding error in json output depending on options
                             if self.json_rule:
                                 self.json_output["minor"]["count"] += 1
                                 id = 0
@@ -685,8 +712,14 @@ class Norms:
                                     id += 1
                                 if init == 0:
                                     self.json_output["minor"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : filename, "line": i[2]}]}})
+
+                            # Displaying Minor error
                             else: print_error(filename, "minor", i, self.rule)
+
+                        # Displaying Info Coding Style errors
                         for i in self.info:
+
+                            # Adding error in json output depending on options
                             if self.json_rule:
                                 self.json_output["info"]["count"] += 1
                                 id = 0
@@ -698,7 +731,11 @@ class Norms:
                                     id += 1
                                 if init == 0:
                                     self.json_output["info"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : filename, "line": i[2]}]}})
+
+                            # Displaying info error
                             else: print_error(filename, "info", i, self.rule)
+
+                        # Displaying Line Break Depending on options
                         if not self.json_rule:
                             if (self.rule == False): print("\033[0m")
                             else:
@@ -716,14 +753,24 @@ class Norms:
                     self.info = []
 
     def run(self):
+        ## Run function
+        ## Use : Run Main rule
+
+        # Generating clang file for L3 Detection
         os.system("echo \"BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: false\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nBreakBeforeBraces: Linux\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: false\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\" > .clang-format")
 
         # Don't ignore files if the -md is active for DiscordCi.
         if not self.rule:
             process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
+
+        # Start Check_Error
         self.browse_directory(os.listdir("."), ".")
+
+        # Erasing Clang file
         os.system("rm .clang-format")
+
+        # Displaying bad files if needed
         if len(self.bad_files) > 0:
             self.error_nbr += 1
             if (not self.json_rule):
@@ -733,6 +780,9 @@ class Norms:
                     self.inside.write("# ‣ Bad files :\n\n")
                     self.inside.close()
             for i in self.bad_files:
+
+                ### Adding errors in json file depending of options given as paramater
+
                 if self.json_rule:
                     self.json_output["major"]["count"] += 1
                     init = 0
@@ -752,6 +802,7 @@ class Norms:
                     self.inside = open("trace.md", "a")
                     self.inside.write("\n")
                     self.inside.close()
+            # Jenkins check for Abricot's Performance
             if "JENKINS" in os.environ:
                 sys.exit(0)
             self.major_nbr += len(self.bad_files)
@@ -761,7 +812,8 @@ class Norms:
                     print("\033[1;32mNo Coding style error detected : Code clean\033[0m")
                     if "JENKINS" in os.environ:
                         sys.exit(1)
-                elif not self.json_rule:
+                else:
+                    ## Display Report of all errors
                     print("Here's your report:")
                     print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
                     print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
