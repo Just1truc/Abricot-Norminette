@@ -23,8 +23,8 @@ body:
       label: Version
       description: Are you using the last version ? Check with ```abricot --update```
       options:
-        - Yes
-        - No
+        - "Yes"
+        - "No"
     validations:
       required: true
   - type: dropdown
