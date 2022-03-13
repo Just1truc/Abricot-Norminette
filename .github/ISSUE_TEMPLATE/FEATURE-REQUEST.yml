@@ -23,8 +23,8 @@ body:
       label: Version
       description: Are you using the last version ? Check with ```abricot --update```
       options:
-        - Yes
-        - No
+        - "Yes"
+        - "No"
     validations:
       required: true
   - type: dropdown
@@ -33,7 +33,7 @@ body:
       label: Did you check your request is not already asked ?
       description: Search in the open issues of the repository
       options:
-        - Yes
-        - No
+        - "Yes"
+        - "No"
     validations:
       required: true
