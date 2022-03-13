@@ -183,7 +183,7 @@ class Too_many_functions:
             inside = open(files, "r")
             function_nbr = 0
             for lines in inside:
-                if (lines[0] == '{'):
+                if (lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
                     function_nbr += 1
             if (function_nbr > self.max_function_nbr):
                 Norm_obj.major.append(('O3', "Too many functions in one file (%d > 5)." % function_nbr, ""))
@@ -378,14 +378,6 @@ class Line_Endings:
 
     def run(self, Norm_obj, files):
         if ".c" in files or ".h" in files and self.active == True:
-            #inside = open(files, "r")
-            #line = 0
-            #for lines in inside:
-            #    line += 1
-            #    for endings in self.forbidden_endings:
-            #        if endings in lines:
-            #            Norm_obj.minor.append(('G7', "Line should finish only end with a \\n.", line))
-            #inside.close()
             result = subprocess.check_output("cat -A "+files, shell=True)
             line = 0
             for lines in str(result).split("$"):
@@ -481,7 +473,7 @@ class Empty_line:
         if (".c" in files) and self.active == True:
             for lines in inside:
                 line += 1
-                if prev_line[0] == '}' and lines[0] != '\n':
+                if prev_line.replace("\n", "").replace(" ", "").replace("\t", "") == "}" and prev_line[0] == '{' and lines[0] != '\n':
                     Norm_obj.minor.append(('G2', "There should be only one empty_line each time.", line_nbr))
                 prev_line = lines
         inside.close()
