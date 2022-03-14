@@ -378,7 +378,7 @@ class Line_Endings:
 
     def run(self, Norm_obj, files):
         if ".c" in files or ".h" in files and self.active == True:
-            result = subprocess.check_output("cat -A "+files, shell=True)
+            result = subprocess.check_output("cat -vet "+files, shell=True)
             line = 0
             for lines in str(result).split("$"):
                 line += 1
