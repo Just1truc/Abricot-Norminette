@@ -839,7 +839,7 @@ class Norms:
                 output["minor"] = self.minor_nbr
                 output["info"] = self.info_nbr
                 print(f"::set-output name=SUMMARY::{JSONEncoder().encode(output)}")
-        else: print(self.json_output)
+        else: print(JSONEncoder().encode(self.json_output))
 
 def main():
     rule=False
