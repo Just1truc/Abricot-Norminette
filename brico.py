@@ -378,13 +378,13 @@ class Line_Endings:
 
     def run(self, Norm_obj, files):
         if ".c" in files or ".h" in files and self.active == True:
-            result = subprocess.check_output("cat -vet "+files, shell=True)
+            result = subprocess.check_output("cat -vET "+files, shell=True)
             line = 0
             for lines in str(result).split("$"):
                 line += 1
                 if "^M" in lines:
                     Norm_obj.minor.append(('G7', "Line should finish only end with a \\n.", line))
-    
+
 class Global_variable:
 
     def __init__(self):
