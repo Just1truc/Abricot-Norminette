@@ -378,7 +378,10 @@ class Line_Endings:
 
     def run(self, Norm_obj, files):
         if ".c" in files or ".h" in files and self.active == True:
-            result = subprocess.check_output("cat -vET "+files, shell=True)
+            if sys.platform == "darwin":
+                result = subprocess.check_output("cat -vet "+files, shell=True)
+            else:
+                result = subprocess.check_output("cat -vET "+files, shell=True)
             line = 0
             for lines in str(result).split("$"):
                 line += 1
