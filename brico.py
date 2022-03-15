@@ -373,20 +373,23 @@ class Trailling_spaces:
 
 class Line_Endings:
     def __init__(self):
-        self.forbidden_endings = [ "\015" ]
+        self.forbidden_endings = [
+            b'\r\n',
+            b'\n\r',
+            b'\r',
+        ]
         self.active = True
 
     def run(self, Norm_obj, files):
         if ".c" in files or ".h" in files and self.active == True:
-            if sys.platform == "darwin":
-                result = subprocess.check_output("cat -vet "+files, shell=True)
-            else:
-                result = subprocess.check_output("cat -vET "+files, shell=True)
-            line = 0
-            for lines in str(result).split("$"):
-                line += 1
-                if "^M" in lines:
-                    Norm_obj.minor.append(('G7', "Line should finish only end with a \\n.", line))
+            counts = dict.fromkeys(self.forbidden_endings, 0)
+            line_nbr = 0
+            with open(files, 'rb') as fp:
+                for line in fp:
+                    line_nbr += 1
+                    for x in self.forbidden_endings:
+                        if line.endswith(x):
+                            Norm_obj.minor.append(('G7', "Line should end with \\n", line_nbr))
 
 class Global_variable:
 
