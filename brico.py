@@ -620,7 +620,7 @@ class Norms:
 
         ## Json List on error for option -json argument
 
-        self.json_output = {"major" : {"count" : 0, "list": []},
+        self.json_output = {"major" : {"count" : 0, "list": {}},
                             "minor" : {"count" : 0, "list": []},
                             "info" : {"count" : 0, "list" : []}}
         self.inside = 0
@@ -687,16 +687,10 @@ class Norms:
 
                             # Adding error in json output depending on options
                             if self.json_rule:
-                                self.json_output["major"]["count"] += 1
-                                id = 0
-                                init = 0
-                                for dictio in self.json_output["major"]["list"]:
-                                   if i[0] in dictio:
-                                       init = 1
-                                       self.json_output["major"]["list"][id][i[0]]["list"].append({"file" : filename, "line": i[2]})
-                                   id += 1
-                                if init == 0:
-                                    self.json_output["major"]["list"].append({ i[0] : { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] } })
+                                if i[0] not in self.json_output["major"]["list"]:
+                                    self.json_output["major"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] }
+                                else:
+                                    self.json_output["major"]["list"][i[0]]["list"].append({ "file" : filename, "line": i[2] })
 
                             # Displaying Major error
                             else :print_error(filename, "major", i, self.rule)
@@ -706,16 +700,10 @@ class Norms:
 
                             # Adding error in json output depending on options
                             if self.json_rule:
-                                self.json_output["minor"]["count"] += 1
-                                id = 0
-                                init = 0
-                                for dictio in self.json_output["minor"]["list"]:
-                                    if i[0] in dictio:
-                                        init = 1
-                                        self.json_output["minor"]["list"][id][i[0]]["list"].append({"file" : filename, "line": i[2]})
-                                    id += 1
-                                if init == 0:
-                                    self.json_output["minor"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : filename, "line": i[2]}]}})
+                                if i[0] not in self.json_output["minor"]["list"]:
+                                    self.json_output["minor"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] }
+                                else:
+                                    self.json_output["minor"]["list"][i[0]]["list"].append({ "file" : filename, "line": i[2] })
 
                             # Displaying Minor error
                             else: print_error(filename, "minor", i, self.rule)
@@ -725,16 +713,10 @@ class Norms:
 
                             # Adding error in json output depending on options
                             if self.json_rule:
-                                self.json_output["info"]["count"] += 1
-                                id = 0
-                                init = 0
-                                for dictio in self.json_output["info"]["list"]:
-                                    if i[0] in dictio:
-                                        init = 1
-                                        self.json_output["info"]["list"][id][i[0]]["list"].append({"file" : filename, "line": i[2]})
-                                    id += 1
-                                if init == 0:
-                                    self.json_output["info"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : filename, "line": i[2]}]}})
+                                if i[0] not in self.json_output["info"]["list"]:
+                                    self.json_output["info"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] }
+                                else:
+                                    self.json_output["info"]["list"][i[0]]["list"].append({ "file" : filename, "line": i[2] })
 
                             # Displaying info error
                             else: print_error(filename, "info", i, self.rule)
@@ -789,15 +771,10 @@ class Norms:
 
                 if self.json_rule:
                     self.json_output["major"]["count"] += 1
-                    init = 0
-                    id = 0
-                    for dictio in self.json_output["major"]["list"]:
-                        if i[0] in dictio:
-                            init = 1
-                            self.json_output["major"]["list"][id][i[0]]["list"].append({"file" : i[2], "line": ""})
-                        id += 1
-                    if init == 0:
-                        self.json_output["major"]["list"].append({i[0] : {" description" : i[1], "list" : [{"file" : i[2], "line": ""}]}})
+                    if not(i[0] in self.json_output["major"]["list"]):
+                        self.json_output["major"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : i[2], "line": "" } ] }
+                    else:
+                        self.json_output["major"]["list"][i[0]]["list"].append({ "file" : i[2], "line": "" })
                 else:
                     print_error("", "major", i, self.rule)
             if not self.json_rule:
