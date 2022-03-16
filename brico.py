@@ -687,6 +687,7 @@ class Norms:
 
                             # Adding error in json output depending on options
                             if self.json_rule:
+                                self.json_output["major"]["count"] += 1
                                 if i[0] not in self.json_output["major"]["list"]:
                                     self.json_output["major"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] }
                                 else:
@@ -700,6 +701,7 @@ class Norms:
 
                             # Adding error in json output depending on options
                             if self.json_rule:
+                                self.json_output["minor"]["count"] += 1
                                 if i[0] not in self.json_output["minor"]["list"]:
                                     self.json_output["minor"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] }
                                 else:
@@ -713,6 +715,7 @@ class Norms:
 
                             # Adding error in json output depending on options
                             if self.json_rule:
+                                self.json_output["info"]["count"] += 1
                                 if i[0] not in self.json_output["info"]["list"]:
                                     self.json_output["info"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : filename, "line": i[2] } ] }
                                 else:
