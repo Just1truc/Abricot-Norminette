@@ -1,3 +1,4 @@
+from dataclasses import replace
 import subprocess
 from copyreg import constructor
 import os
@@ -310,7 +311,9 @@ class Curly_brackets:
             line += 1
             if (lines[0] != ' ' and lines[0] != '\n' and "(" in lines and ")" in lines and "{" in lines):
                 Norm_obj.minor.append(('L4', "Curly brackets misplaced.", line))
-            if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines) and not("}" in lines)) and not("do" in lines):
+            #if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines) and not("}" in lines)) and not("do" in lines):
+            #    Norm_obj.minor.append(('L4', "Curly brackets misplaced.", line))
+            if (lines[0] == ' ' and "{" in lines and not("if" in lines) and not("else" in lines) and not("for" in lines) and not("while" in lines) and not(")" in lines) and not("}" in lines)) and not("do" in lines) and ("if" in prev_line or "else" in prev_line or "for" in prev_line or "while" in prev_line or ")" in prev_line or "}" in prev_line or "do" in prev_line):
                 Norm_obj.minor.append(('L4', "Curly brackets misplaced.", line))
             if (prev_line[0] == ' ' and "}" in prev_line and not("if" in prev_line) and not("else" in prev_line) and not("for" in prev_line) and not("while" in prev_line) and "else" in lines and not("}" in lines)):
                 Norm_obj.minor.append(('L4', "Curly brackets misplaced.", line))
@@ -323,7 +326,7 @@ class Curly_brackets:
         prev_line = "02"
         for lines in inside:
             line += 1
-            if "{" in lines and "struct" in prev_line:
+            if lines[0] == '{' and lines.replace("\n", "").replace(" ", "").replace("\t", "") == "{" and "struct" in prev_line:
                 Norm_obj.minor.append(('L4', "Curly brackets misplaced.", line))
             prev_line = lines
         inside.close()
