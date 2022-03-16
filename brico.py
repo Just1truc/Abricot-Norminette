@@ -33,6 +33,28 @@ def print_error(file, error_type, error_tuple, rule):
         buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
 
+class CodeLineContent:
+    def __init__(self):
+        self.multiple_declaration = True
+        self.one_line_conditions = True
+        self.multiple_ligns_at_once = True
+        self.assignement_in_condition = True
+
+    def run(self, Norm_obj, files):
+        inside = open(files, "r")
+        line = 0
+        for lines in inside:
+            line += 1
+            if ("if" in lines or "else" in lines) and ";" in lines and self.one_line_conditions:
+                Norm_obj.minor.append(('L1', "There shouldn't be a condition and it's statement on the same line", line))
+            if lines.count(";") > 1 and "for" not in lines and self.multiple_ligns_at_once:
+                Norm_obj.minor.append(('L1', "There shouldn't be more than one operation per line (except for 'for' loops)", line))
+            if lines.count(" = ") > 1 and self.multiple_declaration:
+                Norm_obj.minor.append(('L1', "There shoudn't be more than one assignement per line", line))
+            if " = " in lines and "if" in lines and self.assignement_in_condition:
+                Norm_obj.minor.append(('L1', "There shoudn't be an assignement in conditions", line))
+        inside.close()
+
 class TraillingLine:
     def __init__(self):
         self.active = True
@@ -598,7 +620,8 @@ class Norms:
                           "Check_Goto" : Check_Goto(),
                           "Include Guard" : Include_guard(),
                           "Comment_Check" : Comment_Check(),
-                          "TraillingLine" : TraillingLine()}
+                          "TraillingLine" : TraillingLine(),
+                          "CodeLineContent" : CodeLineContent()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
