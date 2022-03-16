@@ -621,8 +621,8 @@ class Norms:
         ## Json List on error for option -json argument
 
         self.json_output = {"major" : {"count" : 0, "list": {}},
-                            "minor" : {"count" : 0, "list": []},
-                            "info" : {"count" : 0, "list" : []}}
+                            "minor" : {"count" : 0, "list": {}},
+                            "info" : {"count" : 0, "list" : {}}}
         self.inside = 0
 
     def browse_directory(self, directory, paths):
