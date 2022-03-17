@@ -1,7 +1,7 @@
 # Abricot Norminette
 
 Abricot Norminette is a file checker notifying the user of coding style errors.
-
+SALUT
 ## Files checked
 
 - *.c
