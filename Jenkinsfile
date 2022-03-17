@@ -132,7 +132,7 @@ ${WORKSPACE}/abricot'''
           }
         }
 
-        stage('O3: Too many fonctions in a file') {
+        stage('O3: Too many functions in a file') {
           steps {
             sh '''cd ~/abricot-tests/O3
 ${WORKSPACE}/abricot'''
