@@ -160,7 +160,7 @@ ${WORKSPACE}/abricot'''
           }
         }
 
-        stage('F6: Comments inside of functions') {
+        stage('F6: Comments inside of function') {
           steps {
             sh '''cd ~/abricot-tests/F6
 ${WORKSPACE}/abricot'''
