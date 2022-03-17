@@ -45,11 +45,11 @@ class CodeLineContent:
         line = 0
         for lines in inside:
             line += 1
-            if ("if" in lines or "else" in lines) and ";" in lines and self.one_line_conditions:
+            if ("if (" in lines or "if(" in lines or "else" in lines) and ";" in lines and self.one_line_conditions:
                 Norm_obj.minor.append(('L1', "There shouldn't be a condition and it's statement on the same line", line))
             if lines.count(";") > 1 and "for" not in lines and self.multiple_ligns_at_once:
                 Norm_obj.minor.append(('L1', "There shouldn't be more than one operation per line (except for 'for' loops)", line))
-            if lines.count(" = ") > 1 and self.multiple_declaration:
+            if lines.count(" = ") > 1 and not("for (" in lines or "for(" in lines or ");" in lines) and self.multiple_declaration:
                 Norm_obj.minor.append(('L1', "There shoudn't be more than one assignement per line", line))
             if " = " in lines and "if" in lines and self.assignement_in_condition:
                 Norm_obj.minor.append(('L1', "There shoudn't be an assignement in conditions", line))
