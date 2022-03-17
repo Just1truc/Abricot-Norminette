@@ -39,7 +39,9 @@ ${WORKSPACE}/abricot'''
 
         stage('G2: There should be only one line between each fonction') {
           steps {
-            sh '''cd ~/abricot-tests/G2
+            sh '''cd ~/abricot-tests/G2/1
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/G2/2
 ${WORKSPACE}/abricot'''
           }
         }
@@ -203,6 +205,21 @@ ${WORKSPACE}/abricot'''
         stage('H2: Header not protected from doucle inclusion') {
           steps {
             sh '''cd ~/abricot-tests/H2
+${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('L1: Code line content') {
+          steps {
+            sh '''cd ~/abricot-tests/L1/1
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/L1/2
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/L1/3
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/L1/4
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/L1/5
 ${WORKSPACE}/abricot'''
           }
         }
