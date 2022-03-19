@@ -33,6 +33,7 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 
 #### Layout inside a function scope
 
+- **L1** Coding content
 - **L2** Bad indentation
 - **L3** Misplaced spaces
 - **L4** Misplaced curly bracket
