@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'python:bullseye'
+    }
+  }
   stages {
     stage('Env. info') {
       parallel {
