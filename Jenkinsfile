@@ -16,7 +16,7 @@ pipeline {
         stage('Setup') {
           steps {
             sh 'chmod +x abricot'
-            sh 'git clone https://github.com/socialeonet/Abricot-Tests.git'
+            sh 'git clone https://github.com/socialeonet/Abricot-Tests.git abricot-tests'
           }
         }
 
