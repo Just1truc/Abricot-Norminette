@@ -169,7 +169,9 @@ ${WORKSPACE}/abricot'''
 
         stage('H2: Header not protected from doucle inclusion') {
           steps {
-            sh '''cd ~/abricot-tests/H2
+            sh '''cd ~/abricot-tests/H2/1
+${WORKSPACE}/abricot'''
+            sh '''cd ~/abricot-tests/H2/2
 ${WORKSPACE}/abricot'''
           }
         }
