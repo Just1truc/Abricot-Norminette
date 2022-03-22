@@ -266,7 +266,7 @@ class Too_many_depth:
                     if "else if" in lines:
                         depth += 1
                 if depth >= self.max_depth and in_it == 1:
-                    Norm_obj.major.append(('C1', "Conditionnal branching.", line))
+                    Norm_obj.minor.append(('C1', "Conditionnal branching.", line))
             inside.close()
 
 class Arguments_nbr:
