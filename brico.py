@@ -221,9 +221,9 @@ class Include_guard:
         if (files[-1] == 'h' and files[-2] == '.'):
             buffer = open(files, "r")
             for lines in buffer:
-                if "#ifndef" in lines:
+                if "#ifndef" in lines and files.split("/")[-1].split(".")[0].upper() + "_H_" in lines:
                     self.check_ifndef = 1
-                if "#endif" in lines:
+                if "#endif" in lines and files.split("/")[-1].split(".")[0].upper() + "_H_" in lines:
                     self.check_endif = 1
             buffer.close()
             if (self.check_ifndef == 0 or self.check_endif == 0):
