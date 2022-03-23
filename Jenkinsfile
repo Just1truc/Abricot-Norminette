@@ -18,7 +18,7 @@ pipeline {
             sh 'chmod +x abricot'
             sh 'rm -rf abricot-tests/'
             sh 'git clone https://github.com/socialeonet/Abricot-Tests.git abricot-tests'
-            sh 'sudo apt-get install clang -y'
+            sh 'su root && apt-get install sudo && sudo apt-get install clang -y'
           }
         }
 
