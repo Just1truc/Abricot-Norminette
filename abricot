@@ -10,7 +10,12 @@ then
         cd $val
     elif [[ $1 == "--all" ]]
     then
-        python3 /usr/local/lib/Abricot_scripts/brico.py --all
+        if [[ -z "${JENKINS}" ]]
+        then
+            python3 /usr/local/lib/Abricot_scripts/brico.py --all
+        else
+            python3 ${WORKSPACE}/brico.py --all
+        fi
     fi
 else
     if [[ -z "${JENKINS}" ]]
