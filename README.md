@@ -37,6 +37,8 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 - **L2** Bad indentation
 - **L3** Misplaced spaces
 - **L4** Misplaced curly bracket
+- **L5** Bad variable declaration
+- **L6** Bad line break
 
 #### Files organization
 
@@ -72,6 +74,11 @@ Abricot is simple program. In order to use it, please type the following command
 
 ```bash
 abricot
+```
+In order to have a better report ( even if it's not currently checked by the moulinette ), please use the following command
+
+```bash
+abricot --all
 ```
 
 ## Updating
