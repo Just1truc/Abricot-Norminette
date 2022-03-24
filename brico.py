@@ -74,14 +74,14 @@ class VariableDeclaration:
             if (lines.replace(" ", "").replace("\t", "").replace("\n", "") == "}" and lines[0] == '}'):
                 in_function = False
             if len(lines.replace("\t", "").replace(" ", "")) == 0 and in_declaration == False and in_function == True:
-                Norm_obj.minor.append(('L5', "There shouldn't be a line break mid function", line))
+                Norm_obj.minor.append(('L6', "There shouldn't be a line break mid function", line))
             if in_function == True:
                 if in_declaration == True:
                     new_line = lines.replace("*", "").replace(" ", "").replace("\n", "")
                     if not(any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in self.var_types)) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{') or "for" in lines:
                         in_declaration = False
                         if len(lines.replace("\t", "").replace(" ", "")) != 0 and prev_line.replace(" ", "") != "{":
-                            Norm_obj.minor.append(('L5', "There should be a lign break between declarations and code", line))
+                            Norm_obj.minor.append(('L6', "There should be a lign break between declarations and code", line))
                 else:
                     new_line = lines.replace("*", "").replace(" ", "").replace("\n", "")
                     if any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in self.var_types) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
