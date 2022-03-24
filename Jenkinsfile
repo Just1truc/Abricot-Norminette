@@ -185,15 +185,15 @@ ${WORKSPACE}/abricot'''
         stage('L1: Code line content') {
           steps {
             sh '''cd abricot-tests/L1/1
-${WORKSPACE}/abricot'''
+${WORKSPACE}/abricot --all'''
             sh '''cd abricot-tests/L1/2
-${WORKSPACE}/abricot'''
+${WORKSPACE}/abricot --all'''
             sh '''cd abricot-tests/L1/3
-${WORKSPACE}/abricot'''
+${WORKSPACE}/abricot --all'''
             sh '''cd abricot-tests/L1/4
-${WORKSPACE}/abricot'''
+${WORKSPACE}/abricot --all'''
             sh '''cd abricot-tests/L1/5
-${WORKSPACE}/abricot'''
+${WORKSPACE}/abricot --all'''
           }
         }
 
