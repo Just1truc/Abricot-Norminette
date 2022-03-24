@@ -8,6 +8,9 @@ then
         git pull
         sh install_abricot.sh
         cd $val
+    elif [[ $1 == "--all" ]]
+    then
+        python3 /usr/local/lib/Abricot_scripts/brico.py --all
     fi
 else
     if [[ -z "${JENKINS}" ]]

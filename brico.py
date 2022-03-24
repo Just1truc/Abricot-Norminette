@@ -33,12 +33,69 @@ def print_error(file, error_type, error_tuple, rule):
         buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
 
+class VariableDeclaration:
+    def __init__(self):
+        self.var_types = [ "int", "char", "float", "double", "void", "DIR", "size_t", "size", "ssize_t", "dirent", "stat", "long", "WINDOW", "sfCircleShape", "sfConvexShape", "sfFont", "sfImage", "sfShader", "sfRectangleShape", "sfRenderTexture", "sfRenderWindow", "sfShape", "sfSprite", "sfText", "sfTexture", "sfTransformable", "sfVertexArray", "sfVertexBuffer", "sfView", "sfContext", "sfCursor", "sfWindow", "sfMusic", "sfSound", "sfSoundBuffer", "sfSoundBufferRecorder", "sfSoundRecorder", "sfSoundStream", "sfFtpDirectoryResponse", "sfFtpListingResponse", "sfFtpResponse", "sfFtp", "sfHttpRequest", "sfHttpResponse", "sfHttp", "sfPacket", "sfSocketSelector", "sfTcpListener", "sfTcpSocket", "sfUdpSocket", "sfClock", "sfMutex", "sfThread" ]
+        self.active = True
+        self.get_struct(os.listdir("."), ".")
+        self.checked = False
+
+    def get_struct(self, direct, paths):
+        for files in direct:
+            test = paths + "/" + files
+            if path.isdir(test):
+                self.get_struct(os.listdir(test), test)
+            else:
+                if (test[-1] == 'h' and test[-2] == '.'):
+                    inside = open(test, "r")
+                    begin = 0
+                    for lines in inside:
+                        if "typedef" in lines:
+                            begin = 1
+                        tot=lines.replace(" ", "")
+                        if begin == 1 and tot[0] == '}':
+                            i = 0
+                            tot=lines.replace(" ", "").replace("}", "").replace(";\n", "").replace("\n", "")
+                            if len(tot) > 0:
+                                self.var_types += [tot]
+    
+    def run(self, Norm_obj, files):
+        buffer = open(files, "r")
+        inside = buffer.read().split("\n")
+        line = 0
+        in_function = False
+        in_declaration = False
+        prev_line = "" 
+        for lines in inside:
+            line += 1
+            if (lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
+                in_function = True
+                in_declaration = True
+            if (lines.replace(" ", "").replace("\t", "").replace("\n", "") == "}" and lines[0] == '}'):
+                in_function = False
+            if len(lines.replace("\t", "").replace(" ", "")) == 0 and in_declaration == False and in_function == True:
+                Norm_obj.minor.append(('L5', "There shouldn't be a line break mid function", line))
+            if in_function == True:
+                if in_declaration == True:
+                    new_line = lines.replace("*", "").replace(" ", "").replace("\n", "")
+                    if not(any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in self.var_types)) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{') or "for" in lines:
+                        in_declaration = False
+                        if len(lines.replace("\t", "").replace(" ", "")) != 0 and prev_line.replace(" ", "") != "{":
+                            Norm_obj.minor.append(('L5', "There should be a lign break between declarations and code", line))
+                else:
+                    new_line = lines.replace("*", "").replace(" ", "").replace("\n", "")
+                    if any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in self.var_types) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
+                        Norm_obj.minor.append(('L5', "Variable Declaration should be in the head of the function", line))
+            prev_line = lines
+
+
 class CodeLineContent:
     def __init__(self):
         self.multiple_declaration = True
         self.one_line_conditions = True
         self.multiple_ligns_at_once = True
         self.assignement_in_condition = True
+        self.checked = False
 
     def run(self, Norm_obj, files):
         inside = open(files, "r")
@@ -58,6 +115,7 @@ class CodeLineContent:
 class TraillingLine:
     def __init__(self):
         self.active = True
+        self.checked = True
     
     def run(self, Norm_obj, files):
         inside = open(files, "r")
@@ -75,6 +133,7 @@ class TraillingLine:
 class Comment_Check:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         inside = open(files, "r")
@@ -93,6 +152,7 @@ class Comment_Check:
 class Check_Goto:
     def __init__(self):
         self.auth = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         inside = open(files, "r")
@@ -106,6 +166,7 @@ class Check_Goto:
 class Line_Break:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, file_name):
         if self.active == True:
@@ -120,6 +181,7 @@ class Line_Break:
 class Check_include:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -149,6 +211,7 @@ class Check_include:
 class Misplaced_spaces:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def tabs_to_space(self, string):
         begin = 0
@@ -200,6 +263,7 @@ class Too_many_functions:
     def __init__(self):
         self.max_function_nbr = 5
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if (files[-1] == 'c' and files[-2] == '.') and self.active == True:
@@ -216,6 +280,7 @@ class Include_guard:
     def __init__(self):
         self.check_ifndef = 0
         self.check_endif = 0
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if (files[-1] == 'h' and files[-2] == '.'):
@@ -235,6 +300,7 @@ class Too_many_depth:
         self.max_depth = 3
         self.indentation_space_nbr = 4
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -273,6 +339,7 @@ class Arguments_nbr:
     def __init__(self):
         self.max_arguments_nbr = 4
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -300,6 +367,7 @@ class Function_length:
     def __init__(self):
         self.max_length = 20
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -324,6 +392,7 @@ class Function_length:
 class Curly_brackets:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def check_c_files(self, Norm_obj, files):
         inside = open(files, "r")
@@ -361,6 +430,7 @@ class Curly_brackets:
 class Identation_error:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -382,6 +452,7 @@ class Identation_error:
 class Trailling_spaces:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -402,6 +473,7 @@ class Line_Endings:
             b'\r',
         ]
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if ".c" in files or ".h" in files and self.active == True:
@@ -420,6 +492,7 @@ class Global_variable:
         self.var_types = [ "int", "char", "float", "double", "void"]
         self.active = True
         self.get_struct(os.listdir("."), ".")
+        self.checked = True
 
     def get_struct(self, direct, paths):
         for files in direct:
@@ -454,6 +527,7 @@ class Global_variable:
 class Preprocessor_Directives:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         start=0
@@ -480,6 +554,7 @@ class Preprocessor_Directives:
 class Empty_line:
     def __init__(self):
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         inside = open(files, "r")
@@ -513,6 +588,7 @@ class Check_file_header:
         self.c_file_header = "/*\n** EPITECH PROJECT,\n** File description:\n*/\n"
         self.h_file_header = "##\n## EPITECH PROJECT,\n## File description:\n##\n"
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -547,6 +623,7 @@ class Check_Include:
     def __init__(self):
         self.authorised_files = [ ".h" ]
         self.active = True
+        self.checked = True
 
     def run(self, files, rule):
         if self.active == True:
@@ -565,6 +642,7 @@ class Check_file:
     def __init__(self):
         self.forbidden_files = [ ".o", ".gch", ".a", ".so", "~", "#", ".d" ]
         self.active = True
+        self.checked = True
 
     def check_04(self, file_name, path, Norm_obj):
         if (any(ele.isupper() for ele in str(file_name)) == True and ("Makefile" in file_name) != True) and self.active == True:
@@ -584,6 +662,7 @@ class Too_Long_Line:
         self.line_length = 80
         self.attributes = {"line_length" : self.line_length}
         self.active = True
+        self.checked = True
 
     def run(self, Norm_obj, files):
         if self.active == True:
@@ -597,7 +676,7 @@ class Too_Long_Line:
 
 class Norms:
     ### Norms class: Central hub of the error handling
-    def __init__(self, rule, json_rule):
+    def __init__(self, rule, json_rule, all_rule):
 
         # A list of checked errors
 
@@ -621,7 +700,8 @@ class Norms:
                           "Include Guard" : Include_guard(),
                           "Comment_Check" : Comment_Check(),
                           "TraillingLine" : TraillingLine(),
-                          "CodeLineContent" : CodeLineContent()}
+                          "CodeLineContent" : CodeLineContent(),
+                          "VariableDeclaration" : VariableDeclaration()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
@@ -641,6 +721,7 @@ class Norms:
 
         self.rule = rule
         self.json_rule = json_rule
+        self.all_rule = all_rule
 
         ## Json List on error for option -json argument
 
@@ -688,7 +769,8 @@ class Norms:
 
                         for rules in self.norm_list:
                             obj = self.norm_list[rules]
-                            obj.run(self, paths + "/" + files)
+                            if obj.checked == True or self.all_rule == True:
+                                obj.run(self, paths + "/" + files)
                     
                     ## Checking if there is errors to display
 
@@ -848,10 +930,12 @@ class Norms:
 def main():
     rule=False
     json_rule=False
+    all_rule=False
     if (len(sys.argv) == 2):
         if (sys.argv[1] == "-md"): rule = True
         if (sys.argv[1] == "-json"): json_rule = True
-    rule = Norms(rule, json_rule)
+        if (sys.argv[1] == "--all"): all_rule = True
+    rule = Norms(rule, json_rule, all_rule)
     rule.run()
 
 main()
