@@ -33,6 +33,33 @@ def print_error(file, error_type, error_tuple, rule):
         buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
 
+class NamingIdentifiers:
+    def __init__(self):
+        self.active = True
+        self.checked = True
+        self.t_checked = False
+
+    def run(self, Norm_obj, files):
+        if files.endswith(".h"):
+            inside = open(files, "r")
+            begin = 0
+            line = 0
+            for lines in inside:
+                line += 1
+                if "typedef" in lines:
+                    begin = 1
+                tot=lines.replace(" ", "")
+                if begin == 1 and tot[0] == '}':
+                    i = 0
+                    tot=lines.replace(" ", "").replace("}", "").replace(";\n", "").replace("\n", "")
+                    if len(tot) > 0 and not(tot.endswith("_t")) and (self.t_checked == True or Norm_obj.all_rule == True):
+                        Norm_obj.major.append(("V1", "Typedef name should end with '_t'", line))
+                tab = [i for i, x in enumerate(lines.split(" ")) if (x == "#define")]
+                if (tab != []):
+                    id = tab[0] + 1
+                    if "#define" in lines and id < len(lines.split(" ")) - 1 and not(lines.split(" ")[id].split("(")[0].isupper()):
+                        Norm_obj.major.append(("V1", "Macros should be in Lowercases", line))
+
 class VariableDeclaration:
     def __init__(self):
         self.var_types = [ "int", "char", "float", "double", "void", "DIR", "size_t", "size", "ssize_t", "dirent", "stat", "long", "WINDOW", "sfCircleShape", "sfConvexShape", "sfFont", "sfImage", "sfShader", "sfRectangleShape", "sfRenderTexture", "sfRenderWindow", "sfShape", "sfSprite", "sfText", "sfTexture", "sfTransformable", "sfVertexArray", "sfVertexBuffer", "sfView", "sfContext", "sfCursor", "sfWindow", "sfMusic", "sfSound", "sfSoundBuffer", "sfSoundBufferRecorder", "sfSoundRecorder", "sfSoundStream", "sfFtpDirectoryResponse", "sfFtpListingResponse", "sfFtpResponse", "sfFtp", "sfHttpRequest", "sfHttpResponse", "sfHttp", "sfPacket", "sfSocketSelector", "sfTcpListener", "sfTcpSocket", "sfUdpSocket", "sfClock", "sfMutex", "sfThread" ]
@@ -489,6 +516,7 @@ class Line_Endings:
 class Global_variable:
 
     def __init__(self):
+        self.special_types = []
         self.var_types = [ "int", "char", "float", "double", "void"]
         self.active = True
         self.get_struct(os.listdir("."), ".")
@@ -511,7 +539,7 @@ class Global_variable:
                             i = 0
                             tot=lines.replace(" ", "").replace("}", "").replace(";\n", "").replace("\n", "")
                             if len(tot) > 0:
-                                self.var_types += [tot]
+                                self.special_types += [tot]
 
     def run(self, Norm_obj, files):
         if ".c" in files and self.active == True:
@@ -520,6 +548,9 @@ class Global_variable:
             for lines in inside:
                 line += 1
                 for types in self.var_types:
+                    if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
+                        Norm_obj.minor.append(('G4', "Global variable should be const.", line))
+                for types in self.special_types:
                     if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
                         Norm_obj.minor.append(('G4', "Global variable should be const.", line))
             inside.close()
@@ -701,7 +732,8 @@ class Norms:
                           "Comment_Check" : Comment_Check(),
                           "TraillingLine" : TraillingLine(),
                           "CodeLineContent" : CodeLineContent(),
-                          "VariableDeclaration" : VariableDeclaration()}
+                          "VariableDeclaration" : VariableDeclaration(),
+                          "NamingIdentifiers" : NamingIdentifiers()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
