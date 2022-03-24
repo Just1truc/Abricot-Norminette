@@ -57,6 +57,10 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 
 - **H2** Header not protected from doucle inclusion
 
+#### Variables and Types
+
+- **V1** Controlling structures and macros
+
 ## Installation
 
 Clone the repository in your home folder :
