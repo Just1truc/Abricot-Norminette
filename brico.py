@@ -62,30 +62,9 @@ class NamingIdentifiers:
 
 class VariableDeclaration:
     def __init__(self):
-        self.var_types = [ "int", "char", "float", "double", "void", "DIR", "size_t", "size", "ssize_t", "dirent", "stat", "long", "WINDOW", "sfCircleShape", "sfConvexShape", "sfFont", "sfImage", "sfShader", "sfRectangleShape", "sfRenderTexture", "sfRenderWindow", "sfShape", "sfSprite", "sfText", "sfTexture", "sfTransformable", "sfVertexArray", "sfVertexBuffer", "sfView", "sfContext", "sfCursor", "sfWindow", "sfMusic", "sfSound", "sfSoundBuffer", "sfSoundBufferRecorder", "sfSoundRecorder", "sfSoundStream", "sfFtpDirectoryResponse", "sfFtpListingResponse", "sfFtpResponse", "sfFtp", "sfHttpRequest", "sfHttpResponse", "sfHttp", "sfPacket", "sfSocketSelector", "sfTcpListener", "sfTcpSocket", "sfUdpSocket", "sfClock", "sfMutex", "sfThread" ]
         self.active = True
-        self.get_struct(os.listdir("."), ".")
         self.checked = False
 
-    def get_struct(self, direct, paths):
-        for files in direct:
-            test = paths + "/" + files
-            if path.isdir(test):
-                self.get_struct(os.listdir(test), test)
-            else:
-                if (test[-1] == 'h' and test[-2] == '.'):
-                    inside = open(test, "r")
-                    begin = 0
-                    for lines in inside:
-                        if "typedef" in lines:
-                            begin = 1
-                        tot=lines.replace(" ", "")
-                        if begin == 1 and tot[0] == '}':
-                            i = 0
-                            tot=lines.replace(" ", "").replace("}", "").replace(";\n", "").replace("\n", "")
-                            if len(tot) > 0:
-                                self.var_types += [tot]
-    
     def run(self, Norm_obj, files):
         buffer = open(files, "r")
         inside = buffer.read().split("\n")
@@ -105,13 +84,13 @@ class VariableDeclaration:
             if in_function == True:
                 if in_declaration == True:
                     new_line = lines.replace("*", "").replace(" ", "").replace("\n", "")
-                    if not(any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in self.var_types)) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{') or "for" in lines:
+                    if not(any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in Norm_obj.var_types)) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{') or "for" in lines:
                         in_declaration = False
                         if len(lines.replace("\t", "").replace(" ", "")) != 0 and prev_line.replace(" ", "") != "{":
                             Norm_obj.minor.append(('L6', "There should be a lign break between declarations and code", line))
                 else:
                     new_line = lines.replace("*", "").replace(" ", "").replace("\n", "")
-                    if any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in self.var_types) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
+                    if any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in Norm_obj.var_types) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
                         Norm_obj.minor.append(('L5', "Variable Declaration should be in the head of the function", line))
             prev_line = lines
 
@@ -231,7 +210,7 @@ class Check_include:
                                 tot += str(char)
                             if char == '<':
                                 in_it = 1
-                        if tot[-1] != 'h' or tot[-2] != '.':
+                        if len(tot) > 3 and (tot[-1] != 'h' or tot[-2] != '.'):
                             Norm_obj.major.append(('G6', "#include should only contain .h files.", line))
             inside.close()
 
@@ -516,43 +495,24 @@ class Line_Endings:
 class Global_variable:
 
     def __init__(self):
-        self.special_types = []
-        self.var_types = [ "int", "char", "float", "double", "void"]
         self.active = True
-        self.get_struct(os.listdir("."), ".")
         self.checked = True
-
-    def get_struct(self, direct, paths):
-        for files in direct:
-            test = paths + "/" + files
-            if path.isdir(test):
-                self.get_struct(os.listdir(test), test)
-            else:
-                if (test[-1] == 'h' and test[-2] == '.'):
-                    inside = open(test, "r")
-                    begin = 0
-                    for lines in inside:
-                        if "typedef" in lines:
-                            begin = 1
-                        tot=lines.replace(" ", "")
-                        if begin == 1 and tot[0] == '}':
-                            i = 0
-                            tot=lines.replace(" ", "").replace("}", "").replace(";\n", "").replace("\n", "")
-                            if len(tot) > 0:
-                                self.special_types += [tot]
 
     def run(self, Norm_obj, files):
         if ".c" in files and self.active == True:
             inside = open(files, "r")
             line = 0
             for lines in inside:
+                ids = []
+                for i,x in enumerate(lines):
+                    if '"' == x:
+                        ids.append(i)
                 line += 1
-                for types in self.var_types:
-                    if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
+                for types in Norm_obj.var_types:
+                    out = [i for i,x in enumerate(ids) if types in lines and lines.index(types) < x]
+                    if types in lines and (out if len(out) > 0 else [1])[0]%2==0 and ((not("const" in lines) and Norm_obj.all_rule == True) or (not("static" in lines) and Norm_obj.all_rule == False)) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
                         Norm_obj.minor.append(('G4', "Global variable should be const.", line))
-                for types in self.special_types:
-                    if types in lines and not("const" in lines) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
-                        Norm_obj.minor.append(('G4', "Global variable should be const.", line))
+                        break
             inside.close()
 
 class Preprocessor_Directives:
@@ -748,6 +708,7 @@ class Norms:
         self.major_nbr = 0
         self.minor_nbr = 0
         self.info_nbr = 0
+        self.var_types = [ "int", "char", "float", "double", "void", "DIR", "size_t", "size", "ssize_t", "dirent", "stat", "long", "WINDOW", "sfCircleShape", "sfConvexShape", "sfFont", "sfImage", "sfShader", "sfRectangleShape", "sfRenderTexture", "sfRenderWindow", "sfShape", "sfSprite", "sfText", "sfTexture", "sfTransformable", "sfVertexArray", "sfVertexBuffer", "sfView", "sfContext", "sfCursor", "sfWindow", "sfMusic", "sfSound", "sfSoundBuffer", "sfSoundBufferRecorder", "sfSoundRecorder", "sfSoundStream", "sfFtpDirectoryResponse", "sfFtpListingResponse", "sfFtpResponse", "sfFtp", "sfHttpRequest", "sfHttpResponse", "sfHttp", "sfPacket", "sfSocketSelector", "sfTcpListener", "sfTcpSocket", "sfUdpSocket", "sfClock", "sfMutex", "sfThread" ]
 
         ## Option rules
 
@@ -761,6 +722,25 @@ class Norms:
                             "minor" : {"count" : 0, "list": {}},
                             "info" : {"count" : 0, "list" : {}}}
         self.inside = 0
+
+    def get_struct(self, direct, paths):
+        for files in direct:
+            test = paths + "/" + files
+            if path.isdir(test):
+                self.get_struct(os.listdir(test), test)
+            else:
+                if (test[-1] == 'h' and test[-2] == '.'):
+                    inside = open(test, "r")
+                    begin = 0
+                    for lines in inside:
+                        if "typedef" in lines:
+                            begin = 1
+                        tot=lines.replace(" ", "")
+                        if begin == 1 and tot[0] == '}':
+                            i = 0
+                            tot=lines.replace(" ", "").replace("}", "").replace(";\n", "").replace("\n", "")
+                            if len(tot) > 0:
+                                self.var_types += [tot]
 
     def browse_directory(self, directory, paths):
 
@@ -890,6 +870,9 @@ class Norms:
         if not self.rule:
             process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
+
+        # Get types
+        self.get_struct(os.listdir('.'), '.')
 
         # Start Check_Error
         self.browse_directory(os.listdir("."), ".")
