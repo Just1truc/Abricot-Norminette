@@ -637,9 +637,9 @@ class Check_file:
         self.active = True
         self.checked = True
 
-    def check_04(self, file_name, path, Norm_obj):
-        if (any(ele.isupper() for ele in str(file_name)) == True and ("Makefile" in file_name) != True) and self.active == True:
-            Norm_obj.bad_files.append(('O4', "Name not in snake case convention.", path.replace("./", "")))
+    def check_04(self, file_name, paths, Norm_obj):
+        if any(ele.isupper() for ele in str(file_name)) == True and (path.isdir(paths) or file_name.endswith(".c") or file_name.endswith(".h") or Norm_obj.all_rule == True) and self.active == True:
+            Norm_obj.bad_files.append(('O4', "Name not in snake case convention.", paths.replace("./", "")))
 
     def check_01(self, file_name, files, Norm_obj):
         for ext in self.forbidden_files:
