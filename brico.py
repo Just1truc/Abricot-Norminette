@@ -33,6 +33,8 @@ def print_error(file, error_type, error_tuple, rule):
         buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
 
+
+
 class NamingIdentifiers:
     def __init__(self):
         self.active = True
@@ -624,7 +626,7 @@ class Check_Include:
                     tot.append(('G6', "Include folder should only contain .h files.", dos.replace("./", "")))
             if len(tot) > 0:
                 er = 1
-                print("\033[1;36mIn include\n")
+                print("\033[1m‣ In Include\n")
                 for i in tot:
                     print_error("", "major", i, rule)
                 print("")
@@ -700,8 +702,8 @@ class Norms:
         self.info = []
         self.bad_files = []
         self.error_nbr = 0
-        self.minor_color = "\033[93m"
-        self.major_color = "\033[91m"
+        self.minor_color = "\033[93;1m"
+        self.major_color = "\033[91;1m"
         self.info_color = "\033[36;1m"
         self.reset_color = "\033[0m"
         self.ignored_files = []
@@ -919,7 +921,7 @@ class Norms:
                         sys.exit(1)
                 else:
                     ## Display Report of all errors
-                    print("Here's your report:")
+                    print("\033[1mHere's your report:")
                     print(self.major_color + "[MAJOR]" + self.reset_color + " : ", self.major_nbr, end=" | ")
                     print(self.minor_color + "[MINOR]" + self.reset_color + " : ", self.minor_nbr, end=" | ")
                     print(self.info_color + "[INFO]" + self.reset_color + " : ", self.info_nbr)
