@@ -223,9 +223,9 @@ ${WORKSPACE}/abricot'''
         stage('V1: Naming identifiers') {
           steps {
             sh '''cd abricot-tests/V1/1
-${WORKSPACE}/abricot -all'''
+${WORKSPACE}/abricot --all'''
             sh '''cd abricot-tests/V1/2
-${WORKSPACE}/abricot -all'''
+${WORKSPACE}/abricot --all'''
             sh '''cd abricot-tests/V1/3
 ${WORKSPACE}/abricot --all'''
             sh '''cd abricot-tests/V1/4
