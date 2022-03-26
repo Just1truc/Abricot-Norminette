@@ -82,6 +82,13 @@ ${WORKSPACE}/abricot'''
           }
         }
 
+        stage('G9: Leading/Trailing lines') {
+          steps {
+            sh '''cd abricot-tests/G9
+${WORKSPACE}/abricot --all'''
+          }
+        }
+
         stage('C1: There should not be more than 3 depth (conditionnal branching)') {
           steps {
             sh '''cd abricot-tests/C1
@@ -93,6 +100,21 @@ ${WORKSPACE}/abricot'''
           steps {
             sh '''cd abricot-tests/A3
 ${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('L1: Code line content') {
+          steps {
+            sh '''cd abricot-tests/L1/1
+${WORKSPACE}/abricot --all'''
+            sh '''cd abricot-tests/L1/2
+${WORKSPACE}/abricot --all'''
+            sh '''cd abricot-tests/L1/3
+${WORKSPACE}/abricot --all'''
+            sh '''cd abricot-tests/L1/4
+${WORKSPACE}/abricot --all'''
+            sh '''cd abricot-tests/L1/5
+${WORKSPACE}/abricot --all'''
           }
         }
 
@@ -114,6 +136,22 @@ ${WORKSPACE}/abricot'''
           steps {
             sh '''cd abricot-tests/L4
 ${WORKSPACE}/abricot'''
+          }
+        }
+
+        stage('L5: Variable declaration') {
+          steps {
+            sh '''cd abricot-tests/L5/1
+${WORKSPACE}/abricot --all'''
+            sh '''cd abricot-tests/L5/2
+${WORKSPACE}/abricot --all'''
+          }
+        }
+
+        stage('L6: Line jumps') {
+          steps {
+            sh '''cd abricot-tests/L6
+${WORKSPACE}/abricot --all'''
           }
         }
 
@@ -182,23 +220,19 @@ ${WORKSPACE}/abricot'''
           }
         }
 
-        stage('L1: Code line content') {
+        stage('V1: Naming identifiers') {
           steps {
-            sh '''cd abricot-tests/L1/1
+            sh '''cd abricot-tests/V1/1
+${WORKSPACE}/abricot -all'''
+            sh '''cd abricot-tests/V1/2
+${WORKSPACE}/abricot -all'''
+            sh '''cd abricot-tests/V1/3
 ${WORKSPACE}/abricot --all'''
-            sh '''cd abricot-tests/L1/2
-${WORKSPACE}/abricot --all'''
-            sh '''cd abricot-tests/L1/3
-${WORKSPACE}/abricot --all'''
-            sh '''cd abricot-tests/L1/4
-${WORKSPACE}/abricot --all'''
-            sh '''cd abricot-tests/L1/5
+            sh '''cd abricot-tests/V1/4
 ${WORKSPACE}/abricot --all'''
           }
         }
-
       }
     }
-
   }
 }
