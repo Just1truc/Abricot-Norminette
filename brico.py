@@ -7,6 +7,7 @@ import os.path
 from os import path
 import re
 from json import JSONEncoder
+from webbrowser import get
 
 def print_error(file, error_type, error_tuple, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}\033[0m"
@@ -61,8 +62,10 @@ class NamingIdentifiers:
             line = 0
             for lines in inside:
                 line += 1
-                if "typedef" in lines:
+                if "typedef" in lines and not (";" in lines):
                     begin = 1
+                elif "typedef" in lines and ";" in lines and lines.replace(";", "").replace("\n", "").split(" ")[-1].endswith("_t") == False:
+                    Norm_obj.major.append(("V1", "Typedef name should end with '_t'", line))
                 tot=lines.replace(" ", "")
                 if begin == 1 and tot[0] == '}':
                     i = 0
@@ -72,8 +75,24 @@ class NamingIdentifiers:
                 tab = [i for i, x in enumerate(lines.split(" ")) if (x == "#define")]
                 if (tab != []):
                     id = tab[0] + 1
-                    if "#define" in lines and id < len(lines.split(" ")) - 1 and not(lines.split(" ")[id].split("(")[0].isupper()):
+                    if "#define" in lines and id < len(lines.split(" ")) and not(lines.split(" ")[id].split("(")[0].isupper()):
                         Norm_obj.major.append(("V1", "Macros should be in Uppercases", line))
+            inside.close()
+            buffer = open(files, "r")
+            inside = "".join(buffer.read().replace(" ", "").replace("\n", "[END]"))
+            get_splited = re.split("enum+.+{+.+}", inside)
+            if get_splited[0] == inside:
+                return
+            get_enums = re.findall("enum+.+{+.+}", inside)
+            id = 0
+            line = 1
+            for enums in get_enums:
+                line += get_splited[id].count("[END]")
+                for macro in enums.replace("enum", "").split("{")[1].replace("}", "").split(","):
+                    if any([i.islower() for i in macro.split("=")[0]]):
+                        Norm_obj.major.append(("V1", "Macros should be in Uppercases", line + macro.split([i for i in macro.split("[END]") if len(i) > 0][0])[0].count("[END]")))
+                    line += macro.count("[END]")
+                id += 1
 
 class VariableDeclaration:
     def __init__(self):
