@@ -232,6 +232,15 @@ ${WORKSPACE}/abricot --all'''
 ${WORKSPACE}/abricot --all'''
           }
         }
+
+        stage('V3: Pointers') {
+          steps {
+            sh '''cd abricot-tests/V3/1
+${WORKSPACE}/abricot --all'''
+            sh '''cd abricot-tests/V3/2
+${WORKSPACE}/abricot --all'''
+          }
+        }
       }
     }
   }
