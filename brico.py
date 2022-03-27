@@ -122,6 +122,9 @@ class VariableDeclaration:
                         in_declaration = False
                         if len(lines.replace("\t", "").replace(" ", "")) != 0 and prev_line.replace(" ", "") != "{":
                             Norm_obj.minor.append(('L6', "There should be a lign break between declarations and code", line))
+                    else:
+                        if ("," in lines and not("(" in lines or ")" in lines or "{" in lines)):
+                            Norm_obj.minor.append(('L5', "Only one variable should be declared per line", line))
                 else:
                     new_line = lines.replace("*", "").replace(" ", "").replace("\n", "")
                     if any(("(" + types + " " in lines or " " + types + " " in lines) and (new_line.count("(" + types) + lines.count(" " + types + " ") - new_line.count("(" + types + ")") > 0) for types in Norm_obj.var_types) and not(lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
