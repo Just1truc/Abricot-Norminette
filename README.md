@@ -60,6 +60,7 @@ Abricot Norminette is a file checker notifying the user of coding style errors.
 #### Variables and Types
 
 - **V1** Controlling structures and macros
+- **V3** Pointers position
 
 ## Installation
 
