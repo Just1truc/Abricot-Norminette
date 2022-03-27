@@ -512,7 +512,7 @@ class Global_variable:
                 line += 1
                 for types in Norm_obj.var_types:
                     out = [i for i,x in enumerate(ids) if types in lines and lines.index(types) < x]
-                    if types in lines and (out if len(out) > 0 else [1])[0]%2==0 and ((not("const" in lines) and Norm_obj.all_rule == True) or (not("static" in lines) and Norm_obj.all_rule == False)) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
+                    if types in lines and (out if len(out) > 0 else [0])[0]%2==0 and ((not("const" in lines) and Norm_obj.all_rule == True) or (not("static" in lines) and Norm_obj.all_rule == False)) and not("(" in lines) and lines[0] != ' ' and lines[0] != '\t' and not(")" in lines) and not(lines[0:2] == "**"):
                         Norm_obj.minor.append(('G4', "Global variable should be const.", line))
                         break
             inside.close()
