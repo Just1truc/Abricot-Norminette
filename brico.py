@@ -33,7 +33,20 @@ def print_error(file, error_type, error_tuple, rule):
         buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
 
+class Pointers:
+    def __init__(self):
+        self.active = True
+        self.checked = True
 
+    def run(self, Norm_obj, files):
+        buffer = open(files, "r")
+        line = 0
+        for lines in buffer:
+            line += 1
+            if any([(types + '*' in lines) for types in Norm_obj.var_types]):
+                Norm_obj.minor.append(('V3', 'The pointer symbol should be attached to the assosiated variable', line))
+        buffer.close()
+        
 
 class NamingIdentifiers:
     def __init__(self):
@@ -60,7 +73,7 @@ class NamingIdentifiers:
                 if (tab != []):
                     id = tab[0] + 1
                     if "#define" in lines and id < len(lines.split(" ")) - 1 and not(lines.split(" ")[id].split("(")[0].isupper()):
-                        Norm_obj.major.append(("V1", "Macros should be in Lowercases", line))
+                        Norm_obj.major.append(("V1", "Macros should be in Uppercases", line))
 
 class VariableDeclaration:
     def __init__(self):
@@ -695,7 +708,8 @@ class Norms:
                           "TraillingLine" : TraillingLine(),
                           "CodeLineContent" : CodeLineContent(),
                           "VariableDeclaration" : VariableDeclaration(),
-                          "NamingIdentifiers" : NamingIdentifiers()}
+                          "NamingIdentifiers" : NamingIdentifiers(),
+                          "Pointers" : Pointers()}
         self.organisation_norms = Check_file()
         self.major = []
         self.minor = []
