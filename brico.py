@@ -324,6 +324,7 @@ class Include_guard:
         self.check_ifndef = 0
         self.check_endif = 0
         self.check_define = 0
+        self.pragma = 0
         self.checked = True
 
     def run(self, Norm_obj, files):
@@ -336,8 +337,10 @@ class Include_guard:
                     self.check_define = 1
                 if "#endif" in lines:
                     self.check_endif = 1
+                if "#pragma" in lines:
+                    self.pragma = 1
             buffer.close()
-            if self.check_ifndef == 0 or self.check_endif == 0 or self.check_define == 0:
+            if (self.check_ifndef == 0 or self.check_endif == 0 or self.check_define == 0) and self.pragma == 0:
                 Norm_obj.minor.append(('H2', "Header not protected from double inclusion.", ""))
 
 
@@ -567,7 +570,7 @@ class Preprocessor_Directives:
         if (".h" in files and files[-1] == 'h') and self.active == True:
             for lines in inside:
                 line += 1
-                if "#ifndef" in lines:
+                if "#ifndef" in lines or "#pragma" in lines:
                     start=1
                 if "#endif" in lines:
                     start = 0
