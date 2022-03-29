@@ -323,18 +323,21 @@ class Include_guard:
     def __init__(self):
         self.check_ifndef = 0
         self.check_endif = 0
+        self.check_define = 0
         self.checked = True
 
     def run(self, Norm_obj, files):
         if (files[-1] == 'h' and files[-2] == '.'):
             buffer = open(files, "r")
             for lines in buffer:
-                if "#ifndef" in lines and files.split("/")[-1].split(".")[0].upper() + "_H_" in lines:
+                if "#ifndef" in lines and files.split("/")[-1].split(".")[0].upper() + "_H" in lines:
                     self.check_ifndef = 1
-                if "#endif" in lines and files.split("/")[-1].split(".")[0].upper() + "_H_" in lines:
+                if "#define" in lines and files.split("/")[-1].split(".")[0].upper() + "_H" in lines:
+                    self.check_define = 1
+                if "#endif" in lines:
                     self.check_endif = 1
             buffer.close()
-            if (self.check_ifndef == 0 or self.check_endif == 0):
+            if self.check_ifndef == 0 or self.check_endif == 0 or self.check_define == 0:
                 Norm_obj.minor.append(('H2', "Header not protected from double inclusion.", ""))
 
 
