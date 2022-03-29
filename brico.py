@@ -606,7 +606,7 @@ class Empty_line:
             for lines in inside:
                 line += 1
                 if prev_line.replace("\n", "").replace(" ", "").replace("\t", "") == "}" and prev_line[0] == '}' and lines[0] != '\n':
-                    Norm_obj.minor.append(('G2', "There should be only one empty_line each time.", line_nbr))
+                    Norm_obj.minor.append(('G2', "There should be only one empty_line each time.", line))
                 prev_line = lines
         inside.close()
 
