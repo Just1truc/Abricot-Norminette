@@ -200,6 +200,7 @@ class Check_Goto:
     def run(self, Norm_obj, files):
         inside = open(files, "r")
         line = 0
+        two = 0
         for lines in inside:
             line += 1
             if " goto " in lines and self.auth == True:
