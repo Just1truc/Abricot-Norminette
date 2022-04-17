@@ -88,7 +88,7 @@ class NamingIdentifiers:
             line = 1
             for enums in get_enums:
                 line += get_splited[id].count("[END]")
-                for macro in enums.replace("enum", "").split("{")[1].replace("}", "").split(","):
+                for macro in enums.replace("enum", "").split("{")[1].split("}")[0].split(","):
                     if any([i.islower() for i in macro.split("=")[0]]):
                         Norm_obj.major.append(("V1", "Macros should be in Uppercases", line + macro.split([i for i in macro.split("[END]") if len(i) > 0][0])[0].count("[END]")))
                     line += macro.count("[END]")
