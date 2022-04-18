@@ -392,7 +392,7 @@ class Arguments_nbr:
         self.checked = True
 
     def run(self, Norm_obj, files):
-        if self.active == True:
+        if self.active == True and files.endswith(".c"):
             inside = open(files, "r")
             line = 0
             counter = 0
