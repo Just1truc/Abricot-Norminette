@@ -493,10 +493,10 @@ class Identation_error:
                 while lines[i] == ' ':
                     i+=1
                 if i % 4 != 0:
-                    Norm_obj.minor.append(('L2', "No tab should be replaced by an identation.", test))
+                    Norm_obj.minor.append(('L2', "No tab should be replaced by an indentation.", test))
                 for char in lines:
                     if (char == '\t' and ("Makefile" in files) != True):
-                        Norm_obj.minor.append(('L2', "No tab should be replaced by an identation.", test))
+                        Norm_obj.minor.append(('L2', "No tab should be replaced by an indentation.", test))
             inside.close()
 
 class Trailling_spaces:
