@@ -40,7 +40,7 @@ class Pointers:
         self.checked = True
 
     def run(self, Norm_obj, files):
-        buffer = open(files, "r")
+        buffer = open(files, "r", encoding="utf8", errors='ignore')
         line = 0
         for lines in buffer:
             line += 1
@@ -57,7 +57,7 @@ class NamingIdentifiers:
 
     def run(self, Norm_obj, files):
         if files.endswith(".h"):
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             begin = 0
             line = 0
             for lines in inside:
@@ -78,7 +78,7 @@ class NamingIdentifiers:
                     if "#define" in lines and id < len(lines.split(" ")) and not(lines.split(" ")[id].split("(")[0].isupper()):
                         Norm_obj.major.append(("V1", "Macros should be in Uppercases", line))
             inside.close()
-            buffer = open(files, "r")
+            buffer = open(files, "r", encoding="utf8", errors='ignore')
             inside = "".join(buffer.read().replace(" ", "").replace("\n", "[END]"))
             get_splited = re.split("enum+.+{+.+}", inside)
             if get_splited[0] == inside:
@@ -100,7 +100,7 @@ class VariableDeclaration:
         self.checked = False
 
     def run(self, Norm_obj, files):
-        buffer = open(files, "r")
+        buffer = open(files, "r", encoding="utf8", errors='ignore')
         inside = buffer.read().split("\n")
         line = 0
         in_function = False
@@ -141,7 +141,7 @@ class CodeLineContent:
         self.checked = False
 
     def run(self, Norm_obj, files):
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         line = 0
         for lines in inside:
             line += 1
@@ -161,7 +161,7 @@ class TraillingLine:
         self.checked = True
     
     def run(self, Norm_obj, files):
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         line = 0
         rest = ""
         for lines in inside:
@@ -179,7 +179,7 @@ class Comment_Check:
         self.checked = True
 
     def run(self, Norm_obj, files):
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         line = 0
         in_it = 0
         for lines in inside:
@@ -198,7 +198,7 @@ class Check_Goto:
         self.checked = True
 
     def run(self, Norm_obj, files):
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         line = 0
         two = 0
         for lines in inside:
@@ -214,7 +214,7 @@ class Line_Break:
 
     def run(self, Norm_obj, file_name):
         if self.active == True:
-            inside = open(file_name, "r")
+            inside = open(file_name, "r", encoding="utf8", errors='ignore')
             rest = ""
             for lines in inside:
                 rest = lines
@@ -229,7 +229,7 @@ class Check_include:
 
     def run(self, Norm_obj, files):
         if self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             line = 0
             in_it = 0
             for lines in inside:
@@ -311,7 +311,7 @@ class Too_many_functions:
 
     def run(self, Norm_obj, files):
         if (files[-1] == 'c' and files[-2] == '.') and self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             function_nbr = 0
             for lines in inside:
                 if (lines.replace(" ", "").replace("\t", "").replace("\n", "") == "{" and lines[0] == '{'):
@@ -330,7 +330,7 @@ class Include_guard:
 
     def run(self, Norm_obj, files):
         if (files[-1] == 'h' and files[-2] == '.'):
-            buffer = open(files, "r")
+            buffer = open(files, "r", encoding="utf8", errors='ignore')
             for lines in buffer:
                 if "#ifndef" in lines:
                     self.check_ifndef = 1
@@ -358,7 +358,7 @@ class Too_many_depth:
             spaces_lvl = 4
             depth = 1
             op_list = [ "for (", "for(", "if (", "if(", "while (", "while(", "do(", "do (" ]
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             line = 0
             for lines in inside:
                 line += 1
@@ -393,7 +393,7 @@ class Arguments_nbr:
 
     def run(self, Norm_obj, files):
         if self.active == True and files.endswith(".c"):
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             line = 0
             counter = 0
             last_char = 'p'
@@ -421,7 +421,7 @@ class Function_length:
 
     def run(self, Norm_obj, files):
         if self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             counter = 0
             begin_line = 0
             line = 0
@@ -445,7 +445,7 @@ class Curly_brackets:
         self.checked = True
 
     def check_c_files(self, Norm_obj, files):
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         line = 0
         prev_line = "02"
         for lines in inside:
@@ -460,7 +460,7 @@ class Curly_brackets:
         inside.close()
 
     def check_h_files(self, Norm_obj, files):
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         line = 0
         prev_line = "02"
         for lines in inside:
@@ -484,7 +484,7 @@ class Identation_error:
 
     def run(self, Norm_obj, files):
         if self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             test = 0
             for lines in inside:
                 nbr = 0
@@ -506,7 +506,7 @@ class Trailling_spaces:
 
     def run(self, Norm_obj, files):
         if self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             line = 0
             for lines in inside:
                 line += 1
@@ -544,7 +544,7 @@ class Global_variable:
 
     def run(self, Norm_obj, files):
         if ".c" in files and self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             line = 0
             for lines in inside:
                 ids = []
@@ -567,7 +567,7 @@ class Preprocessor_Directives:
     def run(self, Norm_obj, files):
         start=0
         line = 0
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         if (".h" in files and files[-1] == 'h') and self.active == True:
             for lines in inside:
                 line += 1
@@ -592,7 +592,7 @@ class Empty_line:
         self.checked = True
 
     def run(self, Norm_obj, files):
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         trailling_lines = 0
         line_nbr = 0
         if (".c" in files or "Makefile" in files) and self.active == True:
@@ -606,7 +606,7 @@ class Empty_line:
                     trailling_lines = 0
                     Norm_obj.minor.append(('G2', "There should be only one empty_line each time.", line_nbr))
         inside.close()
-        inside = open(files, "r")
+        inside = open(files, "r", encoding="utf8", errors='ignore')
         prev_line = "\n"
         line = 0
         if (".c" in files) and self.active == True:
@@ -627,7 +627,7 @@ class Check_file_header:
 
     def run(self, Norm_obj, files):
         if self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             line_nbr = 0
             result = ""
             mid_res = ""
@@ -701,7 +701,7 @@ class Too_Long_Line:
 
     def run(self, Norm_obj, files):
         if self.active == True:
-            inside = open(files, "r")
+            inside = open(files, "r", encoding="utf8", errors='ignore')
             line = 0
             for lines in inside:
                line += 1
@@ -775,7 +775,7 @@ class Norms:
                 self.get_struct(os.listdir(test), test)
             else:
                 if (test[-1] == 'h' and test[-2] == '.'):
-                    inside = open(test, "r")
+                    inside = open(test, "r", encoding="utf8", errors='ignore')
                     begin = 0
                     for lines in inside:
                         if "typedef" in lines:
