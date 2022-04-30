@@ -760,6 +760,10 @@ class Norms:
         self.rule = rule
         self.json_rule = json_rule
         self.all_rule = all_rule
+        
+        ## Goto rule
+
+        self.goto = False
 
         ## Json List on error for option -json argument
 
@@ -767,6 +771,24 @@ class Norms:
                             "minor" : {"count" : 0, "list": {}},
                             "info" : {"count" : 0, "list" : {}}}
         self.inside = 0
+
+    def check_for_goto(self, directory, paths):
+        for files in directory:
+            absolute_path = paths + "/" + files
+            if path.isdir(absolute_path):
+                self.check_for_goto(os.listdir(absolute_path), absolute_path)
+            else:
+                if (absolute_path.endswith(".c")):
+                    inside = open(files, "r", encoding="utf8", errors='ignore')
+                    line = 0
+                    for lines in inside:
+                        line += 1
+                        if " goto " in lines:
+                            print("\033[1;32mSorry there was a goto, so i \033[0;1mgot to\033[1;32m the end of the checking ^^'.(Don't use goto please)\033[0m")
+                            inside.close()
+                            quit(1)
+                    inside.close()
+
 
     def get_struct(self, direct, paths):
         for files in direct:
@@ -918,6 +940,8 @@ class Norms:
 
         # Get types
         self.get_struct(os.listdir('.'), '.')
+
+        self.check_for_goto(os.listdir("."), ".")
 
         # Start Check_Error
         self.browse_directory(os.listdir("."), ".")
