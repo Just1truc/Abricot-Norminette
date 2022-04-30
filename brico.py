@@ -779,7 +779,7 @@ class Norms:
                 self.check_for_goto(os.listdir(absolute_path), absolute_path)
             else:
                 if (absolute_path.endswith(".c")):
-                    inside = open(files, "r", encoding="utf8", errors='ignore')
+                    inside = open(absolute_path, "r", encoding="utf8", errors='ignore')
                     line = 0
                     for lines in inside:
                         line += 1
