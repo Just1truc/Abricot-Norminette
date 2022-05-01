@@ -73,6 +73,8 @@ Get into the repository folder and execute the "install_abricot.sh" file :
 cd ~/Abricot-Norminette && ./install_abricot.sh
 ```
 
+Don't forget to **star** the repository if you like it. It would help me a lot.
+
 ## Usage
 
 Abricot is simple program. In order to use it, please type the following command into a terminal
