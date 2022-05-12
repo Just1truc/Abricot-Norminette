@@ -299,7 +299,7 @@ class Misplaced_spaces:
                 for i in range(min(len(lines), len(fmt))):
                     clean_fmt = self.fix_clang(self.tabs_to_space(fmt[i])).strip()
                     clean_line = lines[i].rstrip('\\').strip()
-                    if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', '') and clean_line[0:2] != "**" and not('//' in clean_line) and not("#define" in lines.replace(" ", "") or "#include" in lines.replace(" ", "")):
+                    if clean_fmt != clean_line and clean_fmt.replace(' ', '') == clean_line.replace(' ', '') and clean_line[0:2] != "**" and not('//' in clean_line) and not("#define" in clean_line.replace(" ", "") or "#include" in clean_line.replace(" ", "")):
                         Norm_obj.minor.append(('L3', "Misplaced spaces.", (i + 1)))
                 file_opened.close()
 
