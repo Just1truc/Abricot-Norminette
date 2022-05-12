@@ -275,7 +275,7 @@ class Misplaced_spaces:
         return string.replace(" ;", ";")
 
     def run(self, Norm_obj, files):
-        if ".c" in files and self.active == True:
+        if (files.endswith(".c") or files.endswith(".h") or "Makefile" in files) and self.active == True:
             files = [files]
             for f in files:
                 break_pos = []
