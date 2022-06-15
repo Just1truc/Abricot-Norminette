@@ -1029,6 +1029,7 @@ def main():
     if (len(sys.argv) == 3):
         if (sys.argv[1] == "--dir"):
             BASEPATH = './' + sys.argv[2]
+            json_rule = True
     rule = Norms(rule, json_rule, all_rule)
     rule.run()
 
