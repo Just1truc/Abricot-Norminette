@@ -7,7 +7,10 @@ import os.path
 from os import path
 import re
 from json import JSONEncoder
+from termios import CREAD
 from webbrowser import get
+
+from ldap3 import BASE
 
 def print_error(file, error_type, error_tuple, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}\033[0m"
@@ -33,6 +36,8 @@ def print_error(file, error_type, error_tuple, rule):
         buffer = open("trace.md", "a")
         buffer.write(pattern2.format(error_type=error_type.upper(), error_name=error_tuple[0], message=error_tuple[1], fileinfo=fileinfo) + "\n")
         buffer.close()
+
+BASEPATH = "./"
 
 class Pointers:
     def __init__(self):
@@ -855,7 +860,7 @@ class Norms:
 
                     if (len(self.major) != 0 or len(self.minor) != 0 or len(self.info) != 0):
                         self.error_nbr += 1
-                        filename = test.replace("./", "")
+                        filename = test[2:].replace(BASEPATH[2:] + '/', "")
 
                         ### Displaying file name
                         if not self.json_rule:
@@ -936,15 +941,15 @@ class Norms:
         # Don't ignore files if the -md is active for DiscordCi.
         if not self.rule:
             process = subprocess.Popen(["git", "clean", "-ndX"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            self.ignored_files = ['./' + line.decode().split()[-1] for line in process.stdout.readlines()]
+            self.ignored_files = [BASEPATH + line.decode().split()[-1] for line in process.stdout.readlines()]
 
         # Get types
-        self.get_struct(os.listdir('.'), '.')
+        self.get_struct(os.listdir(BASEPATH), BASEPATH)
 
-        self.check_for_goto(os.listdir("."), ".")
+        self.check_for_goto(os.listdir(BASEPATH), BASEPATH)
 
         # Start Check_Error
-        self.browse_directory(os.listdir("."), ".")
+        self.browse_directory(os.listdir(BASEPATH), BASEPATH)
 
         # Erasing Clang file
         os.system("rm .clang-format")
@@ -1012,6 +1017,8 @@ class Norms:
         else: print(JSONEncoder().encode(self.json_output))
 
 def main():
+    global BASEPATH
+    BASEPATH = './'
     rule=False
     json_rule=False
     all_rule=False
@@ -1019,6 +1026,9 @@ def main():
         if (sys.argv[1] == "-md"): rule = True
         if (sys.argv[1] == "-json"): json_rule = True
         if (sys.argv[1] == "--all"): all_rule = True
+    if (len(sys.argv) == 3):
+        if (sys.argv[1] == "--dir"):
+            BASEPATH = './' + sys.argv[2]
     rule = Norms(rule, json_rule, all_rule)
     rule.run()
 
