@@ -970,7 +970,7 @@ class Norms:
                 if self.json_rule:
                     self.json_output["major"]["count"] += 1
                     if not(i[0] in self.json_output["major"]["list"]):
-                        self.json_output["major"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : i[2], "line": "" } ] }
+                        self.json_output["major"]["list"][i[0]] = { "description" : i[1], "list" : [ { "file" : i[2][2:].replace(BASEPATH[2:] + '/', ""), "line": "" } ] }
                     else:
                         self.json_output["major"]["list"][i[0]]["list"].append({ "file" : i[2], "line": "" })
                 else:
