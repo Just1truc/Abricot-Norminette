@@ -1,16 +1,10 @@
-from dataclasses import replace
 import subprocess
-from copyreg import constructor
 import os
 import sys
 import os.path
 from os import path
 import re
 from json import JSONEncoder
-from termios import CREAD
-from webbrowser import get
-
-from ldap3 import BASE
 
 def print_error(file, error_type, error_tuple, rule):
     pattern = "  {color}[{error_type}] ({error_name}){endcolor} - {message}\033[90m{fileinfo}\033[0m"
