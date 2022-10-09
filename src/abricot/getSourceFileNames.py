@@ -1,6 +1,6 @@
 import os
 
-def getSourceFileNames():
+def getSourceFileNames() -> List[str]:
     res = []
     # recursiveley get all files in the current directory
     for root, dirs, files in os.walk(os.path.dirname(__file__)):
