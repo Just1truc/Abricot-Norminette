@@ -1,4 +1,7 @@
-import rules.C_A3 as A3
+from profile import rules
+from abricot import getAllErrors
 
-A3.checker()
+for rule in rules.values():
+    rule.checker()
 
+errors = getAllErrors()
