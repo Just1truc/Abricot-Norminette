@@ -9,7 +9,8 @@ class Colors(Enum):
     CYAN = '\033[96m'
     WHITE = '\033[97m'
     BLACK = '\033[98m'
+    GREY = '\033[90m'
     RESET = '\033[0m'
 
-def printc(text: str, color: Colors = Colors.WHITE, end: str = "\n") -> None:
-    print(color.value + text + Colors.RESET.value, end=end)
+def printc(text: str, color: Colors = Colors.WHITE, bold: bool = False, end: str = "\n") -> None:
+    print(("\033[1m" if bold else "") + color.value + text + Colors.RESET.value, end=end)

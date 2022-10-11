@@ -5,5 +5,8 @@ def getSourceFileNames() -> list[str]:
     # recursiveley get all files in the current directory
     for root, dirs, files in os.walk('.'):
         for file in files:
-            res.append(os.path.join(root, file))
+            filename = os.path.join(root, file)
+            if filename.startswith('./'):
+                filename = filename[2:]
+            res.append(filename)
     return res
