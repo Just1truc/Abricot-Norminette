@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from program.profile import rules
 from abricot import getAllErrors
 from program.arguments import parser
