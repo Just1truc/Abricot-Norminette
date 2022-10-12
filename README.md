@@ -136,11 +136,17 @@ You might create a new branch before merging into the main branch so Jenkins wil
 
 #### Architecture Designer : Mathias André
 
-[![linkeding bage](https://img.shields.io/badge/-linkedin-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/mathias-andr%C3%A9-a7b30721a/)
+[![linkeding bage](https://img.shields.io/badge/-linkedin-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/mathias-andré/)
 [![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/MathiDEV)
 [![mail](https://img.shields.io/badge/-Mail-0078D4?logo=Microsoft-Outlook&style=for-the-badge)](mailto:mathias.andre@epitech.eu)
 
-#### Quality Responsible :  Thomas Mazaud
+#### Performances Responsible : Valentin Nouri
+
+[![linkeding bage](https://img.shields.io/badge/-linkedin-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/valentin-nouri/)
+[![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/vavarier)
+[![mail](https://img.shields.io/badge/-Mail-0078D4?logo=Microsoft-Outlook&style=for-the-badge)](mailto:valentin.nouri@epitech.eu)
+
+#### Quality Responsible : Thomas Mazaud
 
 [![linkeding bage](https://img.shields.io/badge/-linkedin-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/thomasmazaud/)
 [![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/Fyroeo)

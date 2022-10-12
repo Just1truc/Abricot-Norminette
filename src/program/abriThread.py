@@ -1,14 +1,12 @@
 import threading
 
 
-        
 class Abrifast():
     def __init__(self):
         self.queu = []
 
-    def add(self, function, name):
-        self.queu.append((name, threading.Thread(target=function)))
-
+    def add(self, function, config, name):
+        self.queu.append((name, threading.Thread(target=function, args=(config,))))
 
     def info(self):
         for thread in self.queu:
