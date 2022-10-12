@@ -35,9 +35,16 @@ else
     echo "=> clang-format found"
 fi
 
+BASEDIR=$(dirname "$0")
+
+tput sgr 0
+echo "=> Installing python dependencies..."
+pip install -r "$BASEDIR/requirements.txt" 2>&1 > /dev/null
+tput setaf 2
+echo "=> Installation of requirements done"
+
 tput init
 echo "=> Copying source code..."
-BASEDIR=$(dirname "$0")
 sudo mkdir /usr/local/lib/abricot
 sudo cp -R "$BASEDIR/../src/." /usr/local/lib/abricot
 tput setaf 2
