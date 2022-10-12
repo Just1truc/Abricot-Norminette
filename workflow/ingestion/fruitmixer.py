@@ -1,5 +1,4 @@
 import os
-import sys
 import re
 
 def abricotize(filename: str) -> None:
@@ -9,11 +8,11 @@ def abricotize(filename: str) -> None:
             filecontent = f.read()
     except IOError:
         print("Cannot open file: {}".format(filename))
-        sys.exit(1)
+        exit(1)
     
     if filecontent is None:
         print("File is empty")
-        sys.exit(1)
+        exit(1)
     
     functions = [f for f in filecontent.splitlines() if f.startswith("def check_")]
     first_function = functions[0]
