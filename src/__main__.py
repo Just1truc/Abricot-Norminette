@@ -33,3 +33,6 @@ errors = getAllErrors()
 output = OutputManager(errors)
 output.groupBy(args.group)
 output.showAs(args.format)
+
+if args.status:
+    exit(len(errors) > 0)
