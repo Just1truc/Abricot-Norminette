@@ -1,11 +1,12 @@
 import os
+import re
 import subprocess
 import abricot
 from program.print import printc, Colors
 from utils import is_source_file, is_header_file
 from program.configuration import Configuration
 
-CLANG_CONFIG = "AlignAfterOpenBracket: false\nAlignArrayOfStructures: None\nAlignConsecutiveMacros: None\nAlignConsecutiveAssignments: None\nAlignConsecutiveBitFields: None\nAlignConsecutiveDeclarations: None\nAlignEscapedNewlines: Right\nAlignOperands: false\nAlignTrailingComments: false\nAllowAllArgumentsOnNextLine: true\nAllowAllParametersOfDeclarationOnNextLine: true\nAllowShortEnumsOnASingleLine: true\nAllowShortBlocksOnASingleLine: Never\nAllowShortCaseLabelsOnASingleLine: false\nAllowShortFunctionsOnASingleLine: All\nAllowShortLambdasOnASingleLine: All\nAllowShortIfStatementsOnASingleLine: true\nAllowShortLoopsOnASingleLine: false\nAlwaysBreakAfterDefinitionReturnType: None\nAlwaysBreakAfterReturnType: None\nAlwaysBreakBeforeMultilineStrings: false\nAlwaysBreakTemplateDeclarations: MultiLine\nAllowAllConstructorInitializersOnNextLine: true\nFixNamespaceComments: false\nColumnLimit: 0\nIndentWidth: 4\nKeepEmptyLinesAtTheStartOfBlocks: true\nMaxEmptyLinesToKeep: 9999999\nNamespaceIndentation: None\nBreakBeforeBraces: Custom"
+CLANG_CONFIG = "BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: false\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: false\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\nAlignArrayOfStructures: None\nAlignConsecutiveMacros: None\nAlignConsecutiveAssignments: None\nAlignConsecutiveBitFields: None\nAlignConsecutiveDeclarations: None\nAlignEscapedNewlines: Right\nAlignTrailingComments: false\nAllowAllArgumentsOnNextLine: true\nAllowAllParametersOfDeclarationOnNextLine: true\nAllowShortEnumsOnASingleLine: true\nAllowShortLambdasOnASingleLine: All\nAllowShortIfStatementsOnASingleLine: true\nAllowShortLoopsOnASingleLine: true\nAlwaysBreakAfterDefinitionReturnType: None\nAlwaysBreakAfterReturnType: None\nAlwaysBreakBeforeMultilineStrings: false\nAlwaysBreakTemplateDeclarations: MultiLine\nAllowAllConstructorInitializersOnNextLine: true\nKeepEmptyLinesAtTheStartOfBlocks: true\nMaxEmptyLinesToKeep: 9999999\nBreakBeforeBraces: Custom"
 
 def getFormatedFile(file, original):
     try:
@@ -22,7 +23,7 @@ def getFileContent(file):
 def replaceLinebreaks(original, formated):
     original = original.replace(" ", "").replace("\t", "")
     linebreaks = [i for i, c in enumerate(original) if c == "\n"]
-    formated = formated.replace("\n", "")
+    formated = re.sub(r'\n\s*', '', formated)
     index_without_spaces = 0
     len_linebreaks = len(linebreaks)
     len_formated = len(formated)
