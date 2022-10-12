@@ -248,11 +248,11 @@ def __reset_token_value(lines: List[str], token:Token) -> Token:
 
 
 def get_lines(file: str, replace_comments=False, replace_stringlits=False) -> List[str]:
-    lines = vera.getAllLines(file)
+    lines = abricot.getAllLines(file)
     if replace_comments or replace_stringlits:
         lines = [l[:] for l in lines]
     if replace_comments:
-        comments = vera.getTokens(file, 1, 0, -1, -1, ['ccomment', 'cppcomment'])
+        comments = abricot.getTokens(file, 1, 0, -1, -1, ['ccomment', 'cppcomment'])
         for comment in comments:
             comment = __reset_token_value(lines, comment)
             if comment.type == 'ccomment':  # /*  */
@@ -261,7 +261,7 @@ def get_lines(file: str, replace_comments=False, replace_stringlits=False) -> Li
                 __remove_between(lines, comment, '//')
 
     if replace_stringlits:
-        stringlits = vera.getTokens(file, 1, 0, -1, -1, ['stringlit'])
+        stringlits = abricot.getTokens(file, 1, 0, -1, -1, ['stringlit'])
         for stringlit in stringlits:
             stringlit = __reset_token_value(lines, stringlit)
             __remove_between(lines, stringlit, '"', '"')
