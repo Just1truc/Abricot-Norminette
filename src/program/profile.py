@@ -9,14 +9,15 @@ class Severities(Enum):
 
 
 class Rule:
-    def __init__(self, code: str, name: str, severity: Severities, description: str, checker: callable):
+    def __init__(self, code: str, name: str, severity: Severities, description: str, checker: callable, optional: bool):
         self.code = code
         self.name = name
         self.severity = severity
         self.description = description
         self.checker = checker
+        self.optional = optional
 
 
 rules = {
-    "L3": Rule("C-L3", "Spaces", Severities.MINOR, "You have misplaced space(s)", rules.C_L3.checker),
+    "L3": Rule("C-L3", "Spaces", Severities.MINOR, "You have misplaced space(s)", rules.C_L3.checker, False),
 }

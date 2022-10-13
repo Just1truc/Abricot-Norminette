@@ -38,7 +38,8 @@ if args.ignore:
     config.ignored = getIgnoredFiles()
     
 for rule in rules.values():
-    thread.add(rule.checker, config, rule.name)
+    if not rule.optional or args.all:
+        thread.add(rule.checker, config, rule.name)
 
 thread.run()
 
