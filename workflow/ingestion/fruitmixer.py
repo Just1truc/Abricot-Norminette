@@ -27,7 +27,21 @@ def abricotize(filename: str) -> None:
     with open("destination/%s" % filename.replace("-", "_"), 'w') as f:
         f.write(filecontent)
 
+def get_banana_rules():
+    print("remove sources")
+    os.system("rm -rf sources")
+    print("create sources")
+    os.system("mkdir sources")
+    print("clone banana coding style checker")
+    os.system("git clone git@github.com:Epitech/banana-coding-style-checker.git")
+    print("move banana coding style checker to sources")
+    os.system("cp banana-coding-style-checker/vera/rules/*.py sources")
+    print("remove banana coding style checker")
+    os.system("rm -rf banana-coding-style-checker")
+    print("Done getting banana rules")
+
 def main():
+    get_banana_rules()
     os.system("rm -rf destination")
     os.system("mkdir destination")
     for (dirpath, dirnames, filenames) in os.walk("sources"):
