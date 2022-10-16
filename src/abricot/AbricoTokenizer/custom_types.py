@@ -1,6 +1,20 @@
 ## Custom Types for code understanding ##
 
 
+## Parsing options
+
+class ParsingOptions():
+
+    def __init__(self, fromLine : int, fromColumn : int, toLine : int, toColumn : int):
+        self.fromLine : int = fromLine
+        self.fromColumn : int = fromColumn
+        self.toLine : int = toLine
+        self.toColumn : int = toColumn
+
+    def getOptions(self):
+        return self.__dict__
+
+
 ## Token Object ##
 class TokenObject():
 

@@ -1,7 +1,7 @@
 ## Local imports
 from typing import Tuple
 from custom_exceptions import TokensError, PreprocessingError, UnknownTokenError
-from custom_types import PCPPToken, TokenObject, TokenSequence
+from custom_types import PCPPToken, ParsingOptions, TokenObject, TokenSequence
 import os
 from logger import log_service
 ## Remote imports
@@ -13,11 +13,12 @@ logSave : bool = False
 if (log):
     AbriLogger = log_service(logSave)
 
-def filterTokens(FilterSequence : list[str], tokenList : TokenSequence) -> list[str]:
+
+def filterTokens(FilterSequence : list[str], tokenList : TokenSequence, parsingOptions : ParsingOptions) -> list[str]:
     filteredTokenSequence : TokenSequence = TokenSequence([])
 
     for token in tokenList:
-        if token.type in FilterSequence:
+        if token.type in FilterSequence and token.column >= parsingOptions.fromColumn and token.line >= parsingOptions.fromLine and token.line <= parsingOptions.toLine and token.column <= parsingOptions.toColumn:
             filteredTokenSequence.append(token)
 
     return filteredTokenSequence 
@@ -30,8 +31,10 @@ def getTokens(FileName : str, fromLine : int, fromColumn : int, toLine : int, to
 
     if (fromLine < 1 or fromColumn < 0 or (toLine > 0 and fromLine > toLine) or (fromLine == toLine and toColumn >= 0 and fromColumn > toColumn)):
         raise TokensError('illegal range of tokens requested by the script')
+    
+    parsOpt : ParsingOptions = ParsingOptions(fromLine=fromLine, fromColumn=fromColumn, toLine=toLine, toColumn=toColumn)
 
-    return filterTokens(FilterSequence=FilterSequence, tokenList=tokenizer.getTokens(FileName))
+    return filterTokens(FilterSequence=FilterSequence, tokenList=TokenizerObject.getTokens(FileName), parsingOptions=parsOpt)
 
 
 #Instancier l'objet et faire une méthode setFile qui initialise les files. 
