@@ -33,9 +33,6 @@ pipeline {
     }
 
     stage('Tests') {
-      environment {
-        JENKINS = 'true'
-      }
       parallel {
         stage('G1: Bad file Header') {
           steps {
