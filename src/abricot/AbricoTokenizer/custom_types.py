@@ -64,7 +64,7 @@ class TokenSequence(list):
             raise TypeError('Bad type use in insert')
 
     def __len__(self):
-        return super.__len__()
+        return super().__len__()
 
     
 
