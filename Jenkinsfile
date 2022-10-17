@@ -7,7 +7,7 @@ pipeline {
   
   environment {
     JENKINS = 'true'
-    PYTHONPATH = 'modules'
+    PYTHONPATH = '/home/jenkins-agent/workspace/Abricot-Norminette_develop/modules'
   }
   
   stages {
@@ -38,7 +38,6 @@ pipeline {
         stage('G1: Bad file Header') {
           steps {
             sh '''cd abricot-tests/G1/C
-python -c "import sys; print(sys.path)"
 ${WORKSPACE}/abricot --status'''
             sh '''cd abricot-tests/G1/H
 ${WORKSPACE}/abricot --status'''
