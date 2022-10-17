@@ -2,7 +2,6 @@ pipeline {
   agent {
     docker {
       image 'python:bullseye'
-      args '-u root --privileged'
     }
   }
   stages {
