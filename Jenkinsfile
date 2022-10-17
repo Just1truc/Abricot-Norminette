@@ -15,8 +15,8 @@ pipeline {
 
         stage('Setup') {
           steps {
-            sh 'pip install --no-cache-dir --upgrade pip'
-            sh 'pip install --no-cache-dir -r scripts/requirements.txt'
+            sh 'pip install --user --no-cache-dir --upgrade pip'
+            sh 'pip install --user --no-cache-dir -r scripts/requirements.txt'
             sh 'ln -s src/__main__.py abricot'
             sh 'chmod +x abricot'
             sh 'rm -rf abricot-tests/'
