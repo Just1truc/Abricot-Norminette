@@ -3,12 +3,13 @@
 import os
 from program.abriThread import Abrifast
 from program.profile import rules
-from abricot import getAllErrors
+from abricot import getAllErrors, TokenizerObject, getSourceFileNames
 from program.arguments import parser
 from program.output import OutputManager
 from program.ignored import getIgnoredFiles
 from program.configuration import Configuration
 from program.print import printc, Colors
+
 
 args = parser.parse_args()
 thread = Abrifast()
@@ -36,7 +37,9 @@ if args.version:
 
 if args.ignore:
     config.ignored = getIgnoredFiles()
-    
+
+TokenizerObject.setFiles(getSourceFileNames(config))
+
 for rule in rules.values():
     if not rule.optional or args.all:
         thread.add(rule.checker, config, rule.name)

@@ -42,7 +42,6 @@ def __get_function_body(file: str, function_start_index: int):
     tokens = abricot.getTokens(file, line_number, column_number, -1, -1, ['leftbrace', 'rightbrace'])
     end_line_number = -1
     end_column_number = -1
-
     for token in tokens:
         if token.name == 'leftbrace':
             if braces_count == 0:

@@ -1,13 +1,13 @@
 ## Local imports
 from typing import Tuple
-from custom_exceptions import TokensError, PreprocessingError, UnknownTokenError
-from custom_types import PCPPToken, ParsingOptions, TokenObject, TokenSequence
+from abricot.AbricoTokenizer.custom_exceptions import TokensError, PreprocessingError, UnknownTokenError
+from abricot.AbricoTokenizer.custom_types import PCPPToken, ParsingOptions, TokenObject, TokenSequence
 import os
-from logger import log_service
+from abricot.AbricoTokenizer.logger import log_service
 ## Remote imports
 from pcpp import Preprocessor
 
-log : bool = True
+log : bool = False
 logSave : bool = False
 
 if (log):
@@ -18,8 +18,17 @@ def filterTokens(FilterSequence : list[str], tokenList : TokenSequence, parsingO
     filteredTokenSequence : TokenSequence = TokenSequence([])
 
     for token in tokenList:
-        if token.type in FilterSequence and token.column >= parsingOptions.fromColumn and token.line >= parsingOptions.fromLine and token.line <= parsingOptions.toLine and token.column <= parsingOptions.toColumn:
-            filteredTokenSequence.append(token)
+        if token.type not in FilterSequence:
+            continue
+        if token.line < parsingOptions.fromLine:
+            continue
+        if token.line == parsingOptions.fromLine and token.column < parsingOptions.fromColumn:
+            continue
+        if parsingOptions.toLine != -1 and token.line > parsingOptions.toLine:
+            continue
+        if parsingOptions.toColumn != -1 and token.line == parsingOptions.toLine and token.column > parsingOptions.toColumn:
+            continue
+        filteredTokenSequence.append(token)
 
     return filteredTokenSequence 
 
@@ -174,6 +183,7 @@ class Tokenizer():
             "STAR": "star",
             "MULTIPLYEQUAL": "starassign",
             "COMMENT1": "ccomment",
+            "COMMENT2" : "cppcomment",
             "CHAR": "charlit",
             "STRING": "stringlit",
             "DPOUND": "pound_pound",
@@ -250,7 +260,7 @@ class Tokenizer():
                 if (log):
                     print(AbriLogger.success('<< Tokenizer.checkPreProcessorValues : Value found'))
 
-                concat_values : int = 1
+                concat_values : int = 2
                 
                 if pcppTokens[tokenIndex + 1].value == 'include' and tokenIndex + 2 < len(pcppTokens) and pcppTokens[tokenIndex + 2].type == 'CPP_WS':
                     concat_values = 3
@@ -262,7 +272,7 @@ class Tokenizer():
                 if (log):
                     print(AbriLogger.info(f'Concat value : {concat_values}'))
                 
-                tpl : tuple[str, str] = (('pp_hheader' if pcppTokens[tokenIndex + 3].value == '<' else 'pp_qheader') if concat_values == 8 or concat_values == 4 else PreProcessorValues, ''.join([token.value for token in pcppTokens[tokenIndex: tokenIndex + concat_values]]))
+                tpl : tuple[str, str] = (('pp_hheader' if pcppTokens[tokenIndex + 3].value == '<' else 'pp_qheader') if concat_values == 8 or concat_values == 4 else self.pp_values[PreProcessorValues], ''.join([token.value for token in pcppTokens[tokenIndex: tokenIndex + concat_values]]))
 
                 del pcppTokens[tokenIndex: tokenIndex + concat_values]
 
@@ -277,8 +287,9 @@ class Tokenizer():
 
         if (log):
             print(AbriLogger.info('>> Tokenizer.initTokens'))
-
-        file_content : str = open(filePath, mode='r', encoding='utf-8').read()
+        if not any([filePath.endswith(ext) for ext in ['.c', '.h']]) and not filePath.endswith('Makefile'):
+            return []
+        file_content : str = open(filePath, mode='r', encoding='utf-8', errors="ignore").read()
 
         try:
             list_pcppTokens : list = Preprocessor().tokenize(text=file_content)
@@ -348,11 +359,12 @@ class Tokenizer():
             # Setup type for classic types
             tokenRef.type = self.type2vera_type.get(tokenRef.type.replace('CPP_', ''))
 
+            tokenRef.name = tokenRef.type
             #line = tokenRef.line if tokenRef.line > line else line
 
             ret.append(item=tokenRef)
 
-        ret.append(TokenObject(file=filePath, column=0, line=line + 1, type='eof', raw='', value=''))
+        ret.append(TokenObject(file=filePath, column=0, line=line + 1, name='eof', type='eof', raw='', value=''))
 
         #end get tokens
 
