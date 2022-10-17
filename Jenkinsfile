@@ -22,7 +22,7 @@ pipeline {
 
         stage('Setup') {
           steps {
-            sh 'pip install --target=${WORKSPACE}/modules --no-cache-dir -r scripts/requirements.txt'
+            sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
             sh 'ln -s src/__main__.py abricot'
             sh 'chmod +x abricot'
             sh 'rm -rf abricot-tests/'
