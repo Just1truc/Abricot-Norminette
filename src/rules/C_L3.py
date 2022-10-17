@@ -8,11 +8,14 @@ from program.configuration import Configuration
 
 CLANG_CONFIG = "BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: false\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: false\nAllowShortFunctionsOnASingleLine: None\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\nAlignArrayOfStructures: None\nAlignConsecutiveMacros: None\nAlignConsecutiveAssignments: None\nAlignConsecutiveBitFields: None\nAlignConsecutiveDeclarations: None\nAlignEscapedNewlines: Right\nAlignTrailingComments: false\nAllowAllArgumentsOnNextLine: true\nAllowAllParametersOfDeclarationOnNextLine: true\nAllowShortEnumsOnASingleLine: true\nAllowShortLambdasOnASingleLine: All\nAllowShortIfStatementsOnASingleLine: true\nAllowShortLoopsOnASingleLine: true\nAlwaysBreakAfterDefinitionReturnType: None\nAlwaysBreakAfterReturnType: None\nAlwaysBreakBeforeMultilineStrings: false\nAlwaysBreakTemplateDeclarations: MultiLine\nAllowAllConstructorInitializersOnNextLine: true\nKeepEmptyLinesAtTheStartOfBlocks: true\nMaxEmptyLinesToKeep: 9999999\nBreakBeforeBraces: Custom"
 
+def fixClang(formatted):
+    return re.sub(r'(\w+)==', '\\1 ==', formatted)
+
 def getFormatedFile(file, original):
     try:
         p = subprocess.Popen(["clang-format", file], stdout=subprocess.PIPE)
         result = p.communicate()[0].decode("utf-8")
-        return replaceLinebreaks(original, result)
+        return replaceLinebreaks(original, fixClang(result))
     except FileNotFoundError:
         return None
 
