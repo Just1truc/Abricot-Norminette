@@ -7,7 +7,7 @@ pipeline {
   
   environment {
     JENKINS = 'true'
-    PYTHONPATH = '${WORKSPACE}/modules'
+    PYTHONPATH = 'modules'
   }
   
   stages {
