@@ -2,6 +2,7 @@
 from typing import Tuple
 from abricot.AbricoTokenizer.custom_exceptions import TokensError, PreprocessingError, UnknownTokenError
 from abricot.AbricoTokenizer.custom_types import PCPPToken, ParsingOptions, TokenObject, TokenSequence
+from program.abriThread import Abrifast
 import os
 from abricot.AbricoTokenizer.logger import log_service
 ## Remote imports
@@ -52,6 +53,9 @@ class Tokenizer():
     def __init__(self):
         if (log):
             print(AbriLogger.info('>> Tokenizer.__init__'))
+
+        self.abriThread = Abrifast()
+
         self.fileList : list[str] = []
         self.tokensPerFile : dict[str, TokenSequence] = {}
         self.concat_type : dict[str, str] = {
@@ -200,7 +204,7 @@ class Tokenizer():
         if (log):
             print(AbriLogger.info('>> Tokenizer.setFiles'))
         self.fileList = filePathList
-        self.tokensPerFile = self.initAllFilesTokens()
+        self.initAllFilesTokens()
         if (log):
             print(AbriLogger.info('<< Tokenizer.setFiles'))
 
@@ -368,18 +372,20 @@ class Tokenizer():
 
             ret.append(item=tokenRef)
 
+        # todo améliorer la position de l'eof
         ret.append(TokenObject(file=filePath, column=0, line=line + 1, name='eof', type='eof', raw='', value=''))
 
         #end get tokens
 
         return ret
 
+    def directAdd(self, filePath : str):
+        self.tokensPerFile[filePath] = self.initTokens(filePath=filePath)
 
-    def initAllFilesTokens(self) -> dict[str, TokenSequence]:
-        newTokenSequence : dict[str, TokenSequence] = {}
+    def initAllFilesTokens(self) -> None:
         for filePath in self.fileList:
-            newTokenSequence[filePath] = self.initTokens(filePath=filePath)
-        return newTokenSequence
+            self.abriThread.add(function=self.directAdd, config=filePath, name=filePath)
+        self.abriThread.run()
 
 
     def addFile(self, filePath : str) -> None:
@@ -394,4 +400,3 @@ class Tokenizer():
         return self.tokensPerFile[filePath]
 
 TokenizerObject = Tokenizer()
-
