@@ -40,4 +40,8 @@ rules = {
     "L2": Rule("C-L2", "Indentation", Severities.MINOR, "No tabulations may be used for indentation", rules.C_L2.checker, False),
     "L3": Rule("C-L3", "Spaces", Severities.MINOR, "You have misplaced space(s)", rules.C_L3.checker, False),
     "L4": Rule("C-L4", "Curly Brackets", Severities.MINOR, "You have misplaced curly bracket(s)", rules.C_L4.checker, False),
+    "O1": Rule("C-O1", "Contents of the repository", Severities.MAJOR, "The repository must not contain compiled, temporary or unnecessary files", rules.C_O1.checker, False),
+    "O3": Rule("C-O3", "File coherence", Severities.MAJOR, "Your files can contain at most 5 functions", rules.C_O3.checker, False),
+    "O4": Rule("C-O4", "Naming files and folders", Severities.MINOR, "Your files should be correctly named", rules.C_O4.checker, False),
+    "V1": Rule("C-V1", "Naming identifiers", Severities.MINOR, "Your identifiers should be correctly named", rules.C_V1.checker, False),
 }

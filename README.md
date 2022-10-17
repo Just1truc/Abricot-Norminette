@@ -8,6 +8,16 @@
 
 **More seriously,** the Abricot development team has been thinking for some time about a more modern and more stable implementation of the norminette. This new year for Epitech is an opportunity to make it **compliant with current coding style rules.**
 
+## Installation
+
+Because we wanted to stay simple, there is one and only command to install Abricot:
+
+```
+curl https://raw.githubusercontent.com/Just1truc/Abricot-Norminette/main/get_abricot.sh | sh
+```
+
+_Imagine having to pull a docker image to run a norminette..._ 😒
+
 ## Checked files
 
 Here are the files affected by Abricot's style check:
@@ -35,7 +45,8 @@ _Abricot also looks for **unwanted files** in the repository..._
 - <img height=16 src=".github/assets/severity/minor.png"> **C-G2** There should be only one line between each fonction
 - <img height=16 src=".github/assets/severity/minor.png"> **C-G3** Preprocessor directive must be indented
 - <img height=16 src=".github/assets/severity/major.png"> **C-G4** Global Variable must be const
-- <img height=16 src=".github/assets/severity/minor.png"> **C-G6** #include should only contain .h files
+- <img height=16 src=".github/assets/severity/major.png"> **C-G5** #include should only contain .h files
+- <img height=16 src=".github/assets/severity/minor.png"> **C-G6** Line endings must be done in UNIX style
 - <img height=16 src=".github/assets/severity/minor.png"> **C-G7** Line should finish only end with a "\n"
 - <img height=16 src=".github/assets/severity/minor.png"> **C-G8** Trailing space
 - <img height=16 src=".github/assets/severity/minor.png"> **C-G9** Constant values
@@ -79,8 +90,6 @@ _Abricot also looks for **unwanted files** in the repository..._
 
 - <img height=16 src=".github/assets/severity/minor.png"> **V1** Controlling structures and macros
 - <img height=16 src=".github/assets/severity/minor.png"> **V3** Pointers position
-
-## Installation
 
 
 
