@@ -12,11 +12,36 @@
 
 Because we wanted to stay simple, there is one and only command to install Abricot:
 
-```
+```properties
 curl https://raw.githubusercontent.com/Just1truc/Abricot-Norminette/main/get_abricot.sh | sh
 ```
 
 _Imagine having to pull a docker image to run a norminette..._ 😒
+
+
+## Usage
+
+We wanted to make Abricot usable at any time, without requesting superuser permissions and without creating intermediate files polluting your workspace.
+
+You can launch a deep analysis with Abricot with the following simple command:
+
+```properties
+abricot
+```
+
+You can also take a look at all the additional features implemented with:
+
+```properties
+abricot -h
+```
+
+## Updating
+
+Updates are regulary made.<br />
+To keep Abricot up-to-date, please use the following command :
+```properties
+abricot --update
+```
 
 ## Checked files
 
@@ -91,31 +116,30 @@ _Abricot also looks for **unwanted files** in the repository..._
 - <img height=16 src=".github/assets/severity/minor.png"> **V1** Controlling structures and macros
 - <img height=16 src=".github/assets/severity/minor.png"> **V3** Pointers position
 
+## Performances
 
+Another really important point for us is performance.
 
-## Usage
+**Abricot Norminette** uses multi-threading, a smart caching policy and is regularly profiled in search of optimization opportunities.
 
-We wanted to make Abricot usable at any time, without requesting superuser permissions and without creating intermediate files polluting your workspace.
+Here's a small report of what we got as benchmark:
 
-You can launch a deep analysis with Abricot with the following simple command:
+#### On a ~20 files project:
+| 🍑 Abricot | 🍌 Banana |
+| ------- | ------ |
+| 0.73s   | 2.67s  |
 
-```bash
-abricot
-```
+#### On a ~30 files project:
+| 🍑 Abricot | 🍌 Banana |
+| ------- | ------ |
+| 0.98s   | 5,38s  |
 
-You can also take a look at all the additional features implemented with:
+#### On a ~50 files project:
+| 🍑 Abricot | 🍌 Banana |
+| ------- | ------ |
+| 2.09s   | 2m01s  |
 
-```bash
-abricot -h
-```
-
-## Updating
-
-Updates are regulary made.<br />
-To keep Abricot up-to-date, please use the following command :
-```
-abricot --update
-```
+_Banana reported 0 coding style errors on this project_
 
 ## Compatibility
 
@@ -127,13 +151,6 @@ Python3+ should be installed on your computer for Abricot to work.
 | Fedora based 	| ✅             	|
 | macOS        	| ✅             	|
 | Windows      	| ⚠️ WSL advised 	|
-
-## Contribution [![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fjenkins.dev.socialeo.eu%2Fjob%2FAbricot-Norminette%2Fjob%2Fmain%2F&label=Jenkins&logo=Jenkins&logoColor=red&style=for-the-badge)](https://jenkins.dev.socialeo.eu/job/Abricot-Norminette/)
-
-Abricot is tested against every coding style errors using Jenkins on https://jenkins.dev.socialeo.eu/job/Abricot-Norminette/ <br />
-After your contribution, you might want to check if the build is successful.
-
-You might create a new branch before merging into the main branch so Jenkins will automatically test it within a minute.
 
 ## Credits
 
@@ -154,6 +171,7 @@ You might create a new branch before merging into the main branch so Jenkins wil
 [![linkeding bage](https://img.shields.io/badge/-linkedin-0A66C2?logo=linkedin&style=for-the-badge)](https://www.linkedin.com/in/valentin-nouri/)
 [![git hub bage](https://img.shields.io/badge/-GitHub-181717?logo=GitHub&style=for-the-badge)](https://github.com/vavarier)
 [![mail](https://img.shields.io/badge/-Mail-0078D4?logo=Microsoft-Outlook&style=for-the-badge)](mailto:valentin.nouri@epitech.eu)
+
 
 #### Quality Responsible : Thomas Mazaud
 
