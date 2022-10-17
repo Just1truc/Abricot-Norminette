@@ -4,6 +4,12 @@ pipeline {
       image 'python:bullseye'
     }
   }
+  
+  environment {
+    JENKINS = 'true'
+    PYTHONPATH = '${WORKSPACE}/modules'
+  }
+  
   stages {
     stage('Env. info') {
       parallel {
@@ -15,8 +21,7 @@ pipeline {
 
         stage('Setup') {
           steps {
-            sh 'pip install --user --no-cache-dir --upgrade pip'
-            sh 'pip install --user --no-cache-dir -r scripts/requirements.txt'
+            sh 'pip install --target=${WORKSPACE}/modules --no-cache-dir -r scripts/requirements.txt'
             sh 'ln -s src/__main__.py abricot'
             sh 'chmod +x abricot'
             sh 'rm -rf abricot-tests/'
