@@ -15,7 +15,8 @@ pipeline {
 
         stage('Setup') {
           steps {
-            sh 'pip install pcpp -u'
+            sh 'pip install --no-cache-dir --upgrade pip'
+            sh 'pip install --no-cache-dir pcpp'
             sh 'ln -s src/__main__.py abricot'
             sh 'chmod +x abricot'
             sh 'rm -rf abricot-tests/'
