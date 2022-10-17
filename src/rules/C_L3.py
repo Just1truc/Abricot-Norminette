@@ -56,7 +56,7 @@ def checker(config: Configuration):
         os.rename(".clang-format", ".clang-format.bak")
     with open(".clang-format", "w") as f:
         f.write(CLANG_CONFIG)
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file) and not is_header_file(file):
             continue
         original = getFileContent(file)

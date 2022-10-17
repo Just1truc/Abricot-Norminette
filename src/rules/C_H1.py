@@ -6,7 +6,7 @@ from utils import is_source_file, is_header_file, get_lines
 FORBIDDEN_SOURCE_FILE_DIRECTIVES = ['typedef', 'pp_define']
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file) and not is_header_file(file):
             continue
         s = ""
@@ -28,7 +28,7 @@ def checker(config):
             elif is_header_file(file) and search.group('endline') and '{' in search.group('endline') \
                     and 'static' not in search.group('modifiers') and 'inline' not in search.group('modifiers'):
                 abricot.report(file, line_start, "H1")
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file):
             continue
         for token in abricot.getTokens(file, 1, 0, -1, -1, FORBIDDEN_SOURCE_FILE_DIRECTIVES):

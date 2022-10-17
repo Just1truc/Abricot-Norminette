@@ -20,7 +20,7 @@ def abricotize(filename: str) -> None:
     filecontent = filecontent.replace("import vera", "import abricot")
     filecontent = filecontent.replace(first_function, "def checker(config):")
     filecontent = filecontent.replace("%s()" % first_function_name, "")
-    filecontent = filecontent.replace("vera.getSourceFileNames()", "abricot.getSourceFileNames(config)")
+    filecontent = filecontent.replace("vera.getSourceFileNames()", "abricot.getSourceFileNames()")
     filecontent = filecontent.replace("vera.", "abricot.")
     filecontent = re.sub(r'(INFO|MINOR|MAJOR)\:C\-', "", filecontent)
 

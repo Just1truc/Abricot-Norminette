@@ -130,7 +130,7 @@ def _check_for_function(file, tokens):
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not (is_source_file(file) or is_header_file(file)):
             continue
 

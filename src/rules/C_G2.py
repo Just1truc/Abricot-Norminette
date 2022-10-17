@@ -29,7 +29,7 @@ def is_only_one_line_without_comment(file: str, last_function: Function, current
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file) and not is_header_file(file):
             continue
 

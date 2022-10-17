@@ -18,7 +18,7 @@ def get_function_start_at_token(functions: List[Function], token: Token) -> bool
 # pylint:disable=too-many-locals
 # pylint:disable=too-many-statements
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file) and not is_header_file(file):
             continue
         tokens_filter = [

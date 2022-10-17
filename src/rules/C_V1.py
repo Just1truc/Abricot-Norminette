@@ -150,7 +150,7 @@ ALLOWED_TYPES = [
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file) and not is_header_file(file):
             continue
         s = ""

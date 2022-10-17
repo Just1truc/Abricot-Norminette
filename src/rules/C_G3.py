@@ -43,7 +43,7 @@ def _is_pp_directive(file: str, line_number: int, directives: List[str]):
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_header_file(file):
             continue
 

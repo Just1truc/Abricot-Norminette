@@ -39,7 +39,7 @@ def acceptPairs(file, tokens, index=0, level=0, state="other"):
                 state = "const"
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not (is_source_file(file) or is_header_file(file)):
             continue
         tokens = abricot.getTokens(

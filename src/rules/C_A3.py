@@ -4,7 +4,7 @@ from utils import is_source_file, is_header_file, is_makefile, get_lines
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file) and not is_header_file(file) and not is_makefile(file):
             continue
 

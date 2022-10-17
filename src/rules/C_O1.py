@@ -73,7 +73,7 @@ _UNWANTED_FILES_REGEXES = [
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         file_name = get_filename(file)
         for regex in _UNWANTED_FILES_REGEXES:
             if regex.match(file_name):

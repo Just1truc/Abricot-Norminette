@@ -5,7 +5,7 @@ from utils import is_header_file, is_source_file, get_filename_without_extension
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_source_file(file) and not is_header_file(file):
             continue
 

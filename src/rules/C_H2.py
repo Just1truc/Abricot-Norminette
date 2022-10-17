@@ -37,7 +37,7 @@ def _is_protected_by_ifndef(file):
 
 
 def checker(config):
-    for file in abricot.getSourceFileNames(config):
+    for file in abricot.getSourceFileNames():
         if not is_header_file(file):
             continue
         protected = _is_protected_by_ifndef(file) or _is_protected_by_pragma_once(file)
