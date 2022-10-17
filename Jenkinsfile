@@ -37,8 +37,8 @@ pipeline {
       parallel {
         stage('G1: Bad file Header') {
           steps {
-            sh 'python -c "import sys; print(sys.path)"'
             sh '''cd abricot-tests/G1/C
+python -c "import sys; print(sys.path)"
 ${WORKSPACE}/abricot --status'''
             sh '''cd abricot-tests/G1/H
 ${WORKSPACE}/abricot --status'''
