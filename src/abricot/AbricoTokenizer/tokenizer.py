@@ -26,7 +26,7 @@ def filterTokens(FilterSequence : list[str], tokenList : TokenSequence, parsingO
             continue
         if parsingOptions.toLine != -1 and token.line > parsingOptions.toLine:
             continue
-        if parsingOptions.toColumn != -1 and token.line == parsingOptions.toLine and token.column > parsingOptions.toColumn:
+        if parsingOptions.toColumn != -1 and token.line == parsingOptions.toLine and token.cur_column > parsingOptions.toColumn:
             continue
         filteredTokenSequence.append(token)
 
@@ -316,7 +316,7 @@ class Tokenizer():
 
             #check types, new element ect
 
-            tokenRef : TokenObject = TokenObject(file=filePath, column=pcppToken.lexpos, line=pcppToken.lineno, type=pcppToken.type, raw=pcppToken.source, value=pcppToken.value)
+            tokenRef : TokenObject = TokenObject(file=filePath, column=pcppToken.lexpos, line=pcppToken.lineno, type=pcppToken.type, raw=pcppToken.source, value=pcppToken.value, cur_column=pcppToken.lexpos)
     
             # Get new line number and setup column offset
 
@@ -330,6 +330,7 @@ class Tokenizer():
             if (self.check_isNL(tokenRef) == True):
                 tokenRef.raw = '\n'
                 tokenRef.type = 'newline'
+                tokenRef.name = tokenRef.type
                 ret.append(item=tokenRef)
                 continue
 
@@ -338,6 +339,7 @@ class Tokenizer():
             if (concatTypeResult != False):
                 tokenRef.type = concatTypeResult[0]
                 tokenRef.value = tokenRef.raw = concatTypeResult[1]
+                tokenRef.name = tokenRef.type
                 ret.append(item=tokenRef)
                 continue
 
@@ -347,12 +349,14 @@ class Tokenizer():
                 tokenRef.type = PPTypeTest[0]
                 tokenRef.value = PPTypeTest[1]
                 tokenRef.raw = PPTypeTest[1]
+                tokenRef.name = tokenRef.type
                 ret.append(item=tokenRef)
                 continue
 
             ## check if type is a specific type
             if (tokenRef.value in self.type_dict):
                 tokenRef.type = self.type_dict[tokenRef.value]
+                tokenRef.name = tokenRef.type
                 ret.append(item=tokenRef)
                 continue
 
