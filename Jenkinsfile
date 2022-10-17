@@ -16,6 +16,7 @@ pipeline {
         stage('Env. info') {
           steps {
             sh 'python -V'
+            sh 'python -c "import sys; print(sys.path)"'
           }
         }
 
