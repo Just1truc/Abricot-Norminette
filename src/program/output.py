@@ -116,7 +116,7 @@ class OutputManager():
 
     def outputDefault(self, plain=False):
         if (len(self.result) == 0):
-            printc("No Coding style error detected : Code clean", color=(Colors.WHITE if plain else Colors.GREEN), bold=(not plain))
+            printc("No Coding style error detected : Code clean", color=(Colors.NONE if plain else Colors.GREEN), bold=(not plain))
             return
         for step in self.result:
             printc(step["title"], bold=(not plain))

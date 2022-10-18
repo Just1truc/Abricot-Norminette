@@ -1,6 +1,7 @@
 from enum import Enum
 
 class Colors(Enum):
+    NONE = ''
     RED = '\033[91m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
@@ -12,5 +13,5 @@ class Colors(Enum):
     GREY = '\033[90m'
     RESET = '\033[0m'
 
-def printc(text: str, color: Colors = Colors.WHITE, bold: bool = False, end: str = "\n") -> None:
-    print(("\033[1m" if bold else "") + color.value + text + Colors.RESET.value, end=end)
+def printc(text: str, color: Colors = Colors.NONE, bold: bool = False, end: str = "\n") -> None:
+    print(("\033[1m" if bold else "") + color.value + text + (Colors.RESET.value if color != Colors.NONE else ''), end=end)
