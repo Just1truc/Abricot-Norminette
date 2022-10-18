@@ -1,4 +1,5 @@
 ## Local imports
+from typing import Union
 from abricot.AbricoTokenizer.custom_exceptions import TokensError, PreprocessingError, UnknownTokenError
 from abricot.AbricoTokenizer.custom_types import PCPPToken, ParsingOptions, TokenObject, TokenSequence
 from program.abriThread import Abrifast
@@ -212,7 +213,7 @@ class Tokenizer():
         """ Check if token is a new line or a simple ws """
         return token.type == 'CPP_WS' and token.value == '\n'
 
-    def checkConcatType(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> tuple[str, str] | bool:
+    def checkConcatType(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> Union[tuple[str, str], bool]:
         """ Check if a type is a combinaison of multiple characters not checked by pcpp """
         if (log):
             print(AbriLogger.info('>> Tokenizer.checkConcatType'))
@@ -250,7 +251,7 @@ class Tokenizer():
             ) and pcppTokens[tokenIndex + 3].value == '.'
 
 
-    def checkPPValues(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> tuple[str, str] | bool:
+    def checkPPValues(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> Union[tuple[str, str], bool]:
         """ Test if types are preprocessors types """
         if (log):
             print(AbriLogger.info('>> Tokenizer.checkPreProcessorValues'))
@@ -338,7 +339,7 @@ class Tokenizer():
                 continue
 
             # Check types composed of multiple tokens 
-            concatTypeResult : str | bool = self.checkConcatType(tokenIndex=index, pcppTokens=pcpp_tokens)
+            concatTypeResult : Union[str, bool] = self.checkConcatType(tokenIndex=index, pcppTokens=pcpp_tokens)
             if (concatTypeResult != False):
                 tokenRef.type = concatTypeResult[0]
                 tokenRef.value = tokenRef.raw = concatTypeResult[1]
@@ -347,7 +348,7 @@ class Tokenizer():
                 continue
 
             ## Check if type is preprocessing type
-            PPTypeTest : tuple(str, str) | bool = self.checkPPValues(tokenIndex=index, pcppTokens=pcpp_tokens)
+            PPTypeTest : Union[tuple[str, str], bool] = self.checkPPValues(tokenIndex=index, pcppTokens=pcpp_tokens)
             if (PPTypeTest != False):
                 tokenRef.type = PPTypeTest[0]
                 tokenRef.value = PPTypeTest[1]

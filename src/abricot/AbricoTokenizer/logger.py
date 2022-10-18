@@ -1,9 +1,11 @@
 
+from typing import Union
+
 class log_service:
 
     """ Log service """
 
-    def __init__(self, save : True | False = False):
+    def __init__(self, save : bool = False):
         self.base : str = "[Abricot]"
         self.line_number : int = 0
         self.log_trace = []
