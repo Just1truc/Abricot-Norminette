@@ -1,5 +1,4 @@
 ## Local imports
-from typing import Tuple
 from abricot.AbricoTokenizer.custom_exceptions import TokensError, PreprocessingError, UnknownTokenError
 from abricot.AbricoTokenizer.custom_types import PCPPToken, ParsingOptions, TokenObject, TokenSequence
 from program.abriThread import Abrifast
@@ -251,7 +250,7 @@ class Tokenizer():
             ) and pcppTokens[tokenIndex + 3].value == '.'
 
 
-    def checkPPValues(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> Tuple[str, str] | bool:
+    def checkPPValues(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> tuple[str, str] | bool:
         """ Test if types are preprocessors types """
         if (log):
             print(AbriLogger.info('>> Tokenizer.checkPreProcessorValues'))
