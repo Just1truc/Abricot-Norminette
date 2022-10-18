@@ -1,15 +1,21 @@
+def Assert(dir, status) {
+  res = sh(
+    script: "${WORKSPACE}/abricot abricot-tests/${dir} --status --format=plain",
+    returnStatus: true
+  )
+  if (res != status) {
+    error "${dir}: expected ${status}, got ${res}"
+  }
+}
+
 pipeline {
   agent {
-    docker {
-      image 'python:bullseye'
-    }
+    dockerfile true
   }
-  
   environment {
     JENKINS = 'true'
     PYTHONPATH = '/home/jenkins-agent/workspace/Abricot-Norminette_develop/modules'
   }
-  
   stages {
     stage('Env. info') {
       parallel {
@@ -19,232 +25,160 @@ pipeline {
             sh 'python -c "import sys; print(sys.path)"'
           }
         }
-
         stage('Setup') {
           steps {
-            sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
             sh 'ln -s src/__main__.py abricot'
             sh 'chmod +x abricot'
+            sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
             sh 'rm -rf abricot-tests/'
             sh 'git clone https://github.com/socialeonet/Abricot-Tests.git abricot-tests'
           }
         }
-
       }
     }
-
     stage('Tests') {
       parallel {
         stage('G1: Bad file Header') {
           steps {
-            sh '''cd abricot-tests/G1/C
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/G1/H
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('G1/C', 1)
+            Assert('G1/H', 1)
           }
         }
-
         stage('G2: There should be only one line between each fonction') {
           steps {
-            sh '''cd abricot-tests/G2/1
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/G2/2
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('G2/1', 1)
+            Assert('G2/2', 1)
           }
         }
-
         stage('G3: Preprocessor directive must be indented') {
           steps {
-            sh '''cd abricot-tests/G3
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('G3', 1)
           }
         }
-
         stage('G4: Global Variable must be const') {
           steps {
-            sh '''cd abricot-tests/G4
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('G4', 1)
           }
         }
-
         stage('G6: #include should only contain .h files') {
           steps {
-            sh '''cd abricot-tests/G6
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('G6', 1)
           }
         }
-
         stage('G7: Line should finish only end with a backslash n') {
           steps {
-            sh '''cd abricot-tests/G7
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('G7', 1)
           }
         }
-
         stage('G8: Trailing space') {
           steps {
-            sh '''cd abricot-tests/G8
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('G8', 1)
           }
         }
-
         stage('G9: Leading/Trailing lines') {
           steps {
-            sh '''cd abricot-tests/G9
-${WORKSPACE}/abricot --all --status --format=plain'''
+            Assert('G9', 1)
           }
         }
-
         stage('C1: There should not be more than 3 depth (conditionnal branching)') {
           steps {
-            sh '''cd abricot-tests/C1
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('C1', 1)
           }
         }
-
         stage('A3: Missing Line Break') {
           steps {
-            sh '''cd abricot-tests/A3
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('A3', 1)
           }
         }
-
         stage('L1: Code line content') {
           steps {
-            sh '''cd abricot-tests/L1/1
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/L1/2
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/L1/3
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/L1/4
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/L1/5
-${WORKSPACE}/abricot --all --status --format=plain'''
+            Assert('L1/1', 1)
+            Assert('L1/2', 1)
+            Assert('L1/3', 1)
+            Assert('L1/4', 1)
+            Assert('L1/5', 1)
           }
         }
-
         stage('L2: Bad indentation') {
           steps {
-            sh '''cd abricot-tests/L2
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('L2', 1)
           }
         }
-
         stage('L3: Misplaced spaces') {
           steps {
-            sh '''cd abricot-tests/L3
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('L3', 1)
           }
         }
-
         stage('L4: Misplaced curly bracket') {
           steps {
-            sh '''cd abricot-tests/L4
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('L4', 1)
           }
         }
-
         stage('L5: Variable declaration') {
           steps {
-            sh '''cd abricot-tests/L5/1
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/L5/2
-${WORKSPACE}/abricot --all --status --format=plain'''
+            Assert('L5/1', 1)
+            Assert('L5/2', 1)
           }
         }
-
         stage('L6: Line jumps') {
           steps {
-            sh '''cd abricot-tests/L6
-${WORKSPACE}/abricot --all --status --format=plain'''
+            Assert('L6', 1)
           }
         }
-
         stage('O1: Check useless file') {
           steps {
-            sh '''cd abricot-tests/O1/
-cd "#"
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/O1/
-cd "~"
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/O1/D
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/O1/A
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/O1/GCH
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/O1/O
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/O1/SO
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('O1/#', 1)
+            Assert('O1/~', 1)
+            Assert('O1/D', 1)
+            Assert('O1/A', 1)
+            Assert('O1/GCH', 1)
+            Assert('O1/O', 1)
+            Assert('O1/SO', 1)
           }
         }
-
         stage('O3: Too many functions in a file') {
           steps {
-            sh '''cd abricot-tests/O3
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('O3', 1)
           }
         }
-
         stage('O4: Snake case convention') {
           steps {
-            sh '''cd abricot-tests/O4
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('O4', 1)
           }
         }
-
         stage('F5: More than 4 arguments in a function') {
           steps {
-            sh '''cd abricot-tests/F5/more
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('F5/more', 1)
           }
         }
-
         stage('F5: Argumentless function') {
           steps {
-            sh '''cd abricot-tests/F5/argumentless
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('F5/argumentless', 1)
           }
         }
-
         stage('F6: Comments inside of function') {
           steps {
-            sh '''cd abricot-tests/F6
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('F6', 1)
           }
         }
-
         stage('H2: Header not protected from doucle inclusion') {
           steps {
-            sh '''cd abricot-tests/H2/1
-${WORKSPACE}/abricot --status --format=plain'''
-            sh '''cd abricot-tests/H2/2
-${WORKSPACE}/abricot --status --format=plain'''
+            Assert('H2/1', 1)
+            Assert('H2/2', 1)
           }
         }
-
         stage('V1: Naming identifiers') {
           steps {
-            sh '''cd abricot-tests/V1/1
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/V1/2
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/V1/3
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/V1/4
-${WORKSPACE}/abricot --all --status --format=plain'''
+            Assert('V1/1', 1)
+            Assert('V1/2', 1)
+            Assert('V1/3', 1)
+            Assert('V1/4', 1)
           }
         }
-
         stage('V3: Pointers') {
           steps {
-            sh '''cd abricot-tests/V3/1
-${WORKSPACE}/abricot --all --status --format=plain'''
-            sh '''cd abricot-tests/V3/2
-${WORKSPACE}/abricot --all --status --format=plain'''
+            Assert('V3/1', 1)
+            Assert('V3/2', 1)
           }
         }
       }
