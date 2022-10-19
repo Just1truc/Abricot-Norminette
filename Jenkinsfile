@@ -40,145 +40,194 @@ pipeline {
       parallel {
         stage('G1: Bad file Header') {
           steps {
-            Assert('G1/C', 1)
-            Assert('G1/H', 1)
+            Assert('G1/C/ERROR', 1)
+            Assert('G1/C/OK', 0)
+            Assert('G1/H/ERROR', 1)
+            Assert('G1/H/OK', 0)
           }
         }
         stage('G2: There should be only one line between each fonction') {
           steps {
-            Assert('G2/1', 1)
-            Assert('G2/2', 1)
+            Assert('G2/2 separated lines/ERROR', 1)
+            Assert('G2/2 separated lines/OK', 0)
+            Assert('G2/no separeted line/ERROR', 1)
+            Assert('G2/no separeted line/OK', 0)
           }
         }
         stage('G3: Preprocessor directive must be indented') {
           steps {
-            Assert('G3', 1)
+            Assert('G3/ERROR', 1)
+            Assert('G3/OK', 0)
           }
         }
         stage('G4: Global Variable must be const') {
           steps {
-            Assert('G4', 1)
+            Assert('G4/ERROR', 1)
+            Assert('G4/OK', 0)
           }
         }
-        stage('G6: #include should only contain .h files') {
+        stage('G5: #include should only contain .h files') {
           steps {
-            Assert('G6', 1)
+            Assert('G5/ERROR', 1)
+            Assert('G5/OK', 0)
           }
         }
-        stage('G7: Line should finish only end with a backslash n') {
+        stage('G8: Global variable must be const') {
           steps {
-            Assert('G7', 1)
+            Assert('G7/ERROR', 1)
+            Assert('G7/OK', 0)
           }
         }
-        stage('G8: Trailing space') {
+        stage('G7: Trailing space') {
           steps {
-            Assert('G8', 1)
-          }
-        }
-        stage('G9: Leading/Trailing lines') {
-          steps {
-            Assert('G9', 1)
+            Assert('G7/ERROR', 1)
+            Assert('G7/OK', 0)
           }
         }
         stage('C1: There should not be more than 3 depth (conditionnal branching)') {
           steps {
-            Assert('C1', 1)
+            Assert('C1/ERROR', 1)
+            Assert('C1/OK', 0)
+          }
+        }
+        stage('C3: GOTO is forbidden') {
+          steps {
+            Assert('C3/ERROR', 1)
+            Assert('C3/OK', 0)
           }
         }
         stage('A3: Missing Line Break') {
           steps {
-            Assert('A3', 1)
+            Assert('A3/ERROR', 1)
+            Assert('A3/OK', 0)
           }
         }
         stage('L1: Code line content') {
           steps {
-            Assert('L1/1', 1)
-            Assert('L1/2', 1)
-            Assert('L1/3', 1)
-            Assert('L1/4', 1)
-            Assert('L1/5', 1)
+            Assert('L1/1/ERROR', 1)
+            Assert('L1/1/OK', 0)
+            Assert('L1/2/ERROR', 1)
+            Assert('L1/2/OK', 0)
+            Assert('L1/3/ERROR', 1)
+            Assert('L1/3/OK', 0)
+            Assert('L1/4/ERROR', 1)
+            Assert('L1/4/OK', 0)
+            Assert('L1/5/ERROR', 1)
+            Assert('L1/5/OK', 0)
           }
         }
         stage('L2: Bad indentation') {
           steps {
-            Assert('L2', 1)
+            Assert('L2/ERROR', 1)
+            Assert('L2/OK', 0)
           }
         }
         stage('L3: Misplaced spaces') {
           steps {
-            Assert('L3', 1)
+            Assert('L3/ERROR', 1)
+            Assert('L3/OK', 0)
           }
         }
         stage('L4: Misplaced curly bracket') {
           steps {
-            Assert('L4', 1)
+            Assert('L4/ERROR', 1)
+            Assert('L4/OK', 0)
           }
         }
         stage('L5: Variable declaration') {
           steps {
-            Assert('L5/1', 1)
-            Assert('L5/2', 1)
+            Assert('L5/1/ERROR', 1)
+            Assert('L5/1/OK', 0)
+            Assert('L5/2/ERROR', 1)
+            Assert('L5/2/OK', 0)
           }
         }
         stage('L6: Line jumps') {
           steps {
-            Assert('L6', 1)
+            Assert('L6/ERROR', 1)
+            Assert('L6/OK', 0)
           }
         }
         stage('O1: Check useless file') {
           steps {
-            Assert('O1/#', 1)
-            Assert('O1/~', 1)
-            Assert('O1/D', 1)
-            Assert('O1/A', 1)
-            Assert('O1/GCH', 1)
-            Assert('O1/O', 1)
-            Assert('O1/SO', 1)
+            Assert('O1/#/ERROR', 1)
+            Assert('O1/#/OK', 0)
+            Assert('O1/~/ERROR', 1)
+            Assert('O1/~/OK', 0)
+            Assert('O1/D/ERROR', 1)
+            Assert('O1/D/OK', 0)
+            Assert('O1/A/ERROR', 1)
+            Assert('O1/A/OK', 0)
+            Assert('O1/GCH/ERROR', 1)
+            Assert('O1/GCH/OK', 0)
+            Assert('O1/O/ERROR', 1)
+            Assert('O1/O/OK', 0)
+            Assert('O1/SO/ERROR', 1)
+            Assert('O1/SO/OK', 0)
           }
         }
         stage('O3: Too many functions in a file') {
           steps {
-            Assert('O3', 1)
+            Assert('O3/ERROR', 1)
+            Assert('O3/OK', 0)
           }
         }
         stage('O4: Snake case convention') {
           steps {
-            Assert('O4', 1)
+            Assert('O4/ERROR', 1)
+            Assert('O4/OK', 0)
+          }
+        }
+        stage('F3: Too long line') {
+          steps {
+            Assert('F3/more/ERROR', 1)
+            Assert('F3/more/OK', 0)
+          }
+        }
+        stage('F4: Too long function') {
+          steps {
+            Assert('F4/ERROR', 1)
+            Assert('F4/OK', 0)
           }
         }
         stage('F5: More than 4 arguments in a function') {
           steps {
-            Assert('F5/more', 1)
+            Assert('F5/ERROR', 1)
+            Assert('F5/OK', 0)
           }
         }
-        stage('F5: Argumentless function') {
+        stage('F6: Argumentless function') {
           steps {
-            Assert('F5/argumentless', 1)
-          }
-        }
-        stage('F6: Comments inside of function') {
-          steps {
-            Assert('F6', 1)
+            Assert('F6/ERROR', 1)
+            Assert('F6/OK', 0)
           }
         }
         stage('H2: Header not protected from doucle inclusion') {
           steps {
-            Assert('H2/1', 1)
-            Assert('H2/2', 1)
+            Assert('H2/1/ERROR', 1)
+            Assert('H2/1/OK', 0)
+            Assert('H2/2/ERROR', 1)
+            Assert('H2/2/OK', 0)
           }
         }
         stage('V1: Naming identifiers') {
           steps {
-            Assert('V1/1', 1)
-            Assert('V1/2', 1)
-            Assert('V1/3', 1)
-            Assert('V1/4', 1)
+            Assert('V1/1/ERROR', 1)
+            Assert('V1/1/OK', 0)
+            Assert('V1/2/ERROR', 1)
+            Assert('V1/2/OK', 0)
+            Assert('V1/3/ERROR', 1)
+            Assert('V1/3/OK', 0)
+            Assert('V1/4/ERROR', 1)
+            Assert('V1/4/OK', 0)
           }
         }
         stage('V3: Pointers') {
           steps {
-            Assert('V3/1', 1)
-            Assert('V3/2', 1)
+            Assert('V3/1/ERROR', 1)
+            Assert('V3/1/OK', 0)
+            Assert('V3/2/ERROR', 1)
+            Assert('V3/2/OK', 0)
           }
         }
       }
