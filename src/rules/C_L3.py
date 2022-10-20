@@ -4,7 +4,6 @@ import subprocess
 import abricot
 from program.print import printc, Colors
 from utils import is_source_file, is_header_file
-from program.configuration import Configuration
 
 CLANG_CONFIG = "BasedOnStyle: LLVM\nAccessModifierOffset: -4\nAllowShortIfStatementsOnASingleLine: false\nAlignAfterOpenBracket: DontAlign\nAlignOperands: false\nAllowShortCaseLabelsOnASingleLine: true\nContinuationIndentWidth: 0\nColumnLimit: 0\nAllowShortBlocksOnASingleLine: false\nAllowShortFunctionsOnASingleLine: false\nFixNamespaceComments: false\nIndentCaseLabels: false\nIndentWidth: 4\nNamespaceIndentation: All\nTabWidth: 4\nUseTab: Never\nSortIncludes: true\nIncludeBlocks: Preserve\nAlignConsecutiveMacros: false\nAlignConsecutiveAssignments: false\nAlignConsecutiveBitFields: false\nAlignConsecutiveDeclarations: false\nAlignEscapedNewlines: Right\nAlignTrailingComments: false\nAllowAllArgumentsOnNextLine: true\nAllowAllParametersOfDeclarationOnNextLine: true\nAllowShortEnumsOnASingleLine: true\nAllowShortLambdasOnASingleLine: All\nAllowShortIfStatementsOnASingleLine: true\nAllowShortLoopsOnASingleLine: true\nAlwaysBreakAfterDefinitionReturnType: false\nAlwaysBreakAfterReturnType: None\nAlwaysBreakBeforeMultilineStrings: false\nAlwaysBreakTemplateDeclarations: MultiLine\nAllowAllConstructorInitializersOnNextLine: true\nKeepEmptyLinesAtTheStartOfBlocks: true\nMaxEmptyLinesToKeep: 9999999\nBreakBeforeBraces: Custom"
 
@@ -54,7 +53,7 @@ def getMisplacedSpaces(file, original, formated):
         if trimmed_line != trimmed_formated and trimmed_line.replace(" ", "") == trimmed_formated.replace(" ", ""):
             abricot.report(file, i + 1, "L3")
 
-def checker(config: Configuration):
+def checker():
     if os.path.exists(".clang-format"):
         os.rename(".clang-format", ".clang-format.bak")
     with open(".clang-format", "w") as f:

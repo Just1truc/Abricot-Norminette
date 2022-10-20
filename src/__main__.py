@@ -50,7 +50,7 @@ TokenizerObject.setFiles(parseFiles)
 
 for rule in rules.values():
     if not rule.optional or args.all:
-        thread.add(rule.checker, config, rule.name)
+        thread.add(rule.checker, (), rule.name)
 
 thread.run()
 

@@ -384,7 +384,7 @@ class Tokenizer():
 
     def initAllFilesTokens(self) -> None:
         for filePath in self.fileList:
-            self.abriThread.add(function=self.directAdd, config=filePath, name=filePath)
+            self.abriThread.add(function=self.directAdd, args=(filePath,), name=filePath)
         self.abriThread.run()
 
 

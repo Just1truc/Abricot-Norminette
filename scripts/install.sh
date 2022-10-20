@@ -34,8 +34,12 @@ else
     tput setaf 2
     echo "=> clang-format found"
 fi
-
 BASEDIR=$(dirname "$0")
+
+tput sgr 0
+echo "=> Installing checker rules..."
+python3 "$BASEDIR/fruitmixer.py"
+tput setaf 2
 
 tput sgr 0
 echo "=> Installing python dependencies..."
