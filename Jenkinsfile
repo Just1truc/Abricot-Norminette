@@ -30,8 +30,6 @@ pipeline {
             sh 'ln -s src/__main__.py abricot'
             sh 'chmod +x abricot'
             sh 'cat scripts/fruitmixer.py'
-            sh 'git config --global user.name "Jenkins"'
-            sh 'git config --global user.email "jenkins@localhost"'
             sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
             sh 'python3 scripts/fruitmixer.py'
             sh 'rm -rf abricot-tests/'
