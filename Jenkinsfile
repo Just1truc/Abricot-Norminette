@@ -31,7 +31,6 @@ pipeline {
             sh 'chmod +x abricot'
             sh 'cat scripts/fruitmixer.py'
             sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
-            sh 'git clone https://github.com/Epitech/banana-coding-style-checker.git /tmp/fruitmixer/remote'
             sh 'python3 scripts/fruitmixer.py'
             sh 'rm -rf abricot-tests/'
             sh 'git clone https://github.com/socialeonet/Abricot-Tests.git abricot-tests'
