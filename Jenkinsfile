@@ -29,6 +29,7 @@ pipeline {
           steps {
             sh 'ln -s src/__main__.py abricot'
             sh 'chmod +x abricot'
+            sh 'cat scripts/fruitmixer.py'
             sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
             sh 'python3 scripts/fruitmixer.py'
             sh 'rm -rf abricot-tests/'
