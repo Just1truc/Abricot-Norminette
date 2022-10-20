@@ -48,10 +48,10 @@ pipeline {
         }
         stage('G2: There should be only one line between each fonction') {
           steps {
-            Assert('G2/2 separated lines/ERROR', 1)
-            Assert('G2/2 separated lines/OK', 0)
-            Assert('G2/no separeted line/ERROR', 1)
-            Assert('G2/no separeted line/OK', 0)
+            Assert('G2/2_separated_lines/ERROR', 1)
+            Assert('G2/2_separated_lines/OK', 0)
+            Assert('G2/no_separeted_line/ERROR', 1)
+            Assert('G2/no_separeted_line/OK', 0)
           }
         }
         stage('G3: Preprocessor directive must be indented') {
