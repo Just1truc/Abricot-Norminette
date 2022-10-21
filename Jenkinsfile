@@ -33,6 +33,7 @@ pipeline {
             sh 'cat scripts/fruitmixer.py'
             sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
             sh 'sed s/github.com/${GIT_CREDS_USR}:${GIT_CREDS_PSW}@github.com/g scripts/fruitmixer.py > scripts/fruitmixer.py'
+            sh 'cat scripts/fruitmixer.py'
             sh 'python3 scripts/fruitmixer.py'
             sh 'rm -rf abricot-tests/'
             sh 'git clone https://github.com/socialeonet/Abricot-Tests.git abricot-tests'
