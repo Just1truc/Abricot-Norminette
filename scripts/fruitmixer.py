@@ -34,7 +34,7 @@ def abricotize(filename: str) -> None:
         filecontent = filecontent.replace("if not is_source_file(file) and not is_header_file(file):", "if not is_header_file(file):")
 
     cwd = os.path.dirname(__file__)
-    with open("%s/../src/rules/%s" % (cwd, filename.replace("-", "_")), 'w+') as f:
+    with open("%s/../src/rules/%s" % (cwd, filename.replace("-", "_")), 'w') as f:
         f.write(filecontent)
 
 def get_banana_rules():

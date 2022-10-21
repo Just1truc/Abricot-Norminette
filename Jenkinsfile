@@ -32,9 +32,9 @@ pipeline {
             sh 'chmod +x abricot'
             sh 'cat scripts/fruitmixer.py'
             sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
-            sh 'sed s/github.com/${GIT_CREDS_USR}:${GIT_CREDS_PSW}@github.com/g scripts/fruitmixer.py > fruitmixer.py'
+            sh 'sed s/github.com/${GIT_CREDS_USR}:${GIT_CREDS_PSW}@github.com/g scripts/fruitmixer.py > scripts/my_fruitmixer.py'
             sh 'ls -lah'
-            sh 'python3 fruitmixer.py'
+            sh 'python3 scripts/my_fruitmixer.py'
             sh 'rm -rf abricot-tests/'
             sh 'git clone https://github.com/socialeonet/Abricot-Tests.git abricot-tests'
           }
