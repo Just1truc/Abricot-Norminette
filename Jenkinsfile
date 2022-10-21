@@ -15,6 +15,7 @@ pipeline {
   environment {
     JENKINS = 'true'
     PYTHONPATH = '/home/jenkins-agent/workspace/Abricot-Norminette_develop/modules'
+    GIT_CREDS = credentials('token-epitech')
   }
   stages {
     stage('Env. info') {
@@ -31,6 +32,7 @@ pipeline {
             sh 'chmod +x abricot'
             sh 'cat scripts/fruitmixer.py'
             sh 'pip3 install --target=${WORKSPACE}/modules -r scripts/requirements.txt'
+            sh 'git clone "https://${GIT_CREDS_USR}:${GIT_CREDS_PSW}@github.com/Epitech/banana-coding-style-checker.git"'
             sh 'python3 scripts/fruitmixer.py'
             sh 'rm -rf abricot-tests/'
             sh 'git clone https://github.com/socialeonet/Abricot-Tests.git abricot-tests'
