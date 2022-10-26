@@ -1,0 +1,12 @@
+on:
+  push:
+    branches: [develop]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Vera ++ Installation
+      run: |
+        echo "hello"
