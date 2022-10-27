@@ -14,7 +14,7 @@ pipeline {
   }
   environment {
     JENKINS = 'true'
-    PYTHONPATH = '/home/jenkins-agent/workspace/Abricot-Norminette_main/modules'
+    PYTHONPATH = '/home/jenkins-agent/workspace/Abricot-Norminette_macOS/modules'
     GIT_CREDS = credentials('token-epitech')
   }
   stages {
