@@ -25,9 +25,10 @@ tput sgr0
 if ! [ -x "$(command -v clang-format)" ]; then
     tput sgr 0
     echo "=> Installing clang-format..."
-    sudo dnf -y install clang-tools-extra pip 2> /dev/null
-    sudo apt update; sudo apt -y install clang-format pip 2> /dev/null
-    sudo zypper -y install clang-tools-extra pip 2> /dev/null
+    sudo dnf -y install clang-tools-extra pip &> /dev/null
+    sudo apt update; sudo apt -y install clang-format pip &> /dev/null
+    sudo zypper -y install clang-tools-extra pip &> /dev/null
+    sudo pacman -Sy clang-tools-extra &> /dev/null
     tput setaf 2
     echo "=> Installation of clang done"
 else
