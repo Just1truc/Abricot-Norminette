@@ -4,7 +4,7 @@ from program.configuration import Configuration
 sourceFiles = None
 
 
-def getSourceFileNames() -> list[str]:
+def getSourceFileNames():
     return sourceFiles
 
 

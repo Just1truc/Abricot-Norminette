@@ -202,7 +202,7 @@ def debug_print(s, **kwargs):
     print(s, file=stderr, flush=True, **kwargs)
 
 
-def __remove_between(lines: List[str], token: Token, begin_token="//", end_token=None) -> None:
+def __remove_between(lines, token: Token, begin_token="//", end_token=None) -> None:
     for offset, value in enumerate(token.value.split("\n")):
         line = lines[token.line - 1 + offset]
         has_line_break = line.endswith('\\')
@@ -228,7 +228,7 @@ def __remove_between(lines: List[str], token: Token, begin_token="//", end_token
         lines[token.line - 1 + offset] = line
 
 
-def __reset_token_value(lines: List[str], token:Token) -> Token:
+def __reset_token_value(lines, token:Token) -> Token:
     value = token.value
     line = lines[token.line - 1][token.column:]
     offset = 0
@@ -247,7 +247,7 @@ def __reset_token_value(lines: List[str], token:Token) -> Token:
         token.type)
 
 
-def get_lines(file: str, replace_comments=False, replace_stringlits=False) -> List[str]:
+def get_lines(file: str, replace_comments=False, replace_stringlits=False):
     lines = abricot.getAllLines(file)
     if replace_comments or replace_stringlits:
         lines = [l[:] for l in lines]
@@ -294,7 +294,7 @@ def get_index_from_raw(raw: str, line: int, column: int):
     return len_before_current_line + len_before_column
 
 
-def get_prev_token_index(tokens: List[Token], index: int, types_filters: List[str]):
+def get_prev_token_index(tokens, index: int, types_filters):
     for i in range(0, index):
         token = tokens[index - i - 1]
         if token.name in types_filters:
@@ -302,7 +302,7 @@ def get_prev_token_index(tokens: List[Token], index: int, types_filters: List[st
     return -1
 
 
-def get_next_token_index(tokens: List[Token], index: int, types_filters: List[str]):
+def get_next_token_index(tokens, index: int, types_filters):
     for i in range(index + 1, len(tokens)):
         token = tokens[i]
         if token.name in types_filters:
@@ -310,7 +310,7 @@ def get_next_token_index(tokens: List[Token], index: int, types_filters: List[st
     return -1
 
 
-def is_token_pointer(tokens: List[Token], index: int):
+def is_token_pointer(tokens, index: int):
     token = tokens[index]
     prev_non_identifier_index = get_prev_token_index(tokens, index, TYPES_TOKENS + BINARY_OPERATORS_TOKENS + ['leftparen'])
     prev_identifier_index = get_prev_token_index(tokens, index, IDENTIFIERS_TOKENS)

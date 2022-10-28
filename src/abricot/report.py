@@ -5,6 +5,6 @@ def report(file: str, line: int, code: str) -> None:
         all_errors[code] = []
     all_errors[code].append((file, line))
 
-def getAllErrors() -> dict[str, list[tuple[str, int]]]:
+def getAllErrors():
     return all_errors
 

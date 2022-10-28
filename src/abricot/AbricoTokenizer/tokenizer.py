@@ -1,22 +1,22 @@
-## Local imports
+# Local imports
 from typing import Union
 from abricot.AbricoTokenizer.custom_exceptions import TokensError, PreprocessingError, UnknownTokenError
 from abricot.AbricoTokenizer.custom_types import PCPPToken, ParsingOptions, TokenObject, TokenSequence
 from program.abriThread import Abrifast
 import os
 from abricot.AbricoTokenizer.logger import log_service
-## Remote imports
+# Remote imports
 from pcpp import Preprocessor
 
-log : bool = False
-logSave : bool = False
+log: bool = False
+logSave: bool = False
 
 if (log):
     AbriLogger = log_service(logSave)
 
 
-def filterTokens(FilterSequence : list[str], tokenList : TokenSequence, parsingOptions : ParsingOptions) -> list[str]:
-    filteredTokenSequence : TokenSequence = TokenSequence([])
+def filterTokens(FilterSequence, tokenList: TokenSequence, parsingOptions: ParsingOptions):
+    filteredTokenSequence: TokenSequence = TokenSequence([])
 
     for token in tokenList:
         if token.type not in FilterSequence:
@@ -31,23 +31,24 @@ def filterTokens(FilterSequence : list[str], tokenList : TokenSequence, parsingO
             continue
         filteredTokenSequence.append(token)
 
-    return filteredTokenSequence 
+    return filteredTokenSequence
 
 
 ## Get Token From File name ##
-def getTokens(FileName : str, fromLine : int, fromColumn : int, toLine : int, toColumn : int, FilterSequence : list[str]):
+def getTokens(FileName: str, fromLine: int, fromColumn: int, toLine: int, toColumn: int, FilterSequence):
 
-    ## Args check
+    # Args check
 
     if (fromLine < 1 or fromColumn < 0 or (toLine > 0 and fromLine > toLine) or (fromLine == toLine and toColumn >= 0 and fromColumn > toColumn)):
         raise TokensError('illegal range of tokens requested by the script')
-    
-    parsOpt : ParsingOptions = ParsingOptions(fromLine=fromLine, fromColumn=fromColumn, toLine=toLine, toColumn=toColumn)
+
+    parsOpt: ParsingOptions = ParsingOptions(
+        fromLine=fromLine, fromColumn=fromColumn, toLine=toLine, toColumn=toColumn)
 
     return filterTokens(FilterSequence=FilterSequence, tokenList=TokenizerObject.getTokens(FileName), parsingOptions=parsOpt)
 
 
-#Instancier l'objet et faire une méthode setFile qui initialise les files. 
+# Instancier l'objet et faire une méthode setFile qui initialise les files.
 class Tokenizer():
 
     def __init__(self):
@@ -56,42 +57,42 @@ class Tokenizer():
 
         self.abriThread = Abrifast()
 
-        self.fileList : list[str] = []
-        self.tokensPerFile : dict[str, TokenSequence] = {}
-        self.concat_type : dict[str, str] = {
-            "HAT,EQUAL" : "xorassign",
-            "DOT,DOT,DOT" : "ellipsis",
-            "INTEGER,DOT,INTEGER" : "floatlit"
+        self.fileList = []
+        self.tokensPerFile = {}
+        self.concat_type = {
+            "HAT,EQUAL": "xorassign",
+            "DOT,DOT,DOT": "ellipsis",
+            "INTEGER,DOT,INTEGER": "floatlit"
         }
-        self.pp_values : dict[str, str] = {
-            "define" : "pp_define",
-            "if" : "pp_if",
-            "if" : "pp_if",
-            "ifdef" : "pp_ifdef",
-            "ifndef" : "pp_ifndef",
-            "else" : "pp_else",
-            "elif" : "pp_elif",
-            "endif" : "pp_endif",
-            "error" : "pp_error",
-            "line" : "pp_line",
-            "pragma" : "pp_pragma",
-            "undef" : "pp_undef",
-            "warning" : "pp_warning",
-            "include" : "pp_include"
+        self.pp_values = {
+            "define": "pp_define",
+            "if": "pp_if",
+            "if": "pp_if",
+            "ifdef": "pp_ifdef",
+            "ifndef": "pp_ifndef",
+            "else": "pp_else",
+            "elif": "pp_elif",
+            "endif": "pp_endif",
+            "error": "pp_error",
+            "line": "pp_line",
+            "pragma": "pp_pragma",
+            "undef": "pp_undef",
+            "warning": "pp_warning",
+            "include": "pp_include"
         }
 
         self.type_dict = {
             "asm": "asm",
-            "auto": "auto", 
+            "auto": "auto",
             "bool": "bool",
-            "false": "false", 
-            "true": "true", 
-            "break": "break", 
-            "case": "case", 
+            "false": "false",
+            "true": "true",
+            "break": "break",
+            "case": "case",
             "catch": "catch",
             "char": "char",
             "class": "class",
-            "const": "const", 
+            "const": "const",
             "continue": "continue",
             "default": "default",
             "delete": "delete",
@@ -136,13 +137,13 @@ class Tokenizer():
             "virtual": "virtual",
             "void": "void",
             "volatile": "volatile",
-            "wchart": "wchart", 
+            "wchart": "wchart",
             "while": "while",
             "any": "any"
         }
 
         self.type2vera_type = {
-            "ID" : "identifier",
+            "ID": "identifier",
             "AMPERSAND": "and",
             "LOGICALAND": "andand",
             "EQUAL": "assign",
@@ -187,20 +188,19 @@ class Tokenizer():
             "STAR": "star",
             "MULTIPLYEQUAL": "starassign",
             "COMMENT1": "ccomment",
-            "COMMENT2" : "cppcomment",
+            "COMMENT2": "cppcomment",
             "CHAR": "charlit",
             "STRING": "stringlit",
             "DPOUND": "pound_pound",
             "POUND": "pound",
-            "INTEGER" : "intlit",
-            "WS" : "space"
+            "INTEGER": "intlit",
+            "WS": "space"
         }
 
         if (log):
             print(AbriLogger.info('<< Tokenizer.__init__'))
 
-
-    def setFiles(self, filePathList : list[str]):
+    def setFiles(self, filePathList):
         if (log):
             print(AbriLogger.info('>> Tokenizer.setFiles'))
         self.fileList = filePathList
@@ -208,30 +208,31 @@ class Tokenizer():
         if (log):
             print(AbriLogger.info('<< Tokenizer.setFiles'))
 
-
-    def check_isNL(sencalf, token : TokenObject) -> bool:
+    def check_isNL(sencalf, token: TokenObject) -> bool:
         """ Check if token is a new line or a simple ws """
         return token.type == 'CPP_WS' and token.value == '\n'
 
-    def checkConcatType(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> Union[tuple[str, str], bool]:
+    def checkConcatType(self, tokenIndex: int, pcppTokens):
         """ Check if a type is a combinaison of multiple characters not checked by pcpp """
         if (log):
             print(AbriLogger.info('>> Tokenizer.checkConcatType'))
 
         for ct in self.concat_type:
 
-            pcppTokensListSize : int = len(pcppTokens)
+            pcppTokensListSize: int = len(pcppTokens)
 
-            types : list[str] = ct.split(',')
+            types = ct.split(',')
             i = 0
             while i < len(types) and tokenIndex + i + 1 < pcppTokensListSize and pcppTokens[tokenIndex + i].type == f'CPP_{types[i]}':
                 i += 1
 
             if i == len(types):
                 if (log):
-                    print(AbriLogger.success('<< Tokenizer.checkConcatType : Success'))
+                    print(AbriLogger.success(
+                        '<< Tokenizer.checkConcatType : Success'))
 
-                res : list[str] = [self.concat_type[ct], pcppTokens[tokenIndex].value]
+                res = [self.concat_type[ct],
+                       pcppTokens[tokenIndex].value]
                 u = 1
                 while (u < len(types)):
                     res[1] = res[1] + pcppTokens[tokenIndex + 1].value
@@ -243,15 +244,14 @@ class Tokenizer():
             print(AbriLogger.info('<< Tokenizer.checkConcatType'))
         return False
 
-
-    def getHheader(self, pcppTokens : list[PCPPToken], tokenIndex : int) -> bool:
+    def getHheader(self, pcppTokens, tokenIndex: int) -> bool:
         """ check if import is part given with include """
         return tokenIndex + 5 < len(pcppTokens) and (
-            (pcppTokens[tokenIndex + 1].value == '<' and pcppTokens[tokenIndex + 5].value == '>')
-            ) and pcppTokens[tokenIndex + 3].value == '.'
+            (pcppTokens[tokenIndex + 1].value ==
+             '<' and pcppTokens[tokenIndex + 5].value == '>')
+        ) and pcppTokens[tokenIndex + 3].value == '.'
 
-
-    def checkPPValues(self, tokenIndex : int, pcppTokens : list[PCPPToken]) -> Union[tuple[str, str], bool]:
+    def checkPPValues(self, tokenIndex: int, pcppTokens):
         """ Test if types are preprocessors types """
         if (log):
             print(AbriLogger.info('>> Tokenizer.checkPreProcessorValues'))
@@ -262,10 +262,11 @@ class Tokenizer():
         for PreProcessorValues in self.pp_values:
             if (pcppTokens[tokenIndex + 1].value == PreProcessorValues):
                 if (log):
-                    print(AbriLogger.success('<< Tokenizer.checkPreProcessorValues : Value found'))
+                    print(AbriLogger.success(
+                        '<< Tokenizer.checkPreProcessorValues : Value found'))
 
-                concat_values : int = 2
-                
+                concat_values: int = 2
+
                 if pcppTokens[tokenIndex + 1].value == 'include' and tokenIndex + 2 < len(pcppTokens) and pcppTokens[tokenIndex + 2].type == 'CPP_WS':
                     concat_values = 3
                 if (tokenIndex + 3 < len(pcppTokens) and pcppTokens[tokenIndex + 3].type == 'CPP_STRING'):
@@ -275,31 +276,33 @@ class Tokenizer():
 
                 if (log):
                     print(AbriLogger.info(f'Concat value : {concat_values}'))
-                
-                tpl : tuple[str, str] = (('pp_hheader' if pcppTokens[tokenIndex + 3].value == '<' else 'pp_qheader') if concat_values == 8 or concat_values == 4 else self.pp_values[PreProcessorValues], ''.join([token.value for token in pcppTokens[tokenIndex: tokenIndex + concat_values]]))
+
+                tpl = (('pp_hheader' if pcppTokens[tokenIndex + 3].value == '<' else 'pp_qheader') if concat_values == 8 or concat_values ==
+                       4 else self.pp_values[PreProcessorValues], ''.join([token.value for token in pcppTokens[tokenIndex: tokenIndex + concat_values]]))
 
                 del pcppTokens[tokenIndex: tokenIndex + concat_values]
 
                 return tpl
-        
+
         if (log):
             print(AbriLogger.info('<< Tokenizer.checkPreProcessorValues'))
         return False
 
-
-    def initTokens(self, filePath : str) -> TokenSequence:
+    def initTokens(self, filePath: str) -> TokenSequence:
 
         if (log):
             print(AbriLogger.info('>> Tokenizer.initTokens'))
         if not any([filePath.endswith(ext) for ext in ['.c', '.h']]) and not filePath.endswith('Makefile'):
             return []
-        file_content : str = open(filePath, mode='r', encoding='utf-8', errors="ignore").read()
+        file_content: str = open(
+            filePath, mode='r', encoding='utf-8', errors="ignore").read()
 
         try:
-            list_pcppTokens : list = Preprocessor().tokenize(text=file_content)
-            pcpp_tokens : list[PCPPToken] = []
+            list_pcppTokens: list = Preprocessor().tokenize(text=file_content)
+            pcpp_tokens = []
             for token in list_pcppTokens:
-                pcpp_tokens.append(PCPPToken(value=token.value, lineno=token.lineno - 2, lexpos=token.lexpos, type=token.type, source=token.source))
+                pcpp_tokens.append(PCPPToken(value=token.value, lineno=token.lineno - 2,
+                                   lexpos=token.lexpos, type=token.type, source=token.source))
 
         except:
             if (log):
@@ -307,21 +310,23 @@ class Tokenizer():
             raise PreprocessingError()
 
         if (log):
-            print(AbriLogger.success('>> Tokenizer.initTokens : Successfully got tokens from pcpp'))
+            print(AbriLogger.success(
+                '>> Tokenizer.initTokens : Successfully got tokens from pcpp'))
 
-        ret : TokenSequence = TokenSequence([])
+        ret: TokenSequence = TokenSequence([])
 
-        #get tokens
-        line : int = 1
-        column_offset : int = 0
-        base_offset : int = 0
+        # get tokens
+        line: int = 1
+        column_offset: int = 0
+        base_offset: int = 0
 
         for index, pcppToken in enumerate(pcpp_tokens):
 
-            #check types, new element ect
+            # check types, new element ect
 
-            tokenRef : TokenObject = TokenObject(file=filePath, column=pcppToken.lexpos, line=pcppToken.lineno, type=pcppToken.type, raw=pcppToken.source, value=pcppToken.value, cur_column=pcppToken.lexpos)
-    
+            tokenRef: TokenObject = TokenObject(file=filePath, column=pcppToken.lexpos, line=pcppToken.lineno,
+                                                type=pcppToken.type, raw=pcppToken.source, value=pcppToken.value, cur_column=pcppToken.lexpos)
+
             # Get new line number and setup column offset
 
             if (tokenRef.line > line):
@@ -338,8 +343,9 @@ class Tokenizer():
                 ret.append(item=tokenRef)
                 continue
 
-            # Check types composed of multiple tokens 
-            concatTypeResult : Union[str, bool] = self.checkConcatType(tokenIndex=index, pcppTokens=pcpp_tokens)
+            # Check types composed of multiple tokens
+            concatTypeResult = self.checkConcatType(
+                tokenIndex=index, pcppTokens=pcpp_tokens)
             if (concatTypeResult != False):
                 tokenRef.type = concatTypeResult[0]
                 tokenRef.value = tokenRef.raw = concatTypeResult[1]
@@ -347,8 +353,9 @@ class Tokenizer():
                 ret.append(item=tokenRef)
                 continue
 
-            ## Check if type is preprocessing type
-            PPTypeTest : Union[tuple[str, str], bool] = self.checkPPValues(tokenIndex=index, pcppTokens=pcpp_tokens)
+            # Check if type is preprocessing type
+            PPTypeTest = self.checkPPValues(
+                tokenIndex=index, pcppTokens=pcpp_tokens)
             if (PPTypeTest != False):
                 tokenRef.type = PPTypeTest[0]
                 tokenRef.value = PPTypeTest[1]
@@ -357,7 +364,7 @@ class Tokenizer():
                 ret.append(item=tokenRef)
                 continue
 
-            ## check if type is a specific type
+            # check if type is a specific type
             if (tokenRef.value in self.type_dict):
                 tokenRef.type = self.type_dict[tokenRef.value]
                 tokenRef.name = tokenRef.type
@@ -365,7 +372,8 @@ class Tokenizer():
                 continue
 
             # Setup type for classic types
-            tokenRef.type = self.type2vera_type.get(tokenRef.type.replace('CPP_', ''))
+            tokenRef.type = self.type2vera_type.get(
+                tokenRef.type.replace('CPP_', ''))
 
             tokenRef.name = tokenRef.type
             #line = tokenRef.line if tokenRef.line > line else line
@@ -373,30 +381,32 @@ class Tokenizer():
             ret.append(item=tokenRef)
 
         # todo améliorer la position de l'eof
-        ret.append(TokenObject(file=filePath, column=0, line=line + 1, name='eof', type='eof', raw='', value=''))
+        ret.append(TokenObject(file=filePath, column=0, line=line +
+                   1, name='eof', type='eof', raw='', value=''))
 
-        #end get tokens
+        # end get tokens
 
         return ret
 
-    def directAdd(self, filePath : str):
+    def directAdd(self, filePath: str):
         self.tokensPerFile[filePath] = self.initTokens(filePath=filePath)
 
     def initAllFilesTokens(self) -> None:
         for filePath in self.fileList:
-            self.abriThread.add(function=self.directAdd, args=(filePath,), name=filePath)
+            self.abriThread.add(function=self.directAdd,
+                                args=(filePath,), name=filePath)
         self.abriThread.run()
 
-
-    def addFile(self, filePath : str) -> None:
-        if not(os.path.exists(filePath)):
+    def addFile(self, filePath: str) -> None:
+        if not (os.path.exists(filePath)):
             raise FileNotFoundError('File not found :', filePath)
         self.tokensPerFile[filePath] = self.initTokens(filePath=filePath)
 
-
-    def getTokens(self, filePath : str) -> TokenSequence:
+    def getTokens(self, filePath: str) -> TokenSequence:
         if filePath not in self.fileList:
-            raise UnknownTokenError(f'fileName not add to tokenizer wait. Please add it before getting tokens :({filePath})')
+            raise UnknownTokenError(
+                f'fileName not add to tokenizer wait. Please add it before getting tokens :({filePath})')
         return self.tokensPerFile[filePath]
+
 
 TokenizerObject = Tokenizer()

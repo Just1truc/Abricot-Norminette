@@ -82,7 +82,7 @@ def __get_arguments_from_string(arguments_string: str):
             argument = ""
     return arguments
 
-def get_functions(file: str) -> List[Function]:
+def get_functions(file: str):
     raw = '\n'.join(get_lines(file, replace_comments=True, replace_stringlits=True))
     uncommented = remove_attributes(raw)
     matches = re.finditer(FUNCTION_REGEX, uncommented)

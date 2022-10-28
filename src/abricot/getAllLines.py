@@ -1,10 +1,10 @@
 savedLines = {}
 
-def getAllLines(file: str) -> list[str]:
+def getAllLines(file: str):
     if file in savedLines:
         return savedLines[file]
 
-def prepareGetAllLines(files: list[str]):
+def prepareGetAllLines(files):
     for file in files:
          with open(file, 'r') as f:
             content = f.read()
