@@ -272,6 +272,10 @@ def is_line_empty(line: str):
     # A line only made of spaces is considered empty
     return len(line) == 0 or line.isspace()
 
+def remove_suffix(input_string, suffix):
+    if suffix and input_string.endswith(suffix):
+        return input_string[:-len(suffix)]
+    return input_string
 
 def is_line_correctly_indented(line: str) -> bool:
     # A well-indented line is considered to either be:
@@ -284,7 +288,7 @@ def is_line_correctly_indented(line: str) -> bool:
     if is_line_empty(line):
         return True
     indentation_regex = re.compile(r'^( *|( {4})*\S+.*)$')
-    return indentation_regex.match(line.removesuffix('*/')) is not None
+    return indentation_regex.match(remove_suffix(line,'*/')) is not None
 
 
 def get_index_from_raw(raw: str, line: int, column: int):
