@@ -2,8 +2,6 @@ import os
 import re
 
 def abricotize(filename: str) -> None:
-    if filename.endswith("C-L3.py"):
-        return
     filecontent = None
     try:
         with open("/tmp/fruitmixer/sources/%s" % filename, 'r') as f:
