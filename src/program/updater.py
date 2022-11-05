@@ -3,7 +3,7 @@ import requests
 from program.print import printc, Colors
 from __init__ import __version__
 
-URL_BASE = "https://raw.githubusercontent.com/Just1truc/Abricot-Norminette/develop"
+URL_BASE = "https://raw.githubusercontent.com/Just1truc/Abricot-Norminette"
 VERSION_FILE = "%s/VERSION" % URL_BASE
 UPDATE_FILE = "%s/get_abricot.sh" % URL_BASE
 
