@@ -29,11 +29,11 @@ if ! [ -x "$(command -v clang-format)" ]; then
         if [ -x "$(command -v dnf)" ]; then
             sudo dnf install clang-tools-extra pip || (tput setaf 1; echo "=> Error: clang-tools-extra install went wrong"; tput sgr0; exit 1)
         elif [ -x "$(command -v apt-get)" ]; then
-            sudo apt-get install clang-format || (tput setaf 1; echo "=> Error: clang-format install went wrong"; tput sgr0; exit 1)
+            sudo apt-get install clang-format pip || (tput setaf 1; echo "=> Error: clang-format install went wrong"; tput sgr0; exit 1)
         elif [ -x "$(command -v zypper)" ]; then
-            sudo zypper install clang-format || (tput setaf 1; echo "=> Error: clang-format install went wrong"; tput sgr0; exit 1)
+            sudo zypper install clang-format python3-pip || (tput setaf 1; echo "=> Error: clang-format install went wrong"; tput sgr0; exit 1)
         elif [ -x "$(command -v pacman)" ]; then
-            sudo pacman -S clang || (tput setaf 1; echo "=> Error: clang-format install went wrong"; tput sgr0; exit 1)
+            sudo pacman -S clang python-pip || (tput setaf 1; echo "=> Error: clang-format install went wrong"; tput sgr0; exit 1)
         else
             tput setaf 1
             echo "=> Error: Your distribution is not supported"
