@@ -22,7 +22,7 @@ tput sgr0
 
 
 # if clang-format or pip is not installed
-if ![ -x "$(command -v clang-format)" && -x "$(command -v pip)" ]; then
+if ! [ -x "$(command -v clang-format)" && -x "$(command -v pip)" ]; then
     if ! [ "$(uname)" == "Darwin" ]; then
         tput sgr 0
         echo "=> Installing clang-format..."
