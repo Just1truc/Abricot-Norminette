@@ -30,7 +30,6 @@ def filterTokens(FilterSequence, tokenList: TokenSequence, parsingOptions: Parsi
         if parsingOptions.toColumn != -1 and token.line == parsingOptions.toLine and token.cur_column > parsingOptions.toColumn:
             continue
         filteredTokenSequence.append(token)
-
     return filteredTokenSequence
 
 
@@ -244,12 +243,25 @@ class Tokenizer():
             print(AbriLogger.info('<< Tokenizer.checkConcatType'))
         return False
 
-    def getHheader(self, pcppTokens, tokenIndex: int) -> bool:
+    def getHheader(self, pcppTokens, tokenIndex: int) -> int:
         """ check if import is part given with include """
-        return tokenIndex + 5 < len(pcppTokens) and (
-            (pcppTokens[tokenIndex + 1].value ==
-             '<' and pcppTokens[tokenIndex + 5].value == '>')
-        ) and pcppTokens[tokenIndex + 3].value == '.'
+        flag_count = 1
+        if tokenIndex + 5 >= len(pcppTokens):
+            return 0
+        if pcppTokens[(tokenIndex + flag_count)].type != 'CPP_LESS':
+            return 0
+        flag_count += 1
+        while (tokenIndex + flag_count) < len(pcppTokens):
+            token = pcppTokens[(tokenIndex + flag_count)]
+            if token.type == 'CPP_WS':
+                flag_count += 1
+                continue
+            if token.type not in ['CPP_ID', 'CPP_FSLASH', 'CPP_DOT']:
+                break
+            flag_count += 1
+        if pcppTokens[(tokenIndex + flag_count)].type != 'CPP_GREATER':
+            return 0
+        return flag_count + 2
 
     def checkPPValues(self, tokenIndex: int, pcppTokens):
         """ Test if types are preprocessors types """
@@ -271,13 +283,14 @@ class Tokenizer():
                     concat_values = 3
                 if (tokenIndex + 3 < len(pcppTokens) and pcppTokens[tokenIndex + 3].type == 'CPP_STRING'):
                     concat_values = 4
-                if self.getHheader(pcppTokens=pcppTokens, tokenIndex=tokenIndex + 2):
-                    concat_values = 8
+                get_header_size = self.getHheader(pcppTokens=pcppTokens, tokenIndex=tokenIndex + 2)
+                if get_header_size > 0:
+                    concat_values = get_header_size
 
                 if (log):
                     print(AbriLogger.info(f'Concat value : {concat_values}'))
 
-                tpl = (('pp_hheader' if pcppTokens[tokenIndex + 3].value == '<' else 'pp_qheader') if concat_values == 8 or concat_values ==
+                tpl = (('pp_hheader' if pcppTokens[tokenIndex + 3].value == '<' else 'pp_qheader') if concat_values == get_header_size or concat_values ==
                        4 else self.pp_values[PreProcessorValues], ''.join([token.value for token in pcppTokens[tokenIndex: tokenIndex + concat_values]]))
 
                 del pcppTokens[tokenIndex: tokenIndex + concat_values]
