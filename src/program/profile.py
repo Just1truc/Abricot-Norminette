@@ -26,7 +26,7 @@ rules = {
     "F3": Rule("C-F3", "Number of columns", Severities.MAJOR, "The length of a line must not exceed 80 columns", rules.C_F3.checker, False),
     "F4": Rule("C-F4", "Number of lines", Severities.MAJOR, "The body of a function must not exceed 20 lines", rules.C_F4.checker, False),
     "F5": Rule("C-F5", "Number of parameters", Severities.MAJOR, "A function must not have more than 4 parameters", rules.C_F5.checker, False),
-    "F6": Rule("C-F6", "Number of local variables", Severities.MAJOR, "A function must not have more than 5 local variables", rules.C_F6.checker, False),
+    "F6": Rule("C-F6", "Functions without parameters", Severities.MAJOR, "A function taking no parameters must take void as a parameter", rules.C_F6.checker, False),
     "F8": Rule("C-F8", "Comments inside a function", Severities.MINOR, "There must be no comment within a function", rules.C_F8.checker, False),
     "F9": Rule("C-F9", "Nested functions", Severities.MAJOR, "Nested functions are not allowed", rules.C_F9.checker, False),
     "G1": Rule("C-G1", "File header", Severities.MINOR, "Files must always start with the standard header", rules.C_G1.checker, False),
