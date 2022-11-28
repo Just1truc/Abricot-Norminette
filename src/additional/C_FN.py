@@ -22,7 +22,7 @@ def check_file_functions(file):
         ['identifier', 'leftparen'] + TYPES_TOKENS + BINARY_OPERATORS_TOKENS
     )
     for i, token in enumerate(tokens):
-        if token.name != 'indentifier':
+        if token.name != 'identifier':
             continue
         if token.value not in banned_functions:
             continue
