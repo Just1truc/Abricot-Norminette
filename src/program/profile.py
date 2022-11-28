@@ -44,4 +44,5 @@ rules = {
     "O3": Rule("C-O3", "File coherence", Severities.MAJOR, "Your files can contain at most 5 functions", rules.C_O3.checker, False),
     "O4": Rule("C-O4", "Naming files and folders", Severities.MINOR, "Your files should be correctly named", rules.C_O4.checker, False),
     "V1": Rule("C-V1", "Naming identifiers", Severities.MINOR, "Your identifiers should be correctly named", rules.C_V1.checker, False),
+    "FN": Rule("C-FN", "Banned function", Severities.MAJOR, "This syscall is usually banned in projects", rules.C_FN.checker, False),
 }

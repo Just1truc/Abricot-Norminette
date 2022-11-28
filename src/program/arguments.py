@@ -9,3 +9,4 @@ parser.add_argument("--version", help="Display the current version of Abricot", 
 parser.add_argument("--group", help="Group errors by file or type", choices=["file", "type"], default="file")
 parser.add_argument("--ignore", help="Use .gitignore configuration to detect files to ignore", action="store_true")
 parser.add_argument("--status", help="Exit status of the program indicates if mistakes were found", action="store_true")
+parser.add_argument("--nofunc", help="Don't report banned functions", action="store_true")

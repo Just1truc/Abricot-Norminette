@@ -43,6 +43,10 @@ def get_banana_rules():
     os.system("cp /tmp/fruitmixer/remote/vera/rules/*.py /tmp/fruitmixer/sources")
     os.system("rm -rf /tmp/fruitmixer/remote")
 
+def add_additional_rules():
+    cwd = os.path.dirname(__file__)
+    os.system("cp %s/../src/additional/*.py %s/../src/rules/" % (cwd, cwd))
+    
 def main():
     get_banana_rules()
     os.system("mkdir /tmp/fruitmixer/destination")
@@ -50,6 +54,7 @@ def main():
         for filename in filenames:
             if filename.endswith(".py"):
                 abricotize(filename)
+    add_additional_rules()
     os.system("rm -rf /tmp/fruitmixer/")
 
 main()

@@ -25,3 +25,4 @@ import rules.C_O1 as C_O1
 import rules.C_O3 as C_O3
 import rules.C_O4 as C_O4
 import rules.C_V1 as C_V1
+import rules.C_FN as C_FN

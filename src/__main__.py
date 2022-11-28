@@ -49,6 +49,8 @@ prepareGetAllLines(parseFiles)
 TokenizerObject.setFiles(parseFiles)
 
 for rule in rules.values():
+    if rule.code == "C-FN" and args.nofunc:
+        continue
     if not rule.optional or args.all:
         thread.add(rule.checker, (), rule.name)
 
