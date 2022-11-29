@@ -38,6 +38,7 @@ rules = {
     "G6": Rule("C-G6", "Line endings", Severities.MINOR, "Line endings must be done in UNIX style", rules.C_G6.checker, False),
     "G7": Rule("C-G7", "Trailing spaced", Severities.MINOR, "No trailing spaces must be present at the end of a line", rules.C_G7.checker, False),
     "G8": Rule("C-G8", "Leading/Trailing lines", Severities.MINOR, "No empty lines must be present", rules.C_G8.checker, False),
+    "L1": Rule("C-L1", "Code line content", Severities.MINOR, "A line must correspond to only one statement", rules.C_L1.checker, True),
     "L2": Rule("C-L2", "Indentation", Severities.MINOR, "No tabulations may be used for indentation", rules.C_L2.checker, False),
     "L3": Rule("C-L3", "Spaces", Severities.MINOR, "You have misplaced space(s)", rules.C_L3.checker, False),
     "L4": Rule("C-L4", "Curly Brackets", Severities.MINOR, "You have misplaced curly bracket(s)", rules.C_L4.checker, False),

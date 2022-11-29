@@ -19,6 +19,7 @@ import rules.C_G7 as C_G7
 import rules.C_G8 as C_G8
 import rules.C_H1 as C_H1
 import rules.C_H2 as C_H2
+import rules.C_L1 as C_L1
 import rules.C_L2 as C_L2
 import rules.C_L3 as C_L3
 import rules.C_L4 as C_L4
