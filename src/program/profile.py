@@ -44,6 +44,7 @@ rules = {
     "L3": Rule("C-L3", "Spaces", Severities.MINOR, "You have misplaced space(s)", rules.C_L3.checker, False),
     "L4": Rule("C-L4", "Curly Brackets", Severities.MINOR, "You have misplaced curly bracket(s)", rules.C_L4.checker, False),
     "L5": Rule("C-L5", "Variable Declarations", Severities.MAJOR, "Variables must be declared one by one at the beginning of the scope of the function", rules.C_L5.checker, True),
+    "L6": Rule("C-L6", "Line Jumps", Severities.MINOR, "It must be a linebreak after variable declaration and no other linebreaks in the scope of the function", rules.C_L6.checker, True),
     "O1": Rule("C-O1", "Contents of the repository", Severities.MAJOR, "The repository must not contain compiled, temporary or unnecessary files", rules.C_O1.checker, False),
     "O3": Rule("C-O3", "File coherence", Severities.MAJOR, "Your files can contain at most 5 functions", rules.C_O3.checker, False),
     "O4": Rule("C-O4", "Naming files and folders", Severities.MINOR, "Your files should be correctly named", rules.C_O4.checker, False),

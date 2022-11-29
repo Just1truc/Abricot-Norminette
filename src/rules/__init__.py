@@ -25,6 +25,7 @@ import rules.C_L2 as C_L2
 import rules.C_L3 as C_L3
 import rules.C_L4 as C_L4
 import rules.C_L5 as C_L5
+import rules.C_L6 as C_L6
 import rules.C_O1 as C_O1
 import rules.C_O3 as C_O3
 import rules.C_O4 as C_O4
