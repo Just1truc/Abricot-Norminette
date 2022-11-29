@@ -7,6 +7,7 @@ import rules.C_F3 as C_F3
 import rules.C_F4 as C_F4
 import rules.C_F5 as C_F5
 import rules.C_F6 as C_F6
+import rules.C_F7 as C_F7
 import rules.C_F8 as C_F8
 import rules.C_F9 as C_F9
 import rules.C_G1 as C_G1
