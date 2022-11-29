@@ -19,7 +19,7 @@ def filterTokens(FilterSequence, tokenList: TokenSequence, parsingOptions: Parsi
     filteredTokenSequence: TokenSequence = TokenSequence([])
 
     for token in tokenList:
-        if token.type not in FilterSequence:
+        if len(FilterSequence) > 0 and token.type not in FilterSequence:
             continue
         if token.line < parsingOptions.fromLine:
             continue
