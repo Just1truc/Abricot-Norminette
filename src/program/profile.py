@@ -21,6 +21,7 @@ class Rule:
 rules = {
     "A3": Rule("C-A3", "Line break at the end of file", Severities.INFO, "Files must end with a line break", rules.C_A3.checker, False),
     "C1": Rule("C-C1", "Conditonal branching", Severities.MAJOR, "A conditionnal block must not contain more than 3 branches", rules.C_C1.checker, False),
+    "C2": Rule("C-C3", "Ternary operators", Severities.MAJOR, "The use of ternary operators is allowed as far as it is kept simple and readable", rules.C_C2.checker, True),
     "C3": Rule("C-C3", "Goto", Severities.MAJOR, "Oh no, cringe...", rules.C_C3.checker, False),
     "F2": Rule("C-F2", "Naming functions", Severities.MINOR, "Your function name is not enough explicit", rules.C_F2.checker, False),
     "F3": Rule("C-F3", "Number of columns", Severities.MAJOR, "The length of a line must not exceed 80 columns", rules.C_F3.checker, False),
@@ -40,6 +41,7 @@ rules = {
     "L2": Rule("C-L2", "Indentation", Severities.MINOR, "No tabulations may be used for indentation", rules.C_L2.checker, False),
     "L3": Rule("C-L3", "Spaces", Severities.MINOR, "You have misplaced space(s)", rules.C_L3.checker, False),
     "L4": Rule("C-L4", "Curly Brackets", Severities.MINOR, "You have misplaced curly bracket(s)", rules.C_L4.checker, False),
+    "L5": Rule("C-L5", "Variable Declarations", Severities.MAJOR, "Variables must be declared one by one at the beginning of the scope of the function", rules.C_L5.checker, True),
     "O1": Rule("C-O1", "Contents of the repository", Severities.MAJOR, "The repository must not contain compiled, temporary or unnecessary files", rules.C_O1.checker, False),
     "O3": Rule("C-O3", "File coherence", Severities.MAJOR, "Your files can contain at most 5 functions", rules.C_O3.checker, False),
     "O4": Rule("C-O4", "Naming files and folders", Severities.MINOR, "Your files should be correctly named", rules.C_O4.checker, False),

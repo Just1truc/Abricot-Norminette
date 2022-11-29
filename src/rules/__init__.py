@@ -1,5 +1,6 @@
 import rules.C_A3 as C_A3
 import rules.C_C1 as C_C1
+import rules.C_C2 as C_C2
 import rules.C_C3 as C_C3
 import rules.C_F2 as C_F2
 import rules.C_F3 as C_F3
@@ -21,6 +22,7 @@ import rules.C_H2 as C_H2
 import rules.C_L2 as C_L2
 import rules.C_L3 as C_L3
 import rules.C_L4 as C_L4
+import rules.C_L5 as C_L5
 import rules.C_O1 as C_O1
 import rules.C_O3 as C_O3
 import rules.C_O4 as C_O4

@@ -114,13 +114,21 @@ class OutputManager():
                    bold=True, end=" : ")
             printc("%d" % self.summary["INFO"])
 
+    def removeDuplicates(self, errors):
+        filtred = []
+        for i, error in enumerate(errors):
+            if not any(error["file"] == e["file"] and error["line"] == e["line"] and error["code"] == e["code"] for e in errors[:i]):
+                filtred.append(error)
+        return filtred
+            
     def outputDefault(self, plain=False):
         if (len(self.result) == 0):
             printc("No Coding style error detected : Code clean", color=(Colors.NONE if plain else Colors.GREEN), bold=(not plain))
             return
         for step in self.result:
             printc(step["title"], bold=(not plain))
-            for error in step["errors"]:
+            errors = self.removeDuplicates(step["errors"])
+            for error in errors:
                 self.printRuleViolation(error, plain=plain)
             print("")
         self.printSummary(plain=plain)
