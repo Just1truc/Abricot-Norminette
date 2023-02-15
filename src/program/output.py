@@ -141,7 +141,7 @@ class OutputManager():
         for group in self.result:
             for error in group["errors"]:
                 print("%s,%s,%s,%d" % (
-                    error["severity"], error["code"], error["file"], error["line"]))
+                    error["severity"], error["code"] + " - " + error["message"], error["file"], error["line"]))
 
     def showAs(self, type):
         if (type == "default"):
