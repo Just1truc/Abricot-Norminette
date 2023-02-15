@@ -53,6 +53,9 @@ rules = {
     "C1": Rule("C-C1", "Conditonal branching", Severities.MAJOR, "A conditionnal block must not contain more than 3 branches", rules.C_C1.checker, False),
     "C2": Rule("C-C3", "Ternary operators", Severities.MAJOR, "You must never use nested or chained ternary operators", rules.C_C2.checker, True),
     "C3": Rule("C-C3", "Goto", Severities.MAJOR, "Oh no, cringe...", rules.C_C3.checker, False),
+
+    "H1": Rule("C-H1", "Content", Severities.MAJOR, "Header files must only contain: function prototypes, type declarations, global variable/constant declarations, macros and static inline functions", rules.C_H1.checker, False),
+    "H2": Rule("C-H2", "Include Guard", Severities.MAJOR, "Header files must be protected from double inclusion", rules.C_H2.checker, False),
     
     "A3": Rule("C-A3", "Line break at the end of file", Severities.INFO, "Files must end with a line break", rules.C_A3.checker, False),
 
